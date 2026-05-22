@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 from langchain_core.documents import Document
 import streamlit as st
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -444,7 +445,98 @@ if not st.session_state.files_processed:
         except Exception as e:
 
             st.error(f"Error processing file: {e}")
+# -----------------------
+# ANALYTICS DASHBOARD
+# -----------------------
 
+if st.session_state.files_processed:
+
+    st.markdown("## 📊 Analytics Dashboard")
+
+    try:
+
+        if uploaded_files:
+
+            for uploaded_file in uploaded_files:
+
+                # CSV
+                if uploaded_file.name.endswith(".csv"):
+                    df = pd.read_csv(uploaded_file)
+
+                # Excel
+                elif uploaded_file.name.endswith(".xlsx"):
+                    df = pd.read_excel(uploaded_file)
+
+                else:
+                    continue
+
+                st.markdown(f"### 📄 {uploaded_file.name}")
+
+                numeric_cols = df.select_dtypes(include='number').columns
+
+                if len(numeric_cols) > 0:
+
+                    col1, col2, col3 = st.columns(3)
+
+                    # KPI Cards
+                    with col1:
+                        st.metric(
+                            "Average",
+                            round(df[numeric_cols[0]].mean(), 2)
+                        )
+
+                    with col2:
+                        st.metric(
+                            "Maximum",
+                            round(df[numeric_cols[0]].max(), 2)
+                        )
+
+                    with col3:
+                        st.metric(
+                            "Minimum",
+                            round(df[numeric_cols[0]].min(), 2)
+                        )
+
+                    # LINE CHART
+                    fig = px.line(
+                        df,
+                        y=numeric_cols[0],
+                        title=f"{numeric_cols[0]} Trend"
+                    )
+
+                    st.plotly_chart(
+                        fig,
+                        use_container_width=True
+                    )
+
+                    # BAR CHART
+                    fig2 = px.bar(
+                        df,
+                        y=numeric_cols[0],
+                        title=f"{numeric_cols[0]} Comparison"
+                    )
+
+                    st.plotly_chart(
+                        fig2,
+                        use_container_width=True
+                    )
+
+                    # PIE CHART
+                    fig3 = px.pie(
+                        df,
+                        names=df.columns[0],
+                        values=numeric_cols[0],
+                        title=f"{numeric_cols[0]} Distribution"
+                    )
+
+                    st.plotly_chart(
+                        fig3,
+                        use_container_width=True
+                    )
+
+    except Exception as e:
+
+        st.warning(f"Analytics unavailable: {e}")
 # -----------------------
 # FILE STATUS
 # -----------------------
