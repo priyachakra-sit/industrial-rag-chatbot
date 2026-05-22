@@ -9,34 +9,72 @@ from groq import Groq
 import tempfile
 
 # -----------------------
+# PAGE CONFIG
+# -----------------------
+st.set_page_config(
+    page_title="Industrial AI Assistant",
+    layout="wide"
+)
+
+# -----------------------
+# CUSTOM UI
+# -----------------------
+st.markdown("""
+<style>
+
+.main {
+    background-color: #0E1117;
+    color: white;
+}
+
+.stTextInput input {
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.stButton button {
+    border-radius: 10px;
+    background-color: #FF4B4B;
+    color: white;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #1E1E1E;
+}
+
+.block-container {
+    padding-top: 2rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------
 # SESSION STATE
 # -----------------------
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # -----------------------
-# PAGE CONFIG
-# -----------------------
-st.set_page_config(page_title="Industrial AI Assistant")
-
-# -----------------------
 # SIDEBAR
 # -----------------------
 with st.sidebar:
-    st.header("About")
+
+    st.header("⚡ Industrial AI Assistant")
 
     st.write("""
     Upload industrial reports and ask questions.
 
-    Supported:
+    Supported Files:
     - PDF
     - Excel
     - CSV
 
-    Powered by:
-    - Streamlit
-    - FAISS
-    - Groq LLM
+    Features:
+    - Multi-file analysis
+    - AI insights
+    - Detailed answers
+    - RAG search
     """)
 
 # -----------------------
@@ -44,9 +82,9 @@ with st.sidebar:
 # -----------------------
 st.title("⚡ Industrial AI Assistant")
 
-st.caption("Assistant for Industrial Reports")
+st.caption("Advanced AI Assistant for Industrial Reports")
 
-st.write("Upload your industrial report and ask questions.")
+st.write("Upload industrial reports and ask questions.")
 
 # -----------------------
 # API KEY
@@ -54,75 +92,92 @@ st.write("Upload your industrial report and ask questions.")
 api_key = st.secrets["GROQ_API_KEY"]
 
 # -----------------------
-# FILE UPLOAD
+# FILE UPLOADER
 # -----------------------
-uploaded_file = st.file_uploader(
-    "Upload Report",
-    type=["pdf", "xlsx", "csv"]
+uploaded_files = st.file_uploader(
+    "Upload Reports",
+    type=["pdf", "xlsx", "csv"],
+    accept_multiple_files=True
 )
 
 # -----------------------
 # MAIN PROCESS
 # -----------------------
-if uploaded_file is not None:
+if uploaded_files:
 
-    # Save uploaded file temporarily
-    with tempfile.NamedTemporaryFile(
-        delete=False,
-        suffix=f".{uploaded_file.name.split('.')[-1]}"
-    ) as tmp:
-
-        tmp.write(uploaded_file.read())
-
-        temp_path = tmp.name
+    all_documents = []
 
     # -----------------------
-    # LOAD FILE
+    # PROCESS FILES
     # -----------------------
-    if uploaded_file.name.endswith(".pdf"):
+    for uploaded_file in uploaded_files:
 
-        loader = PyPDFLoader(temp_path)
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=f".{uploaded_file.name.split('.')[-1]}"
+        ) as tmp:
 
-        documents = loader.load()
+            tmp.write(uploaded_file.read())
 
-    elif uploaded_file.name.endswith(".xlsx"):
+            temp_path = tmp.name
 
-        excel_data = pd.read_excel(
-            temp_path,
-            sheet_name=None
-        )
+        # -----------------------
+        # PDF
+        # -----------------------
+        if uploaded_file.name.endswith(".pdf"):
 
-        text = ""
+            loader = PyPDFLoader(temp_path)
 
-        for sheet_name, df in excel_data.items():
+            documents = loader.load()
 
-            text += f"\n\nSheet: {sheet_name}\n"
+            all_documents.extend(documents)
 
-            text += df.to_string(index=False)
+        # -----------------------
+        # EXCEL
+        # -----------------------
+        elif uploaded_file.name.endswith(".xlsx"):
 
-        documents = [
-            Document(page_content=text)
-        ]
+            excel_data = pd.read_excel(
+                temp_path,
+                sheet_name=None
+            )
 
-    elif uploaded_file.name.endswith(".csv"):
+            text = ""
 
-        df = pd.read_csv(temp_path)
+            for sheet_name, df in excel_data.items():
 
-        text = df.to_string(index=False)
+                text += f"\n\nSheet: {sheet_name}\n"
 
-        documents = [
-            Document(page_content=text)
-        ]
+                text += df.to_string(index=False)
+
+            all_documents.append(
+                Document(page_content=text)
+            )
+
+        # -----------------------
+        # CSV
+        # -----------------------
+        elif uploaded_file.name.endswith(".csv"):
+
+            df = pd.read_csv(temp_path)
+
+            text = df.to_string(index=False)
+
+            all_documents.append(
+                Document(page_content=text)
+            )
+
+    st.success(f"{len(uploaded_files)} file(s) processed successfully!")
 
     # -----------------------
     # TEXT SPLITTING
     # -----------------------
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=100
+        chunk_size=1000,
+        chunk_overlap=200
     )
 
-    chunks = splitter.split_documents(documents)
+    chunks = splitter.split_documents(all_documents)
 
     # -----------------------
     # EMBEDDINGS
@@ -137,21 +192,25 @@ if uploaded_file is not None:
         embeddings
     )
 
-    st.success(f"{uploaded_file.name} processed successfully!")
-
     # -----------------------
-    # USER QUESTION
+    # QUESTION INPUT
     # -----------------------
-    question = st.text_input("Ask your question")
+    question = st.chat_input("Ask your question")
 
     if question:
+
+        # -----------------------
+        # USER MESSAGE
+        # -----------------------
+        with st.chat_message("user"):
+            st.write(question)
 
         # -----------------------
         # RETRIEVAL
         # -----------------------
         docs = vectorstore.similarity_search(
             question,
-            k=3
+            k=5
         )
 
         context = "\n\n".join(
@@ -162,16 +221,20 @@ if uploaded_file is not None:
         # PROMPT
         # -----------------------
         prompt = f"""
-You are an industrial energy audit assistant.
+You are an advanced industrial AI analyst assistant.
 
-Answer ONLY from the provided context.
+Your job is to deeply analyze uploaded reports and provide detailed, professional, and structured responses.
 
 Rules:
-- Give concise answers
-- Do not show unnecessary calculations
-- Give final results clearly
-- Use bullet points when needed
+- Give clear and detailed explanations
+- Use headings and bullet points
 - Mention exact values from data
+- Explain trends and abnormalities
+- Give industrial recommendations
+- Compare values when needed
+- Summarize findings professionally
+- Answer ONLY from provided context
+- Keep responses detailed and insightful
 
 CONTEXT:
 {context}
@@ -197,7 +260,7 @@ QUESTION:
                 }
             ],
             temperature=0.2,
-            max_tokens=1000
+            max_tokens=3000
         )
 
         answer = response.choices[0].message.content
@@ -213,14 +276,12 @@ QUESTION:
         )
 
 # -----------------------
-# DISPLAY CHAT HISTORY
+# DISPLAY CHAT
 # -----------------------
 for chat in st.session_state.chat_history:
 
-    st.markdown("### Question:")
-    st.write(chat["question"])
+    with st.chat_message("user"):
+        st.write(chat["question"])
 
-    st.markdown("### Answer:")
-    st.write(chat["answer"])
-
-    st.divider()
+    with st.chat_message("assistant"):
+        st.write(chat["answer"])
