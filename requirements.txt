@@ -8,3 +8,5 @@ pypdf
 groq
 openpyxl
 plotly
+sentence-transformers
+langchain-huggingface

@@ -5,7 +5,7 @@ import streamlit as st
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.embeddings import FakeEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 import tempfile
 
@@ -163,32 +163,6 @@ header {
     visibility: hidden;
 }
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-
-    .block-container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        padding-top: 1rem !important;
-    }
-
-    h1 {
-        font-size: 2.2rem !important;
-    }
-
-    [data-testid="stSidebar"] {
-        width: 250px !important;
-    }
-
-    .stChatInput input {
-        font-size: 14px !important;
-    }
-
-    [data-testid="stChatMessage"] {
-        padding: 16px;
-    }
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -290,17 +264,15 @@ Upload industrial reports and receive AI-powered insights, trends, analytics, an
 """, unsafe_allow_html=True)
 
 # -----------------------
-# DYNAMIC KPI VALUES
+# KPI VALUES
 # -----------------------
 report_count = st.session_state.report_count
 query_count = len(st.session_state.chat_history)
 
 if query_count == 0:
     efficiency = 100
-
 elif query_count <= 5:
     efficiency = 95 + query_count
-
 else:
     efficiency = 99
 
@@ -427,9 +399,15 @@ if not st.session_state.files_processed:
 
             chunks = splitter.split_documents(all_documents)
 
+            # -----------------------
+            # REAL EMBEDDINGS
+            # -----------------------
             @st.cache_resource
             def load_embeddings():
-                return FakeEmbeddings(size=384)
+
+                return HuggingFaceEmbeddings(
+                    model_name="BAAI/bge-small-en-v1.5"
+                )
 
             embeddings = load_embeddings()
 
