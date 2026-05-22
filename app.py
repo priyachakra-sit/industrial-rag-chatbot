@@ -207,6 +207,9 @@ if "files_processed" not in st.session_state:
 if "report_count" not in st.session_state:
     st.session_state.report_count = 0
 
+if "uploaded_files" not in st.session_state:
+    st.session_state.uploaded_files = []
+
 # -----------------------
 # SIDEBAR
 # -----------------------
@@ -246,6 +249,7 @@ with st.sidebar:
         st.session_state.vectorstore = None
         st.session_state.files_processed = False
         st.session_state.report_count = 0
+        st.session_state.uploaded_files = []
 
         st.rerun()
 
@@ -291,7 +295,6 @@ Upload industrial reports and receive AI-powered insights, trends, analytics, an
 report_count = st.session_state.report_count
 query_count = len(st.session_state.chat_history)
 
-# Dynamic Efficiency
 if query_count == 0:
     efficiency = 100
 
@@ -301,7 +304,6 @@ elif query_count <= 5:
 else:
     efficiency = 99
 
-# Dynamic Status
 status = "Active" if st.session_state.files_processed else "Waiting"
 
 # -----------------------
@@ -358,6 +360,8 @@ if not st.session_state.files_processed:
     # PROCESS FILES
     # -----------------------
     if uploaded_files:
+
+        st.session_state.uploaded_files = uploaded_files
 
         try:
 
@@ -445,26 +449,32 @@ if not st.session_state.files_processed:
         except Exception as e:
 
             st.error(f"Error processing file: {e}")
+
 # -----------------------
 # ANALYTICS DASHBOARD
 # -----------------------
-
 if st.session_state.files_processed:
 
     st.markdown("## 📊 Analytics Dashboard")
 
     try:
 
+        uploaded_files = st.session_state.uploaded_files
+
         if uploaded_files:
 
             for uploaded_file in uploaded_files:
 
+                uploaded_file.seek(0)
+
                 # CSV
                 if uploaded_file.name.endswith(".csv"):
+
                     df = pd.read_csv(uploaded_file)
 
-                # Excel
+                # EXCEL
                 elif uploaded_file.name.endswith(".xlsx"):
+
                     df = pd.read_excel(uploaded_file)
 
                 else:
@@ -472,48 +482,51 @@ if st.session_state.files_processed:
 
                 st.markdown(f"### 📄 {uploaded_file.name}")
 
+                st.dataframe(df.head())
+
                 numeric_cols = df.select_dtypes(include='number').columns
 
                 if len(numeric_cols) > 0:
 
+                    target_col = numeric_cols[0]
+
                     col1, col2, col3 = st.columns(3)
 
-                    # KPI Cards
                     with col1:
                         st.metric(
                             "Average",
-                            round(df[numeric_cols[0]].mean(), 2)
+                            round(df[target_col].mean(), 2)
                         )
 
                     with col2:
                         st.metric(
                             "Maximum",
-                            round(df[numeric_cols[0]].max(), 2)
+                            round(df[target_col].max(), 2)
                         )
 
                     with col3:
                         st.metric(
                             "Minimum",
-                            round(df[numeric_cols[0]].min(), 2)
+                            round(df[target_col].min(), 2)
                         )
 
                     # LINE CHART
-                    fig = px.line(
+                    fig1 = px.line(
                         df,
-                        y=numeric_cols[0],
-                        title=f"{numeric_cols[0]} Trend"
+                        y=target_col,
+                        title=f"{target_col} Trend"
                     )
 
                     st.plotly_chart(
-                        fig,
+                        fig1,
                         use_container_width=True
                     )
 
                     # BAR CHART
                     fig2 = px.bar(
                         df,
-                        y=numeric_cols[0],
-                        title=f"{numeric_cols[0]} Comparison"
+                        y=target_col,
+                        title=f"{target_col} Comparison"
                     )
 
                     st.plotly_chart(
@@ -522,21 +535,33 @@ if st.session_state.files_processed:
                     )
 
                     # PIE CHART
-                    fig3 = px.pie(
-                        df,
-                        names=df.columns[0],
-                        values=numeric_cols[0],
-                        title=f"{numeric_cols[0]} Distribution"
-                    )
+                    try:
 
-                    st.plotly_chart(
-                        fig3,
-                        use_container_width=True
+                        fig3 = px.pie(
+                            df,
+                            names=df.columns[0],
+                            values=target_col,
+                            title=f"{target_col} Distribution"
+                        )
+
+                        st.plotly_chart(
+                            fig3,
+                            use_container_width=True
+                        )
+
+                    except:
+                        pass
+
+                else:
+
+                    st.warning(
+                        "No numeric columns available for analytics."
                     )
 
     except Exception as e:
 
-        st.warning(f"Analytics unavailable: {e}")
+        st.error(f"Analytics unavailable: {e}")
+
 # -----------------------
 # FILE STATUS
 # -----------------------
