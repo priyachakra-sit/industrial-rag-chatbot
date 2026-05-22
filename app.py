@@ -203,6 +203,9 @@ if "vectorstore" not in st.session_state:
 if "files_processed" not in st.session_state:
     st.session_state.files_processed = False
 
+if "report_count" not in st.session_state:
+    st.session_state.report_count = 0
+
 # -----------------------
 # SIDEBAR
 # -----------------------
@@ -241,6 +244,7 @@ with st.sidebar:
         st.session_state.chat_history = []
         st.session_state.vectorstore = None
         st.session_state.files_processed = False
+        st.session_state.report_count = 0
 
         st.rerun()
 
@@ -281,15 +285,34 @@ Upload industrial reports and receive AI-powered insights, trends, analytics, an
 """, unsafe_allow_html=True)
 
 # -----------------------
+# DYNAMIC KPI VALUES
+# -----------------------
+report_count = st.session_state.report_count
+query_count = len(st.session_state.chat_history)
+
+# Dynamic Efficiency
+if query_count == 0:
+    efficiency = 100
+
+elif query_count <= 5:
+    efficiency = 95 + query_count
+
+else:
+    efficiency = 99
+
+# Dynamic Status
+status = "Active" if st.session_state.files_processed else "Waiting"
+
+# -----------------------
 # KPI CARDS
 # -----------------------
 col1, col2, col3, col4 = st.columns(4)
 
 cards = [
-    ("📄 Reports", "12", "#111827"),
-    ("🤖 AI Queries", "58", "#111827"),
-    ("⚡ Efficiency", "94%", "#10B981"),
-    ("📈 Status", "Active", "#6366F1")
+    ("📄 Reports", str(report_count), "#111827"),
+    ("🤖 AI Queries", str(query_count), "#111827"),
+    ("⚡ Efficiency", f"{efficiency}%", "#10B981"),
+    ("📈 Status", status, "#6366F1")
 ]
 
 for col, card in zip([col1, col2, col3, col4], cards):
@@ -336,6 +359,8 @@ if not st.session_state.files_processed:
     if uploaded_files:
 
         try:
+
+            st.session_state.report_count = len(uploaded_files)
 
             all_documents = []
 
