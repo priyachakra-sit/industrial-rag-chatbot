@@ -169,15 +169,93 @@ with st.sidebar:
 # TITLE
 # -----------------------
 
-st.markdown("# ⚡ Industrial AI Assistant")
-
 st.markdown("""
-### Advanced AI Assistant for Industrial Reports
-""")
+<div style="padding-top:20px;">
 
-st.markdown("""
+<h1 style="
+font-size:55px;
+font-weight:800;
+margin-bottom:0;
+background: linear-gradient(90deg,#6C63FF,#8B5CF6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+">
+⚡ Industrial AI Assistant
+</h1>
+
+<p style="
+font-size:22px;
+color:#6B7280;
+margin-top:10px;
+">
+Advanced AI Platform for Industrial Reports & Analytics
+</p>
+
+<p style="
+font-size:16px;
+color:#9CA3AF;
+margin-top:5px;
+">
 Upload industrial reports and receive AI-powered insights, trends, analytics, and recommendations.
-""")
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown("""
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    ">
+    <h4 style="color:#6B7280;">📄 Reports</h4>
+    <h2 style="color:#111827;">12</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    ">
+    <h4 style="color:#6B7280;">🤖 AI Queries</h4>
+    <h2 style="color:#111827;">58</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    ">
+    <h4 style="color:#6B7280;">⚡ Efficiency</h4>
+    <h2 style="color:#10B981;">94%</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col4:
+    st.markdown("""
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    ">
+    <h4 style="color:#6B7280;">📈 Status</h4>
+    <h2 style="color:#6366F1;">Active</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # -----------------------
 # API KEY
@@ -187,6 +265,22 @@ api_key = st.secrets["GROQ_API_KEY"]
 # -----------------------
 # FILE UPLOADER
 # -----------------------
+st.markdown("""
+<div style="
+background:white;
+padding:25px;
+border-radius:24px;
+box-shadow:0 4px 20px rgba(0,0,0,0.05);
+margin-top:25px;
+margin-bottom:25px;
+">
+<h3 style="margin-bottom:15px;">📂 Upload Industrial Reports</h3>
+<p style="color:#6B7280;">
+Supported formats: PDF, Excel, CSV
+</p>
+</div>
+""", unsafe_allow_html=True)
+
 uploaded_files = st.file_uploader(
     "Upload Reports",
     type=["pdf", "xlsx", "csv"],
@@ -344,17 +438,19 @@ QUESTION:
         # -----------------------
         # LLM RESPONSE
         # -----------------------
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.2,
-            max_tokens=3000
-        )
+        with st.spinner("🤖 AI is analyzing industrial reports..."):
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                temperature=0.2,
+                max_tokens=3000
+            )
+
 
         answer = response.choices[0].message.content
 
@@ -373,8 +469,9 @@ QUESTION:
 # -----------------------
 for chat in st.session_state.chat_history:
 
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar="👨‍💻"):
         st.write(chat["question"])
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="🤖"):
         st.write(chat["answer"])
+        
