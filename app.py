@@ -25,53 +25,87 @@ st.markdown("""
 /* APP */
 .stApp {
     background: #F4F7FE;
+    color: #111827;
 }
 
-/* MAIN */
+/* MAIN CONTAINER */
 .block-container {
-    padding-top: 2rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-top: 1.5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
     max-width: 1400px;
 }
 
 /* SIDEBAR */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg,#050816,#0B1023);
-    width: 300px !important;
-    min-width: 300px !important;
     border-right: 1px solid rgba(255,255,255,0.08);
 }
 
 /* SIDEBAR TEXT */
 [data-testid="stSidebar"] * {
-    color: white;
+    color: white !important;
+}
+
+/* HERO TITLE */
+h1 {
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    line-height: 1.1;
 }
 
 /* CHAT MESSAGES */
 [data-testid="stChatMessage"] {
     background: white;
-    border-radius: 20px;
+    border-radius: 22px;
     padding: 20px;
     border: 1px solid #E5E7EB;
     box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    color: #111827 !important;
+}
+
+/* FORCE CHAT TEXT COLOR */
+[data-testid="stChatMessage"] p,
+[data-testid="stChatMessage"] li,
+[data-testid="stChatMessage"] span,
+[data-testid="stChatMessage"] div {
+    color: #111827 !important;
+}
+
+/* USER CHAT */
+[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+    background: linear-gradient(90deg,#EEF2FF,#F5F3FF);
+}
+
+/* AI CHAT */
+[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
+    background: white;
 }
 
 /* CHAT INPUT */
+.stChatInput {
+    position: sticky;
+    bottom: 0;
+    background: transparent;
+    padding-top: 10px;
+}
+
 .stChatInput input {
-    border-radius: 20px !important;
+    border-radius: 18px !important;
     border: 1px solid #E5E7EB !important;
     padding: 18px !important;
     background: white !important;
     font-size: 16px !important;
+    color: #111827 !important;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
 }
 
 /* FILE UPLOADER */
 [data-testid="stFileUploader"] {
     background: white;
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 22px;
+    padding: 22px;
     border: 1px solid #E5E7EB;
     box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
 }
@@ -79,11 +113,40 @@ st.markdown("""
 /* BUTTONS */
 .stButton button {
     background: linear-gradient(90deg,#6C63FF,#8B5CF6);
-    color: white;
+    color: white !important;
     border-radius: 14px;
     border: none;
     padding: 12px 20px;
     font-weight: 600;
+    transition: 0.3s;
+}
+
+.stButton button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 20px rgba(108,99,255,0.3);
+}
+
+/* SUCCESS ALERT */
+.stAlert {
+    border-radius: 18px;
+}
+
+/* KPI CARDS */
+.kpi-card {
+    background: white;
+    padding: 22px;
+    border-radius: 22px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #C7D2FE;
+    border-radius: 10px;
 }
 
 /* REMOVE STREAMLIT STUFF */
@@ -97,6 +160,32 @@ footer {
 
 header {
     visibility: hidden;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+    .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 1rem !important;
+    }
+
+    h1 {
+        font-size: 2.2rem !important;
+    }
+
+    [data-testid="stSidebar"] {
+        width: 250px !important;
+    }
+
+    .stChatInput input {
+        font-size: 14px !important;
+    }
+
+    [data-testid="stChatMessage"] {
+        padding: 16px;
+    }
 }
 
 </style>
@@ -150,9 +239,7 @@ with st.sidebar:
     if st.button("🔄 New Analysis"):
 
         st.session_state.chat_history = []
-
         st.session_state.vectorstore = None
-
         st.session_state.files_processed = False
 
         st.rerun()
@@ -210,12 +297,7 @@ for col, card in zip([col1, col2, col3, col4], cards):
     with col:
 
         st.markdown(f"""
-        <div style="
-        background:white;
-        padding:22px;
-        border-radius:20px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.05);
-        ">
+        <div class="kpi-card">
         <h4 style="color:#6B7280;">{card[0]}</h4>
         <h2 style="color:{card[2]};">{card[1]}</h2>
         </div>
@@ -253,80 +335,90 @@ if not st.session_state.files_processed:
     # -----------------------
     if uploaded_files:
 
-        all_documents = []
+        try:
 
-        for uploaded_file in uploaded_files:
+            all_documents = []
 
-            with tempfile.NamedTemporaryFile(
-                delete=False,
-                suffix=f".{uploaded_file.name.split('.')[-1]}"
-            ) as tmp:
+            for uploaded_file in uploaded_files:
 
-                tmp.write(uploaded_file.read())
+                with tempfile.NamedTemporaryFile(
+                    delete=False,
+                    suffix=f".{uploaded_file.name.split('.')[-1]}"
+                ) as tmp:
 
-                temp_path = tmp.name
+                    tmp.write(uploaded_file.read())
 
-            # PDF
-            if uploaded_file.name.endswith(".pdf"):
+                    temp_path = tmp.name
 
-                loader = PyPDFLoader(temp_path)
+                # PDF
+                if uploaded_file.name.endswith(".pdf"):
 
-                documents = loader.load()
+                    loader = PyPDFLoader(temp_path)
 
-                all_documents.extend(documents)
+                    documents = loader.load()
 
-            # EXCEL
-            elif uploaded_file.name.endswith(".xlsx"):
+                    all_documents.extend(documents)
 
-                excel_data = pd.read_excel(
-                    temp_path,
-                    sheet_name=None
-                )
+                # EXCEL
+                elif uploaded_file.name.endswith(".xlsx"):
 
-                text = ""
+                    excel_data = pd.read_excel(
+                        temp_path,
+                        sheet_name=None
+                    )
 
-                for sheet_name, df in excel_data.items():
+                    text = ""
 
-                    text += f"\n\nSheet: {sheet_name}\n"
+                    for sheet_name, df in excel_data.items():
 
-                    text += df.to_string(index=False)
+                        text += f"\n\nSheet: {sheet_name}\n"
 
-                all_documents.append(
-                    Document(page_content=text)
-                )
+                        text += df.to_string(index=False)
 
-            # CSV
-            elif uploaded_file.name.endswith(".csv"):
+                    all_documents.append(
+                        Document(page_content=text)
+                    )
 
-                df = pd.read_csv(temp_path)
+                # CSV
+                elif uploaded_file.name.endswith(".csv"):
 
-                text = df.to_string(index=False)
+                    df = pd.read_csv(temp_path)
 
-                all_documents.append(
-                    Document(page_content=text)
-                )
+                    text = df.to_string(index=False)
 
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1200,
-            chunk_overlap=200
-        )
+                    all_documents.append(
+                        Document(page_content=text)
+                    )
 
-        chunks = splitter.split_documents(all_documents)
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=700,
+                chunk_overlap=150
+            )
 
-        embeddings = FakeEmbeddings(size=384)
+            chunks = splitter.split_documents(all_documents)
 
-        st.session_state.vectorstore = FAISS.from_documents(
-            chunks,
-            embeddings
-        )
+            @st.cache_resource
+            def load_embeddings():
+                return FakeEmbeddings(size=384)
 
-        st.session_state.files_processed = True
+            embeddings = load_embeddings()
 
-        st.success(
-            f"✅ {len(uploaded_files)} file(s) processed successfully!"
-        )
+            st.session_state.vectorstore = FAISS.from_documents(
+                chunks,
+                embeddings
+            )
 
-        st.rerun()
+            st.session_state.files_processed = True
+
+            st.success(
+                f"✅ {len(uploaded_files)} file(s) processed successfully!"
+            )
+
+            st.rerun()
+
+        except Exception as e:
+
+            st.error(f"Error processing file: {e}")
 
 # -----------------------
 # FILE STATUS
@@ -368,7 +460,7 @@ question = st.chat_input(
 # -----------------------
 # AI RESPONSE
 # -----------------------
-if question and st.session_state.vectorstore:
+if question and st.session_state.vectorstore is not None:
 
     with st.chat_message("user", avatar="👨‍💻"):
         st.write(question)
@@ -420,7 +512,7 @@ QUESTION:
                 }
             ],
             temperature=0.2,
-            max_tokens=3000
+            max_tokens=1800
         )
 
     answer = response.choices[0].message.content
