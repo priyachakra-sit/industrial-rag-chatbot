@@ -22,32 +22,93 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-.main {
-    background-color: #0E1117;
-    color: white;
+/* MAIN BACKGROUND */
+.stApp {
+    background-color: #F5F7FB;
 }
 
-.stTextInput input {
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.stButton button {
-    border-radius: 10px;
-    background-color: #FF4B4B;
-    color: white;
-}
-
-[data-testid="stSidebar"] {
-    background-color: #1E1E1E;
-}
-
+/* MAIN CONTENT */
 .block-container {
     padding-top: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #050816, #0B1023);
+    border-right: 1px solid #1E293B;
+}
+
+/* SIDEBAR TEXT */
+[data-testid="stSidebar"] * {
+    color: white;
+}
+
+/* TITLE */
+h1 {
+    font-size: 3rem !important;
+    font-weight: 700 !important;
+    color: #5B5FEF !important;
+}
+
+/* CHAT INPUT */
+.stChatInput input {
+    border-radius: 15px !important;
+    border: 1px solid #D1D5DB !important;
+    padding: 14px !important;
+    background-color: white !important;
+}
+
+/* FILE UPLOADER */
+[data-testid="stFileUploader"] {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid #E5E7EB;
+}
+
+/* SUCCESS BOX */
+.stAlert {
+    border-radius: 15px;
+}
+
+/* CHAT MESSAGE */
+[data-testid="stChatMessage"] {
+    background-color: white;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+}
+
+/* BUTTONS */
+.stButton button {
+    border-radius: 12px !important;
+    background: linear-gradient(90deg,#6C63FF,#8B5CF6);
+    color: white !important;
+    border: none !important;
+    padding: 10px 18px;
+    font-weight: 600;
+}
+
+/* REMOVE STREAMLIT MENU */
+#MainMenu {
+    visibility: hidden;
+}
+
+footer {
+    visibility: hidden;
+}
+
+header {
+    visibility: hidden;
 }
 
 </style>
 """, unsafe_allow_html=True)
+
 
 # -----------------------
 # SESSION STATE
@@ -60,31 +121,48 @@ if "chat_history" not in st.session_state:
 # -----------------------
 with st.sidebar:
 
-    st.header("⚡ Industrial AI Assistant")
+    st.markdown("# ⚡ Industrial AI")
 
-    st.write("""
-    Upload industrial reports and ask questions.
+    st.markdown("### Your AI Copilot")
 
-    Supported Files:
-    - PDF
-    - Excel
-    - CSV
+    st.divider()
 
-    Features:
-    - Multi-file analysis
-    - AI insights
-    - Detailed answers
-    - RAG search
+    st.markdown("## 📊 Dashboard")
+
+    st.markdown("## 📁 Files")
+
+    st.markdown("## 🤖 AI Insights")
+
+    st.markdown("## 📈 Analytics")
+
+    st.markdown("## ⚙ Settings")
+
+    st.divider()
+
+    st.markdown("""
+    ### 🚀 Features
+
+    ✅ Multi-file Analysis  
+    ✅ AI Insights  
+    ✅ RAG Search  
+    ✅ Industrial Analytics  
+    ✅ Smart Recommendations  
     """)
 
 # -----------------------
 # TITLE
 # -----------------------
-st.title("⚡ Industrial AI Assistant")
+st.markdown("# ⚡ Industrial AI Assistant")
+
+st.markdown("""
+### Advanced AI Assistant for Industrial Reports
+""")
 
 st.caption("Advanced AI Assistant for Industrial Reports")
 
-st.write("Upload industrial reports and ask questions.")
+st.markdown("""
+Upload industrial reports and receive AI-powered insights, analysis, trends, and recommendations.
+""")
 
 # -----------------------
 # API KEY
