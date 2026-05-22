@@ -22,22 +22,26 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* MAIN BACKGROUND */
+/* MAIN APP */
 .stApp {
-    background-color: #F5F7FB;
+    background: #F4F7FE;
+    color: #111827;
 }
 
-/* MAIN CONTENT */
+/* MAIN CONTAINER */
 .block-container {
     padding-top: 2rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    max-width: 1200px;
 }
 
 /* SIDEBAR */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #050816, #0B1023);
-    border-right: 1px solid #1E293B;
+    background: linear-gradient(180deg,#050816,#0B1023);
+    width: 320px !important;
+    min-width: 320px !important;
+    border-right: 1px solid rgba(255,255,255,0.08);
 }
 
 /* SIDEBAR TEXT */
@@ -47,53 +51,63 @@ st.markdown("""
 
 /* TITLE */
 h1 {
-    font-size: 3rem !important;
-    font-weight: 700 !important;
+    font-size: 3.2rem !important;
+    font-weight: 800 !important;
     color: #5B5FEF !important;
+    letter-spacing: -1px;
 }
 
-/* CHAT INPUT */
-.stChatInput input {
-    border-radius: 15px !important;
-    border: 1px solid #D1D5DB !important;
-    padding: 14px !important;
-    background-color: white !important;
+/* SUBTITLE */
+h3 {
+    color: #6B7280 !important;
+    font-weight: 500 !important;
 }
 
 /* FILE UPLOADER */
 [data-testid="stFileUploader"] {
-    background-color: white;
-    border-radius: 15px;
-    padding: 15px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
     border: 1px solid #E5E7EB;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
 }
 
-/* SUCCESS BOX */
-.stAlert {
-    border-radius: 15px;
+/* CHAT INPUT */
+.stChatInput input {
+    border-radius: 20px !important;
+    border: 1px solid #E5E7EB !important;
+    padding: 18px !important;
+    background: white !important;
+    font-size: 16px !important;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
 }
 
 /* CHAT MESSAGE */
 [data-testid="stChatMessage"] {
-    background-color: white;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 15px;
+    background: white;
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 20px;
     border: 1px solid #E5E7EB;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
 }
 
-/* BUTTONS */
+/* SUCCESS BOX */
+.stAlert {
+    border-radius: 18px;
+}
+
+/* BUTTON */
 .stButton button {
-    border-radius: 12px !important;
     background: linear-gradient(90deg,#6C63FF,#8B5CF6);
-    color: white !important;
-    border: none !important;
-    padding: 10px 18px;
+    color: white;
+    border-radius: 14px;
+    border: none;
+    padding: 12px 20px;
     font-weight: 600;
 }
 
-/* REMOVE STREAMLIT MENU */
+/* REMOVE STREAMLIT STUFF */
 #MainMenu {
     visibility: hidden;
 }
@@ -121,11 +135,13 @@ if "chat_history" not in st.session_state:
 # -----------------------
 with st.sidebar:
 
-    st.markdown("# ⚡ Industrial AI")
+    st.markdown("""
+    # ⚡ Industrial AI
 
-    st.markdown("### Your AI Copilot")
+    ### Your AI Co-pilot
+    """)
 
-    st.divider()
+    st.markdown("---")
 
     st.markdown("## 📊 Dashboard")
 
@@ -137,31 +153,30 @@ with st.sidebar:
 
     st.markdown("## ⚙ Settings")
 
-    st.divider()
+    st.markdown("---")
 
     st.markdown("""
     ### 🚀 Features
 
-    ✅ Multi-file Analysis  
+    ✅ Multi-File Analysis  
     ✅ AI Insights  
-    ✅ RAG Search  
-    ✅ Industrial Analytics  
     ✅ Smart Recommendations  
+    ✅ Industrial Analytics  
+    ✅ RAG Search  
     """)
 
 # -----------------------
 # TITLE
 # -----------------------
+
 st.markdown("# ⚡ Industrial AI Assistant")
 
 st.markdown("""
 ### Advanced AI Assistant for Industrial Reports
 """)
 
-st.caption("Advanced AI Assistant for Industrial Reports")
-
 st.markdown("""
-Upload industrial reports and receive AI-powered insights, analysis, trends, and recommendations.
+Upload industrial reports and receive AI-powered insights, trends, analytics, and recommendations.
 """)
 
 # -----------------------
