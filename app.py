@@ -1,7 +1,7 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
 # PREMIUM AI ANALYTICS PLATFORM
-# COMPLETE FINAL PREMIUM VERSION
+# MODERN CHATGPT STYLE VERSION
 # ============================================================
 
 import pandas as pd
@@ -14,6 +14,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 import tempfile
+import time
 
 # ============================================================
 # PAGE CONFIG
@@ -44,8 +45,14 @@ APP
 ========================================================= */
 
 .stApp {
-    background: #F6F8FC;
-    color: #111827;
+
+    background: linear-gradient(
+        180deg,
+        #0F172A 0%,
+        #111827 100%
+    );
+
+    color: white;
 }
 
 /* =========================================================
@@ -67,14 +74,10 @@ LAYOUT
 .block-container {
 
     padding-top: 1.5rem;
-
     padding-left: 2.5rem;
-
     padding-right: 2.5rem;
-
-    padding-bottom: 140px;
-
-    max-width: 1500px;
+    padding-bottom: 90px;
+    max-width: 1450px;
 }
 
 /* =========================================================
@@ -83,15 +86,15 @@ SIDEBAR
 
 [data-testid="stSidebar"] {
 
-    background: white;
+    background: #0B1120;
 
-    border-right: 1px solid rgba(0,0,0,0.06);
+    border-right: 1px solid rgba(255,255,255,0.06);
 
     padding-top: 1rem;
 }
 
 [data-testid="stSidebar"] * {
-    color: #111827 !important;
+    color: white !important;
 }
 
 /* =========================================================
@@ -100,14 +103,10 @@ LOGO
 
 .sidebar-logo {
 
-    font-size: 30px;
-
+    font-size: 28px;
     font-weight: 800;
-
-    color: #4F46E5;
-
-    margin-bottom: 50px;
-
+    color: #8B5CF6;
+    margin-bottom: 40px;
     letter-spacing: -1px;
 }
 
@@ -117,70 +116,20 @@ MENU
 
 .menu-item {
 
-    padding: 18px 18px;
-
+    padding: 16px 18px;
     border-radius: 18px;
-
-    margin-bottom: 14px;
-
-    font-size: 18px;
-
+    margin-bottom: 12px;
+    font-size: 17px;
     font-weight: 600;
-
     cursor: pointer;
-
-    transition: 0.25s;
+    transition: 0.3s;
 }
 
 .menu-item:hover {
 
-    background: #EEF2FF;
-
-    color: #4F46E5;
+    background: rgba(255,255,255,0.05);
 
     transform: translateX(4px);
-}
-
-/* =========================================================
-BUTTONS PREMIUM
-========================================================= */
-
-.stButton button {
-
-    width: 100%;
-
-    height: 70px;
-
-    border-radius: 22px;
-
-    border: none;
-
-    background: white;
-
-    color: #111827 !important;
-
-    font-weight: 700;
-
-    font-size: 18px;
-
-    border: 1px solid rgba(0,0,0,0.06);
-
-    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-
-    transition: 0.25s;
-
-    padding: 0 24px;
-}
-
-.stButton button:hover {
-
-    border: 1px solid #4F46E5;
-
-    color: #4F46E5 !important;
-
-    transform: translateY(-4px);
-
-    box-shadow: 0 14px 30px rgba(79,70,229,0.12);
 }
 
 /* =========================================================
@@ -189,19 +138,24 @@ TITLE
 
 .title {
 
-    font-size: 72px;
-
+    font-size: 48px;
     font-weight: 800;
-
-    color: #111827;
-
+    color: white;
     margin-top: 10px;
+    margin-bottom: 10px;
+    letter-spacing: -2px;
+    line-height: 1.1;
+}
 
-    margin-bottom: 40px;
+/* =========================================================
+WELCOME
+========================================================= */
 
-    letter-spacing: -3px;
+.welcome-text {
 
-    line-height: 1.05;
+    color: #94A3B8;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
 
 /* =========================================================
@@ -210,85 +164,121 @@ MODE BOX
 
 .mode-box {
 
-    background: white;
+    background: rgba(255,255,255,0.04);
+
+    backdrop-filter: blur(12px);
 
     border-radius: 24px;
 
-    padding: 22px 24px;
+    padding: 22px;
 
-    border: 1px solid rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
 
-    margin-bottom: 35px;
-
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    margin-bottom: 30px;
 }
 
 /* =========================================================
-RADIO PREMIUM
+RADIO
 ========================================================= */
 
 .stRadio > div {
 
     display: flex;
 
-    gap: 18px;
+    gap: 16px;
 }
 
 .stRadio label {
 
-    background: white !important;
+    background: rgba(255,255,255,0.04) !important;
 
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
 
-    padding: 18px 26px;
+    padding: 16px 22px;
 
     border-radius: 18px;
 
-    transition: 0.25s;
+    transition: 0.3s;
 
-    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    font-size: 16px !important;
 
-    font-size: 18px !important;
-
-    font-weight: 700 !important;
+    font-weight: 600 !important;
 }
 
 .stRadio label:hover {
 
-    border: 1px solid #4F46E5;
+    border: 1px solid #8B5CF6;
 
     transform: translateY(-3px);
-
-    box-shadow: 0 12px 24px rgba(79,70,229,0.10);
 }
 
 /* =========================================================
-CHAT
+BUTTONS
+========================================================= */
+
+.stButton button {
+
+    width: 100%;
+
+    height: 68px;
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.04);
+
+    backdrop-filter: blur(10px);
+
+    color: white !important;
+
+    font-weight: 600;
+
+    font-size: 16px;
+
+    transition: 0.3s;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.stButton button:hover {
+
+    transform: translateY(-4px);
+
+    border: 1px solid #8B5CF6;
+
+    box-shadow: 0 14px 30px rgba(139,92,246,0.25);
+}
+
+/* =========================================================
+CHAT MESSAGE
 ========================================================= */
 
 [data-testid="stChatMessage"] {
 
-    background: white;
+    background: rgba(255,255,255,0.04);
 
-    border-radius: 28px;
+    backdrop-filter: blur(12px);
 
-    padding: 26px;
+    border-radius: 24px;
 
-    margin-bottom: 22px;
+    padding: 24px;
 
-    border: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 18px;
 
-    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
 
-    max-width: 980px;
+    max-width: 920px;
 
     margin-left: auto;
 
     margin-right: auto;
 
-    font-size: 18px;
+    font-size: 17px;
 
-    line-height: 1.8;
+    line-height: 1.7;
+
+    color: white;
 }
 
 /* =========================================================
@@ -299,68 +289,58 @@ CHAT INPUT
 
     position: fixed;
 
-    bottom: 24px;
+    bottom: 20px;
 
     left: 50%;
 
     transform: translateX(-50%);
 
-    width: 74%;
+    width: 72%;
 
     z-index: 999;
 }
 
 .stChatInput > div {
 
-    background: white;
+    background: rgba(17,24,39,0.95);
 
-    border-radius: 28px;
+    border-radius: 24px;
 
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
 
     padding: 14px 18px;
 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+
+    backdrop-filter: blur(12px);
 }
 
 .stChatInput input {
 
     background: transparent !important;
 
-    color: #111827 !important;
+    color: white !important;
 
-    font-size: 18px !important;
+    font-size: 17px !important;
 
     font-weight: 500;
 }
 
 /* =========================================================
-UPLOAD BOX
+FILE UPLOADER
 ========================================================= */
 
 [data-testid="stFileUploader"] {
 
-    background: white;
+    background: rgba(255,255,255,0.04);
 
-    border: 2px dashed rgba(79,70,229,0.2);
+    border: 2px dashed rgba(139,92,246,0.3);
 
-    border-radius: 28px;
+    border-radius: 24px;
 
-    padding: 40px;
+    padding: 35px;
 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-
-[data-testid="stFileUploader"] small {
-
-    font-size: 16px !important;
-
-    color: #6B7280 !important;
-}
-
-[data-testid="stFileUploader"] section {
-
-    font-size: 18px !important;
+    margin-bottom: 20px;
 }
 
 /* =========================================================
@@ -369,32 +349,20 @@ DATAFRAME
 
 [data-testid="stDataFrame"] {
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     overflow: hidden;
 
-    border: 1px solid rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
 /* =========================================================
-SUBHEADERS
+HEADINGS
 ========================================================= */
 
 h1, h2, h3 {
 
-    font-size: 34px !important;
-
-    font-weight: 700 !important;
-
-    color: #111827 !important;
-}
-
-/* =========================================================
-REMOVE LINES
-========================================================= */
-
-hr {
-    display: none;
+    color: white !important;
 }
 
 /* =========================================================
@@ -406,7 +374,7 @@ SCROLLBAR
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.12);
     border-radius: 10px;
 }
 
@@ -422,12 +390,6 @@ if "chat_history" not in st.session_state:
 
 if "vectorstore" not in st.session_state:
     st.session_state.vectorstore = None
-
-if "files_processed" not in st.session_state:
-    st.session_state.files_processed = False
-
-if "uploaded_files" not in st.session_state:
-    st.session_state.uploaded_files = []
 
 if "chat_mode" not in st.session_state:
     st.session_state.chat_mode = "🧠 General AI Chat"
@@ -475,10 +437,6 @@ with st.sidebar:
 
         st.session_state.vectorstore = None
 
-        st.session_state.files_processed = False
-
-        st.session_state.uploaded_files = []
-
         st.rerun()
 
 # ============================================================
@@ -488,6 +446,17 @@ with st.sidebar:
 st.markdown("""
 <div class="title">
 ⚡ Industrial AI Workspace
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================
+# WELCOME SECTION
+# ============================================================
+
+st.markdown("""
+<div class="welcome-text">
+Analyze industrial reports, detect anomalies, generate AI insights,
+and chat intelligently with your uploaded documents.
 </div>
 """, unsafe_allow_html=True)
 
@@ -514,7 +483,8 @@ st.markdown('</div>', unsafe_allow_html=True)
 # QUICK ACTIONS
 # ============================================================
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2 = st.columns(2)
+col3, col4 = st.columns(2)
 
 with col1:
     if st.button("⚡ Analyze Reports"):
@@ -556,8 +526,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
     if uploaded_files:
 
-        st.session_state.uploaded_files = uploaded_files
-
         try:
 
             all_documents = []
@@ -573,6 +541,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     temp_path = tmp.name
 
+                # ====================================================
+                # PDF
+                # ====================================================
+
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
@@ -580,6 +552,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                     documents = loader.load()
 
                     all_documents.extend(documents)
+
+                # ====================================================
+                # EXCEL
+                # ====================================================
 
                 elif uploaded_file.name.endswith(".xlsx"):
 
@@ -590,7 +566,7 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     for sheet_name, df in excel_data.items():
 
-                        st.subheader(f"📄 Sheet: {sheet_name}")
+                        st.subheader(f"📄 {sheet_name}")
 
                         st.dataframe(df)
 
@@ -600,31 +576,15 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                         if len(numeric_cols) >= 2:
 
-                            st.subheader("📈 Trend Analysis")
-
-                            fig1 = px.line(
+                            fig = px.line(
                                 df,
                                 x=numeric_cols[0],
                                 y=numeric_cols[1],
-                                title="Industrial Trend Analysis"
+                                title="Industrial Data Trend"
                             )
 
                             st.plotly_chart(
-                                fig1,
-                                use_container_width=True
-                            )
-
-                            st.subheader("📊 Consumption Analysis")
-
-                            fig2 = px.bar(
-                                df,
-                                x=numeric_cols[0],
-                                y=numeric_cols[1],
-                                title="Consumption Comparison"
-                            )
-
-                            st.plotly_chart(
-                                fig2,
+                                fig,
                                 use_container_width=True
                             )
 
@@ -644,6 +604,10 @@ Summary:
                             Document(page_content=text)
                         )
 
+                # ====================================================
+                # CSV
+                # ====================================================
+
                 elif uploaded_file.name.endswith(".csv"):
 
                     df = pd.read_csv(temp_path)
@@ -660,7 +624,7 @@ Summary:
                             df,
                             x=numeric_cols[0],
                             y=numeric_cols[1],
-                            title="CSV Data Analysis"
+                            title="CSV Trend Analysis"
                         )
 
                         st.plotly_chart(
@@ -682,12 +646,20 @@ Summary:
                         Document(page_content=text)
                     )
 
+            # ====================================================
+            # CHUNKING
+            # ====================================================
+
             splitter = RecursiveCharacterTextSplitter(
                 chunk_size=700,
                 chunk_overlap=150
             )
 
             chunks = splitter.split_documents(all_documents)
+
+            # ====================================================
+            # EMBEDDINGS
+            # ====================================================
 
             @st.cache_resource
             def load_embeddings():
@@ -698,16 +670,16 @@ Summary:
 
             embeddings = load_embeddings()
 
+            # ====================================================
+            # FAISS VECTOR STORE
+            # ====================================================
+
             st.session_state.vectorstore = FAISS.from_documents(
                 chunks,
                 embeddings
             )
 
-            st.session_state.files_processed = True
-
-            st.success(
-                f"✅ {len(uploaded_files)} file(s) processed successfully!"
-            )
+            st.success("✅ Files processed successfully!")
 
         except Exception as e:
 
@@ -760,7 +732,8 @@ if (
             "content": """
 You are an advanced industrial AI assistant.
 
-Be intelligent, modern and professional.
+Be intelligent, modern, professional,
+and helpful for industrial analytics.
 """
         },
         {
@@ -791,6 +764,8 @@ Be intelligent, modern and professional.
 
                 full_response += delta
 
+                time.sleep(0.01)
+
                 placeholder.markdown(full_response + "▌")
 
         placeholder.markdown(full_response)
@@ -801,7 +776,7 @@ Be intelligent, modern and professional.
     })
 
 # ============================================================
-# RAG RESPONSE
+# RAG CHAT
 # ============================================================
 
 if (
@@ -827,13 +802,11 @@ if (
 You are an advanced industrial AI analyst.
 
 Rules:
-- Be conversational
-- Give accurate insights
-- Mention anomalies
+- Give professional insights
 - Mention trends
+- Mention anomalies
 - Give recommendations
 - Answer ONLY from context
-- Do NOT generate fake image links
 
 CONTEXT:
 {context}
@@ -872,6 +845,8 @@ QUESTION:
             if delta:
 
                 full_response += delta
+
+                time.sleep(0.01)
 
                 placeholder.markdown(full_response + "▌")
 
