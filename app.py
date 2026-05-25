@@ -9,41 +9,49 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 import tempfile
 
-# =========================================
+# =====================================================
 # PAGE CONFIG
-# =========================================
+# =====================================================
 st.set_page_config(
     page_title="Industrial AI Assistant",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
-# =========================================
+# =====================================================
 # CUSTOM CSS
-# =========================================
+# =====================================================
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* =========================================
+/* =====================================================
 MAIN APP
-========================================= */
+===================================================== */
 .stApp {
-    background: #F4F7FB;
+    background: linear-gradient(135deg, #f5f7fb 0%, #eef2ff 100%);
 }
 
-/* =========================================
-REMOVE STREAMLIT DEFAULT HEADER
-========================================= */
+/* =====================================================
+REMOVE STREAMLIT DEFAULT
+===================================================== */
 header {
     visibility: hidden;
     height: 0px;
+}
+
+footer {
+    visibility: hidden;
+}
+
+#MainMenu {
+    visibility: hidden;
 }
 
 [data-testid="stHeader"] {
@@ -58,209 +66,245 @@ header {
     display: none;
 }
 
-footer {
-    visibility: hidden;
-}
-
-#MainMenu {
-    visibility: hidden;
-}
-
-/* =========================================
-REMOVE TOP GAP
-========================================= */
+/* =====================================================
+MAIN CONTAINER
+===================================================== */
 .block-container {
-    padding-top: 0rem !important;
+    padding-top: 1rem !important;
     padding-left: 2rem;
     padding-right: 2rem;
-    padding-bottom: 2rem;
-    max-width: 1400px;
+    padding-bottom: 1rem;
+    max-width: 1500px;
 }
 
-/* =========================================
+/* =====================================================
+BACKGROUND CIRCUIT EFFECT
+===================================================== */
+.main::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    height: 700px;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    background-image:
+        linear-gradient(#7c3aed 2px, transparent 2px),
+        linear-gradient(90deg, #7c3aed 2px, transparent 2px);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
+/* =====================================================
 SIDEBAR
-========================================= */
+===================================================== */
 [data-testid="stSidebar"] {
-    background: white;
-    border-right: 1px solid #E5E7EB;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255,255,255,0.4);
 }
 
 [data-testid="stSidebar"] * {
     color: #111827 !important;
 }
 
-/* =========================================
-SIDEBAR TITLE
-========================================= */
+/* =====================================================
+SIDEBAR LOGO
+===================================================== */
 .sidebar-logo {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 35px;
     color: #111827;
-    margin-bottom: 30px;
 }
 
-/* =========================================
-MENU ITEMS
-========================================= */
+/* =====================================================
+SIDEBAR MENU
+===================================================== */
 .menu-item {
-    padding: 12px 14px;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    font-size: 15px;
     font-weight: 500;
-    color: #374151;
     transition: 0.3s;
     cursor: pointer;
 }
 
 .menu-item:hover {
-    background: #F3F4F6;
+    background: rgba(124,58,237,0.08);
+    transform: translateX(4px);
 }
 
-/* =========================================
+/* =====================================================
 BUTTONS
-========================================= */
+===================================================== */
 .stButton button {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 16px;
     border: none;
-    background: linear-gradient(90deg, #14B8A6, #06B6D4);
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
     color: white !important;
     font-weight: 600;
-    height: 45px;
+    height: 48px;
+    font-size: 15px;
     transition: 0.3s;
+    box-shadow: 0px 8px 20px rgba(124,58,237,0.25);
 }
 
 .stButton button:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
+    box-shadow: 0px 12px 30px rgba(124,58,237,0.35);
 }
 
-/* =========================================
+/* =====================================================
 HERO SECTION
-========================================= */
-.hero-title {
+===================================================== */
+.hero-container {
     text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero-title {
     font-size: 3rem;
-    font-weight: 700;
-    color: #374151;
-    margin-top: 10px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 8px;
 }
 
 .hero-subtitle {
-    text-align: center;
     color: #6B7280;
-    margin-bottom: 35px;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
-/* =========================================
+/* =====================================================
+SEARCH BAR
+===================================================== */
+.search-box input {
+    border-radius: 18px !important;
+}
+
+/* =====================================================
 MODE BOX
-========================================= */
+===================================================== */
 .mode-box {
-    background: white;
-    padding: 22px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 18px;
     border-radius: 18px;
-    border: 1px solid #E5E7EB;
-    margin-bottom: 25px;
-    box-shadow: 0px 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 30px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.05);
 }
 
-/* =========================================
+/* =====================================================
 KPI CARDS
-========================================= */
+===================================================== */
 .kpi-card {
-    background: white;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 22px;
     padding: 24px;
-    border-radius: 18px;
-    border: 1px solid #E5E7EB;
-    box-shadow: 0px 2px 10px rgba(0,0,0,0.04);
-    transition: 0.3s;
+    min-height: 150px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.06);
+    transition: 0.35s;
 }
 
 .kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 10px 28px rgba(0,0,0,0.08);
+    transform: translateY(-6px);
+    box-shadow: 0px 18px 35px rgba(124,58,237,0.12);
 }
 
 .kpi-title {
-    color: #6B7280;
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 10px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
 .kpi-value {
-    color: #14B8A6;
-    font-size: 32px;
-    font-weight: 700;
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 800;
 }
 
-/* =========================================
+.kpi-status {
+    color: #22c55e;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+/* =====================================================
 CHAT MESSAGE
-========================================= */
+===================================================== */
 [data-testid="stChatMessage"] {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #E5E7EB;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.4);
     padding: 16px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.04);
 }
 
-/* =========================================
+/* =====================================================
 CHAT INPUT
-========================================= */
+===================================================== */
 .stChatInput > div {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #D1D5DB;
+    background: rgba(255,255,255,0.92);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.06);
+    padding: 6px;
 }
 
-/* =========================================
+/* =====================================================
 FILE UPLOADER
-========================================= */
+===================================================== */
 [data-testid="stFileUploader"] {
-    background: white;
-    border-radius: 18px;
-    border: 2px dashed #14B8A6;
-    padding: 25px;
+    background: rgba(255,255,255,0.72);
+    border-radius: 20px;
+    border: 2px dashed #7c3aed;
+    padding: 28px;
 }
 
-/* =========================================
-RADIO BUTTONS
-========================================= */
+/* =====================================================
+RADIO BUTTON
+===================================================== */
 .stRadio > div {
-    background: #F9FAFB;
-    padding: 15px;
+    background: rgba(255,255,255,0.55);
     border-radius: 14px;
+    padding: 14px;
 }
 
-/* =========================================
+/* =====================================================
 DATAFRAME
-========================================= */
+===================================================== */
 [data-testid="stDataFrame"] {
-    border-radius: 18px;
+    border-radius: 20px;
     overflow: hidden;
-    border: 1px solid #E5E7EB;
 }
 
-/* =========================================
+/* =====================================================
 SCROLLBAR
-========================================= */
+===================================================== */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #14B8A6;
+    background: #7c3aed;
     border-radius: 10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# =========================================
+# =====================================================
 # SESSION STATE
-# =========================================
+# =====================================================
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -279,14 +323,14 @@ if "uploaded_files" not in st.session_state:
 if "chat_mode" not in st.session_state:
     st.session_state.chat_mode = "General AI Chat"
 
-# =========================================
+# =====================================================
 # SIDEBAR
-# =========================================
+# =====================================================
 with st.sidebar:
 
     st.markdown("""
     <div class="sidebar-logo">
-    ⚡ INDUSTRIAL AI
+    ⚡ Industrial AI
     </div>
     """, unsafe_allow_html=True)
 
@@ -308,24 +352,29 @@ with st.sidebar:
 
         st.rerun()
 
-# =========================================
+# =====================================================
 # HERO SECTION
-# =========================================
+# =====================================================
 st.markdown("""
-<div class="hero-title">
-⚡ Industrial AI Assistant
+<div class="hero-container">
+    <div class="hero-title">⚡ Industrial AI Assistant</div>
+    <div class="hero-subtitle">
+        AI-powered Industrial Analytics & RAG Platform
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="hero-subtitle">
-AI-powered Industrial Analytics & RAG Platform
-</div>
-""", unsafe_allow_html=True)
+# =====================================================
+# SEARCH BAR
+# =====================================================
+st.text_input(
+    "",
+    placeholder="Search..."
+)
 
-# =========================================
+# =====================================================
 # MODE SELECTION
-# =========================================
+# =====================================================
 st.markdown('<div class="mode-box">', unsafe_allow_html=True)
 
 chat_mode = st.radio(
@@ -341,9 +390,9 @@ st.session_state.chat_mode = chat_mode
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# =========================================
+# =====================================================
 # KPI SECTION
-# =========================================
+# =====================================================
 report_count = st.session_state.report_count
 query_count = len(st.session_state.chat_history)
 
@@ -354,10 +403,10 @@ status = "Connected" if st.session_state.files_processed else "Waiting"
 col1, col2, col3, col4 = st.columns(4)
 
 cards = [
-    ("📄 Reports", report_count),
-    ("🤖 AI Queries", query_count),
-    ("⚡ Efficiency", f"{efficiency}%"),
-    ("🟢 Status", status)
+    ("📄 REPORTS", report_count),
+    ("🧠 AI QUERIES", query_count),
+    ("⚡ EFFICIENCY", f"{efficiency}%"),
+    ("🛰 STATUS", status)
 ]
 
 for col, card in zip([col1, col2, col3, col4], cards):
@@ -368,12 +417,13 @@ for col, card in zip([col1, col2, col3, col4], cards):
         <div class="kpi-card">
             <div class="kpi-title">{card[0]}</div>
             <div class="kpi-value">{card[1]}</div>
+            <div class="kpi-status">● Status</div>
         </div>
         """, unsafe_allow_html=True)
 
-# =========================================
+# =====================================================
 # FILE UPLOADER
-# =========================================
+# =====================================================
 if st.session_state.chat_mode == "Upload & Analyze Reports":
 
     st.markdown("## 📂 Upload Industrial Reports")
@@ -467,83 +517,9 @@ if st.session_state.chat_mode == "Upload & Analyze Reports":
 
             st.error(f"Error: {e}")
 
-# =========================================
-# ANALYTICS
-# =========================================
-if (
-    st.session_state.files_processed
-    and st.session_state.chat_mode == "Upload & Analyze Reports"
-):
-
-    st.markdown("## 📊 Analytics Dashboard")
-
-    try:
-
-        uploaded_files = st.session_state.uploaded_files
-
-        for uploaded_file in uploaded_files:
-
-            uploaded_file.seek(0)
-
-            if uploaded_file.name.endswith(".csv"):
-
-                df = pd.read_csv(uploaded_file)
-
-            elif uploaded_file.name.endswith(".xlsx"):
-
-                df = pd.read_excel(uploaded_file)
-
-            else:
-                continue
-
-            st.markdown(f"### 📄 {uploaded_file.name}")
-
-            st.dataframe(df.head())
-
-            numeric_cols = df.select_dtypes(include='number').columns
-
-            if len(numeric_cols) > 0:
-
-                target_col = numeric_cols[0]
-
-                col1, col2, col3 = st.columns(3)
-
-                with col1:
-                    st.metric(
-                        "Average",
-                        round(df[target_col].mean(), 2)
-                    )
-
-                with col2:
-                    st.metric(
-                        "Maximum",
-                        round(df[target_col].max(), 2)
-                    )
-
-                with col3:
-                    st.metric(
-                        "Minimum",
-                        round(df[target_col].min(), 2)
-                    )
-
-                fig = px.line(
-                    df,
-                    y=target_col,
-                    title=f"{target_col} Trend Analysis"
-                )
-
-                st.plotly_chart(
-                    fig,
-                    use_container_width=True
-                )
-
-    except Exception as e:
-
-        st.error(f"Analytics unavailable: {e}")
-
-# =========================================
+# =====================================================
 # DISPLAY CHAT HISTORY
-# =========================================
+# =====================================================
 for chat in st.session_state.chat_history:
 
     with st.chat_message("user"):
@@ -552,16 +528,16 @@ for chat in st.session_state.chat_history:
     with st.chat_message("assistant"):
         st.write(chat["answer"])
 
-# =========================================
+# =====================================================
 # CHAT INPUT
-# =========================================
+# =====================================================
 question = st.chat_input(
-    "Ask your industrial AI question..."
+    "Ask your Industrial AI question..."
 )
 
-# =========================================
+# =====================================================
 # GENERAL AI CHAT
-# =========================================
+# =====================================================
 if (
     question
     and st.session_state.chat_mode == "General AI Chat"
@@ -578,9 +554,9 @@ if (
         {
             "role": "system",
             "content": """
-You are a modern AI assistant.
+You are a highly intelligent industrial AI assistant.
 
-Be conversational, intelligent and helpful.
+Be modern, helpful, conversational and professional.
 """
         }
     ]
@@ -613,84 +589,6 @@ Be conversational, intelligent and helpful.
             messages=messages,
             temperature=0.7,
             max_tokens=1500,
-            stream=True
-        )
-
-        for chunk in response:
-
-            delta = chunk.choices[0].delta.content
-
-            if delta:
-
-                full_response += delta
-
-                placeholder.markdown(full_response + "▌")
-
-        placeholder.markdown(full_response)
-
-    st.session_state.chat_history.append({
-        "question": question,
-        "answer": full_response
-    })
-
-# =========================================
-# RAG AI CHAT
-# =========================================
-if (
-    question
-    and st.session_state.vectorstore is not None
-    and st.session_state.chat_mode == "Upload & Analyze Reports"
-):
-
-    with st.chat_message("user"):
-        st.write(question)
-
-    docs = st.session_state.vectorstore.similarity_search(
-        question,
-        k=5
-    )
-
-    context = "\n\n".join(
-        [doc.page_content for doc in docs]
-    )
-
-    prompt = f"""
-You are an advanced industrial AI analyst.
-
-Rules:
-- Answer ONLY from context
-- Be conversational
-- Give insights
-- Explain clearly
-- Suggest improvements
-
-CONTEXT:
-{context}
-
-QUESTION:
-{question}
-"""
-
-    api_key = st.secrets["GROQ_API_KEY"]
-
-    client = Groq(api_key=api_key)
-
-    with st.chat_message("assistant"):
-
-        placeholder = st.empty()
-
-        full_response = ""
-
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.3,
-            max_tokens=1800,
             stream=True
         )
 
