@@ -1,13 +1,12 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# PREMIUM AI ANALYTICS PLATFORM
-# MODERN CHATGPT STYLE VERSION
+# CLEAN PREMIUM CHATGPT STYLE VERSION
 # ============================================================
 
+import streamlit as st
 import pandas as pd
 import plotly.express as px
 from langchain_core.documents import Document
-import streamlit as st
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
@@ -28,7 +27,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# PREMIUM CSS
+# CLEAN CSS
 # ============================================================
 
 st.markdown("""
@@ -45,18 +44,12 @@ APP
 ========================================================= */
 
 .stApp {
-
-    background: linear-gradient(
-        180deg,
-        #0F172A 0%,
-        #111827 100%
-    );
-
+    background-color: #0F172A;
     color: white;
 }
 
 /* =========================================================
-REMOVE STREAMLIT
+REMOVE STREAMLIT DEFAULTS
 ========================================================= */
 
 header, footer, #MainMenu {
@@ -72,12 +65,11 @@ LAYOUT
 ========================================================= */
 
 .block-container {
-
-    padding-top: 1.5rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-    padding-bottom: 90px;
-    max-width: 1450px;
+    padding-top: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 3rem;
+    max-width: 1400px;
 }
 
 /* =========================================================
@@ -85,12 +77,8 @@ SIDEBAR
 ========================================================= */
 
 [data-testid="stSidebar"] {
-
-    background: #0B1120;
-
-    border-right: 1px solid rgba(255,255,255,0.06);
-
-    padding-top: 1rem;
+    background-color: #111827;
+    border-right: 1px solid rgba(255,255,255,0.08);
 }
 
 [data-testid="stSidebar"] * {
@@ -101,115 +89,47 @@ SIDEBAR
 LOGO
 ========================================================= */
 
-.sidebar-logo {
-
+.logo-text {
     font-size: 28px;
     font-weight: 800;
-    color: #8B5CF6;
     margin-bottom: 40px;
-    letter-spacing: -1px;
+    color: white;
 }
 
 /* =========================================================
-MENU
+SIDEBAR MENU
 ========================================================= */
 
 .menu-item {
-
-    padding: 16px 18px;
-    border-radius: 18px;
+    padding: 14px 16px;
+    border-radius: 14px;
     margin-bottom: 12px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.menu-item:hover {
-
-    background: rgba(255,255,255,0.05);
-
-    transform: translateX(4px);
+    background: rgba(255,255,255,0.03);
 }
 
 /* =========================================================
 TITLE
 ========================================================= */
 
-.title {
-
-    font-size: 48px;
+.main-title {
+    text-align: center;
+    font-size: 52px;
     font-weight: 800;
     color: white;
-    margin-top: 10px;
     margin-bottom: 10px;
-    letter-spacing: -2px;
-    line-height: 1.1;
 }
 
 /* =========================================================
-WELCOME
+SUBTITLE
 ========================================================= */
 
-.welcome-text {
-
+.subtitle {
+    text-align: center;
     color: #94A3B8;
     font-size: 18px;
-    margin-bottom: 30px;
-}
-
-/* =========================================================
-MODE BOX
-========================================================= */
-
-.mode-box {
-
-    background: rgba(255,255,255,0.04);
-
-    backdrop-filter: blur(12px);
-
-    border-radius: 24px;
-
-    padding: 22px;
-
-    border: 1px solid rgba(255,255,255,0.08);
-
-    margin-bottom: 30px;
-}
-
-/* =========================================================
-RADIO
-========================================================= */
-
-.stRadio > div {
-
-    display: flex;
-
-    gap: 16px;
-}
-
-.stRadio label {
-
-    background: rgba(255,255,255,0.04) !important;
-
-    border: 1px solid rgba(255,255,255,0.08);
-
-    padding: 16px 22px;
-
-    border-radius: 18px;
-
-    transition: 0.3s;
-
-    font-size: 16px !important;
-
-    font-weight: 600 !important;
-}
-
-.stRadio label:hover {
-
-    border: 1px solid #8B5CF6;
-
-    transform: translateY(-3px);
+    margin-bottom: 40px;
 }
 
 /* =========================================================
@@ -219,35 +139,38 @@ BUTTONS
 .stButton button {
 
     width: 100%;
-
-    height: 68px;
+    height: 95px;
 
     border-radius: 20px;
 
+    background-color: #1E293B;
+
     border: 1px solid rgba(255,255,255,0.08);
 
-    background: rgba(255,255,255,0.04);
+    color: white;
 
-    backdrop-filter: blur(10px);
-
-    color: white !important;
+    font-size: 18px;
 
     font-weight: 600;
 
-    font-size: 16px;
-
     transition: 0.3s;
-
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
 }
 
 .stButton button:hover {
 
-    transform: translateY(-4px);
-
     border: 1px solid #8B5CF6;
 
-    box-shadow: 0 14px 30px rgba(139,92,246,0.25);
+    transform: translateY(-3px);
+}
+
+/* =========================================================
+SELECTBOX
+========================================================= */
+
+.stSelectbox > div > div {
+    background-color: #1E293B;
+    color: white;
+    border-radius: 14px;
 }
 
 /* =========================================================
@@ -256,27 +179,15 @@ CHAT MESSAGE
 
 [data-testid="stChatMessage"] {
 
-    background: rgba(255,255,255,0.04);
+    background-color: #111827;
 
-    backdrop-filter: blur(12px);
+    border-radius: 20px;
 
-    border-radius: 24px;
+    padding: 20px;
 
-    padding: 24px;
+    margin-bottom: 16px;
 
-    margin-bottom: 18px;
-
-    border: 1px solid rgba(255,255,255,0.08);
-
-    max-width: 920px;
-
-    margin-left: auto;
-
-    margin-right: auto;
-
-    font-size: 17px;
-
-    line-height: 1.7;
+    border: 1px solid rgba(255,255,255,0.06);
 
     color: white;
 }
@@ -286,44 +197,16 @@ CHAT INPUT
 ========================================================= */
 
 .stChatInput {
-
-    position: fixed;
-
-    bottom: 20px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 72%;
-
-    z-index: 999;
+    margin-top: 30px;
 }
 
 .stChatInput > div {
 
-    background: rgba(17,24,39,0.95);
+    background-color: #111827;
 
-    border-radius: 24px;
+    border-radius: 20px;
 
     border: 1px solid rgba(255,255,255,0.08);
-
-    padding: 14px 18px;
-
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-
-    backdrop-filter: blur(12px);
-}
-
-.stChatInput input {
-
-    background: transparent !important;
-
-    color: white !important;
-
-    font-size: 17px !important;
-
-    font-weight: 500;
 }
 
 /* =========================================================
@@ -332,15 +215,13 @@ FILE UPLOADER
 
 [data-testid="stFileUploader"] {
 
-    background: rgba(255,255,255,0.04);
+    background-color: #111827;
 
-    border: 2px dashed rgba(139,92,246,0.3);
+    border: 1px dashed rgba(255,255,255,0.2);
 
-    border-radius: 24px;
+    border-radius: 20px;
 
-    padding: 35px;
-
-    margin-bottom: 20px;
+    padding: 25px;
 }
 
 /* =========================================================
@@ -352,8 +233,6 @@ DATAFRAME
     border-radius: 18px;
 
     overflow: hidden;
-
-    border: 1px solid rgba(255,255,255,0.08);
 }
 
 /* =========================================================
@@ -361,7 +240,6 @@ HEADINGS
 ========================================================= */
 
 h1, h2, h3 {
-
     color: white !important;
 }
 
@@ -391,9 +269,6 @@ if "chat_history" not in st.session_state:
 if "vectorstore" not in st.session_state:
     st.session_state.vectorstore = None
 
-if "chat_mode" not in st.session_state:
-    st.session_state.chat_mode = "🧠 General AI Chat"
-
 if "quick_prompt" not in st.session_state:
     st.session_state.quick_prompt = ""
 
@@ -404,7 +279,7 @@ if "quick_prompt" not in st.session_state:
 with st.sidebar:
 
     st.markdown("""
-    <div class="sidebar-logo">
+    <div class="logo-text">
     ⚡ Industrial AI
     </div>
     """, unsafe_allow_html=True)
@@ -420,12 +295,12 @@ with st.sidebar:
     )
 
     st.markdown(
-        '<div class="menu-item">🧠 AI Workspace</div>',
+        '<div class="menu-item">📚 Documents</div>',
         unsafe_allow_html=True
     )
 
     st.markdown(
-        '<div class="menu-item">📚 Documents</div>',
+        '<div class="menu-item">⚙️ Settings</div>',
         unsafe_allow_html=True
     )
 
@@ -440,51 +315,41 @@ with st.sidebar:
         st.rerun()
 
 # ============================================================
-# TITLE
+# MAIN TITLE
 # ============================================================
 
 st.markdown("""
-<div class="title">
+<div class="main-title">
 ⚡ Industrial AI Workspace
 </div>
 """, unsafe_allow_html=True)
 
-# ============================================================
-# WELCOME SECTION
-# ============================================================
-
 st.markdown("""
-<div class="welcome-text">
-Analyze industrial reports, detect anomalies, generate AI insights,
-and chat intelligently with your uploaded documents.
+<div class="subtitle">
+Analyze industrial reports, detect anomalies,
+generate AI insights, and chat with your documents.
 </div>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# MODE SELECTION
+# MODE SELECT
 # ============================================================
 
-st.markdown('<div class="mode-box">', unsafe_allow_html=True)
-
-chat_mode = st.radio(
+chat_mode = st.selectbox(
     "Select AI Mode",
     [
         "🧠 General AI Chat",
         "📂 Upload & Analyze Reports"
-    ],
-    horizontal=True
+    ]
 )
-
-st.session_state.chat_mode = chat_mode
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================
 # QUICK ACTIONS
 # ============================================================
 
-col1, col2 = st.columns(2)
-col3, col4 = st.columns(2)
+st.markdown("### 🚀 Quick Actions")
+
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     if st.button("⚡ Analyze Reports"):
@@ -510,16 +375,18 @@ with col4:
             "Detect anomalies in uploaded reports."
         )
 
+st.markdown("<br>", unsafe_allow_html=True)
+
 # ============================================================
 # FILE UPLOAD
 # ============================================================
 
-if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
+if chat_mode == "📂 Upload & Analyze Reports":
 
     st.markdown("## 📂 Upload Industrial Reports")
 
     uploaded_files = st.file_uploader(
-        "Upload Reports",
+        "Upload PDF / Excel / CSV Files",
         type=["pdf", "xlsx", "csv"],
         accept_multiple_files=True
     )
@@ -542,7 +409,7 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                     temp_path = tmp.name
 
                 # ====================================================
-                # PDF
+                # PDF PROCESSING
                 # ====================================================
 
                 if uploaded_file.name.endswith(".pdf"):
@@ -554,7 +421,7 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                     all_documents.extend(documents)
 
                 # ====================================================
-                # EXCEL
+                # EXCEL PROCESSING
                 # ====================================================
 
                 elif uploaded_file.name.endswith(".xlsx"):
@@ -580,7 +447,7 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                                 df,
                                 x=numeric_cols[0],
                                 y=numeric_cols[1],
-                                title="Industrial Data Trend"
+                                title="Trend Analysis"
                             )
 
                             st.plotly_chart(
@@ -605,7 +472,7 @@ Summary:
                         )
 
                 # ====================================================
-                # CSV
+                # CSV PROCESSING
                 # ====================================================
 
                 elif uploaded_file.name.endswith(".csv"):
@@ -671,7 +538,7 @@ Summary:
             embeddings = load_embeddings()
 
             # ====================================================
-            # FAISS VECTOR STORE
+            # FAISS
             # ====================================================
 
             st.session_state.vectorstore = FAISS.from_documents(
@@ -713,11 +580,7 @@ if not question and st.session_state.quick_prompt:
 # GENERAL AI CHAT
 # ============================================================
 
-if (
-    question
-    and st.session_state.chat_mode
-    == "🧠 General AI Chat"
-):
+if question and chat_mode == "🧠 General AI Chat":
 
     with st.chat_message("user"):
         st.write(question)
@@ -732,7 +595,7 @@ if (
             "content": """
 You are an advanced industrial AI assistant.
 
-Be intelligent, modern, professional,
+Be intelligent, professional,
 and helpful for industrial analytics.
 """
         },
@@ -782,8 +645,7 @@ and helpful for industrial analytics.
 if (
     question
     and st.session_state.vectorstore is not None
-    and st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
+    and chat_mode == "📂 Upload & Analyze Reports"
 ):
 
     with st.chat_message("user"):
@@ -802,7 +664,7 @@ if (
 You are an advanced industrial AI analyst.
 
 Rules:
-- Give professional insights
+- Give accurate insights
 - Mention trends
 - Mention anomalies
 - Give recommendations
