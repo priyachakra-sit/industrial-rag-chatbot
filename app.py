@@ -14,7 +14,8 @@ import tempfile
 # -----------------------
 st.set_page_config(
     page_title="Industrial AI Assistant",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # -----------------------
@@ -23,56 +24,409 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+/* =========================
+   GOOGLE FONT
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   GLOBAL
+========================= */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* =========================
+   MAIN APP
+========================= */
 .stApp {
-    background: #F4F7FE;
-    color: #111827;
+
+    background:
+        radial-gradient(circle at top left, #1E1B4B 0%, transparent 25%),
+        radial-gradient(circle at top right, #312E81 0%, transparent 25%),
+        linear-gradient(180deg, #050816 0%, #0B1023 100%);
+
+    color: #F8FAFC;
 }
 
+/* =========================
+   MAIN CONTAINER
+========================= */
 .block-container {
-    padding-top: 1.5rem;
+
+    max-width: 1350px;
+
+    padding-top: 1.2rem;
+
     padding-left: 3rem;
+
     padding-right: 3rem;
-    max-width: 1400px;
+
+    padding-bottom: 2rem;
 }
 
+/* =========================
+   SIDEBAR
+========================= */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg,#050816,#0B1023);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10,15,30,0.98),
+            rgba(5,8,22,0.98)
+        );
+
+    border-right:
+        1px solid rgba(255,255,255,0.06);
+
+    backdrop-filter: blur(18px);
+
+    box-shadow:
+        4px 0px 30px rgba(0,0,0,0.35);
 }
 
 [data-testid="stSidebar"] * {
-    color: white !important;
+    color: #F8FAFC !important;
 }
 
+/* =========================
+   HERO TITLE
+========================= */
 h1 {
-    font-size: 3.5rem !important;
+
+    font-size: 4rem !important;
+
     font-weight: 800 !important;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 0.5rem;
+
+    background:
+        linear-gradient(
+            90deg,
+            #A855F7,
+            #6366F1,
+            #38BDF8
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
 }
 
-[data-testid="stChatMessage"] {
-    background: white;
-    border-radius: 22px;
-    padding: 20px;
-    border: 1px solid #E5E7EB;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 18px;
+/* =========================
+   TEXT
+========================= */
+p, label, span, div {
+    color: #E2E8F0;
 }
 
-.stButton button {
-    background: linear-gradient(90deg,#6C63FF,#8B5CF6);
-    color: white !important;
-    border-radius: 14px;
-    border: none;
-    padding: 12px 20px;
-    font-weight: 600;
-}
-
+/* =========================
+   GLASS CARDS
+========================= */
 .kpi-card {
-    background: white;
-    padding: 22px;
-    border-radius: 22px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+
+    background:
+        rgba(255,255,255,0.05);
+
+    backdrop-filter:
+        blur(16px);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius:
+        24px;
+
+    padding:
+        26px;
+
+    transition:
+        all 0.3s ease;
+
+    box-shadow:
+        0px 6px 24px rgba(0,0,0,0.18);
 }
 
+.kpi-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    border:
+        1px solid rgba(168,85,247,0.45);
+
+    box-shadow:
+        0px 10px 35px rgba(168,85,247,0.25);
+}
+
+/* =========================
+   CHAT MESSAGES
+========================= */
+[data-testid="stChatMessage"] {
+
+    background:
+        rgba(255,255,255,0.05);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius:
+        24px;
+
+    padding:
+        18px;
+
+    margin-bottom:
+        18px;
+
+    backdrop-filter:
+        blur(14px);
+
+    box-shadow:
+        0px 6px 22px rgba(0,0,0,0.16);
+
+    animation:
+        fadeIn 0.3s ease-in-out;
+}
+
+/* USER MESSAGE */
+[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(99,102,241,0.20),
+            rgba(168,85,247,0.18)
+        );
+}
+
+/* ASSISTANT MESSAGE */
+[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
+
+    background:
+        rgba(255,255,255,0.04);
+}
+
+/* =========================
+   CHAT INPUT
+========================= */
+.stChatInput {
+
+    position:
+        sticky;
+
+    bottom:
+        8px;
+
+    padding-top:
+        12px;
+
+    background:
+        transparent;
+}
+
+.stChatInput > div {
+
+    background:
+        rgba(15,23,42,0.88);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius:
+        24px;
+
+    padding:
+        10px;
+
+    backdrop-filter:
+        blur(16px);
+
+    box-shadow:
+        0px 8px 28px rgba(0,0,0,0.28);
+}
+
+.stChatInput input {
+
+    background:
+        transparent !important;
+
+    border:
+        none !important;
+
+    color:
+        white !important;
+
+    font-size:
+        16px !important;
+}
+
+/* =========================
+   FILE UPLOADER
+========================= */
+[data-testid="stFileUploader"] {
+
+    background:
+        rgba(255,255,255,0.04);
+
+    border:
+        1px dashed rgba(168,85,247,0.45);
+
+    border-radius:
+        24px;
+
+    padding:
+        30px;
+
+    backdrop-filter:
+        blur(16px);
+
+    transition:
+        all 0.3s ease;
+}
+
+[data-testid="stFileUploader"]:hover {
+
+    border:
+        1px dashed #A855F7;
+
+    background:
+        rgba(168,85,247,0.08);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.stButton button {
+
+    background:
+        linear-gradient(
+            90deg,
+            #7C3AED,
+            #6366F1
+        );
+
+    border:
+        none;
+
+    border-radius:
+        16px;
+
+    padding:
+        12px 22px;
+
+    font-weight:
+        600;
+
+    color:
+        white !important;
+
+    transition:
+        all 0.3s ease;
+
+    box-shadow:
+        0px 4px 18px rgba(124,58,237,0.28);
+}
+
+.stButton button:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0px 8px 28px rgba(124,58,237,0.45);
+}
+
+/* =========================
+   RADIO BUTTONS
+========================= */
+.stRadio > div {
+
+    background:
+        rgba(255,255,255,0.04);
+
+    border:
+        1px solid rgba(255,255,255,0.06);
+
+    padding:
+        14px;
+
+    border-radius:
+        20px;
+}
+
+/* =========================
+   ALERTS
+========================= */
+.stAlert {
+
+    border-radius:
+        18px !important;
+
+    border:
+        none !important;
+
+    backdrop-filter:
+        blur(14px);
+}
+
+/* =========================
+   DATAFRAME
+========================= */
+[data-testid="stDataFrame"] {
+
+    border-radius:
+        20px;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================
+   PLOTLY
+========================= */
+.js-plotly-plot {
+
+    border-radius:
+        24px;
+
+    overflow:
+        hidden;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0B1023;
+}
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        linear-gradient(
+            180deg,
+            #7C3AED,
+            #38BDF8
+        );
+
+    border-radius:
+        12px;
+}
+
+/* =========================
+   REMOVE STREAMLIT BRANDING
+========================= */
 #MainMenu {
     visibility: hidden;
 }
@@ -83,6 +437,50 @@ footer {
 
 header {
     visibility: hidden;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .block-container {
+
+        padding-left: 1rem !important;
+
+        padding-right: 1rem !important;
+    }
+
+    h1 {
+
+        font-size: 2.5rem !important;
+    }
+
+    .kpi-card {
+
+        margin-bottom: 16px;
+    }
+
+    [data-testid="stSidebar"] {
+
+        width: 250px !important;
+    }
 }
 
 </style>
@@ -114,7 +512,7 @@ if "chat_mode" not in st.session_state:
 # -----------------------
 with st.sidebar:
 
-    st.markdown("# ⚡ Industrial AI")
+    st.markdown("# ⚡ Industrial")
     st.markdown("### Your AI Co-pilot")
 
     st.markdown("---")
@@ -140,11 +538,7 @@ with st.sidebar:
 # HERO SECTION
 # -----------------------
 st.markdown("""
-<h1 style="
-background: linear-gradient(90deg,#6C63FF,#8B5CF6);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-">
+<h1>
 ⚡ Industrial AI Assistant
 </h1>
 """, unsafe_allow_html=True)
@@ -214,10 +608,10 @@ status = "Active" if st.session_state.files_processed else "Waiting"
 col1, col2, col3, col4 = st.columns(4)
 
 cards = [
-    ("📄 Reports", str(report_count), "#111827"),
-    ("🤖 AI Queries", str(query_count), "#111827"),
+    ("📄 Reports", str(report_count), "#FFFFFF"),
+    ("🤖 AI Queries", str(query_count), "#FFFFFF"),
     ("⚡ Efficiency", f"{efficiency}%", "#10B981"),
-    ("📈 Status", status, "#6366F1")
+    ("📈 Status", status, "#38BDF8")
 ]
 
 for col, card in zip([col1, col2, col3, col4], cards):
@@ -226,7 +620,7 @@ for col, card in zip([col1, col2, col3, col4], cards):
 
         st.markdown(f"""
         <div class="kpi-card">
-        <h4 style="color:#6B7280;">{card[0]}</h4>
+        <h4 style="color:#CBD5E1;">{card[0]}</h4>
         <h2 style="color:{card[2]};">{card[1]}</h2>
         </div>
         """, unsafe_allow_html=True)
@@ -239,9 +633,7 @@ if (
     == "📂 Upload & Analyze Reports"
 ):
 
-    st.markdown("""
-    ### 📂 Upload Industrial Reports
-    """)
+    st.markdown("## 📂 Upload Industrial Reports")
 
     uploaded_files = st.file_uploader(
         "Upload Reports",
@@ -249,9 +641,6 @@ if (
         accept_multiple_files=True
     )
 
-    # -----------------------
-    # PROCESS FILES
-    # -----------------------
     if uploaded_files:
 
         st.session_state.uploaded_files = uploaded_files
@@ -273,7 +662,6 @@ if (
 
                     temp_path = tmp.name
 
-                # PDF
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
@@ -282,7 +670,6 @@ if (
 
                     all_documents.extend(documents)
 
-                # EXCEL
                 elif uploaded_file.name.endswith(".xlsx"):
 
                     excel_data = pd.read_excel(
@@ -302,7 +689,6 @@ if (
                         Document(page_content=text)
                     )
 
-                # CSV
                 elif uploaded_file.name.endswith(".csv"):
 
                     df = pd.read_csv(temp_path)
@@ -320,9 +706,6 @@ if (
 
             chunks = splitter.split_documents(all_documents)
 
-            # -----------------------
-            # REAL EMBEDDINGS
-            # -----------------------
             @st.cache_resource
             def load_embeddings():
 
@@ -368,12 +751,10 @@ if (
 
                 uploaded_file.seek(0)
 
-                # CSV
                 if uploaded_file.name.endswith(".csv"):
 
                     df = pd.read_csv(uploaded_file)
 
-                # EXCEL
                 elif uploaded_file.name.endswith(".xlsx"):
 
                     df = pd.read_excel(uploaded_file)
@@ -413,7 +794,6 @@ if (
                             round(df[target_col].min(), 2)
                         )
 
-                    # LINE CHART
                     fig1 = px.line(
                         df,
                         y=target_col,
@@ -424,36 +804,6 @@ if (
                         fig1,
                         use_container_width=True
                     )
-
-                    # BAR CHART
-                    fig2 = px.bar(
-                        df,
-                        y=target_col,
-                        title=f"{target_col} Comparison"
-                    )
-
-                    st.plotly_chart(
-                        fig2,
-                        use_container_width=True
-                    )
-
-                    # PIE CHART
-                    try:
-
-                        fig3 = px.pie(
-                            df,
-                            names=df.columns[0],
-                            values=target_col,
-                            title=f"{target_col} Distribution"
-                        )
-
-                        st.plotly_chart(
-                            fig3,
-                            use_container_width=True
-                        )
-
-                    except:
-                        pass
 
     except Exception as e:
 
@@ -493,46 +843,18 @@ if (
 
     client = Groq(api_key=api_key)
 
-    # -----------------------
-    # CONVERSATIONAL MEMORY
-    # -----------------------
     messages = [
         {
             "role": "system",
             "content": """
 You are a highly intelligent, friendly, and conversational AI assistant.
 
-Your personality is:
-- smooth
-- modern
-- engaging
-- professional
-- helpful
-
-You speak naturally like ChatGPT.
-
-You can:
-- answer general questions
-- explain AI concepts
-- help with coding
-- discuss industrial engineering
-- explain analytics
-- solve technical doubts
-- guide users professionally
-
-Rules:
-- Keep conversations natural
-- Avoid robotic replies
-- Be engaging and intelligent
-- Explain clearly
-- Use examples when useful
-- Maintain conversational flow
-- Talk like a modern AI assistant
+Speak naturally like ChatGPT.
+Be smooth, modern, engaging, and helpful.
 """
         }
     ]
 
-    # ADD PREVIOUS CHAT HISTORY
     for chat in st.session_state.chat_history[-5:]:
 
         messages.append(
@@ -549,7 +871,6 @@ Rules:
             }
         )
 
-    # CURRENT QUESTION
     messages.append(
         {
             "role": "user",
@@ -557,9 +878,6 @@ Rules:
         }
     )
 
-    # -----------------------
-    # STREAMING RESPONSE
-    # -----------------------
     with st.chat_message("assistant", avatar="🤖"):
 
         message_placeholder = st.empty()
@@ -588,7 +906,6 @@ Rules:
 
         message_placeholder.markdown(full_response)
 
-    # SAVE CHAT HISTORY
     st.session_state.chat_history.append(
         {
             "question": question,
@@ -621,18 +938,11 @@ if (
     prompt = f"""
 You are an advanced industrial AI analyst assistant.
 
-Your personality is:
-- conversational
-- intelligent
-- professional
-- smooth
-
 Rules:
-- Give detailed explanations
-- Mention trends
-- Give recommendations
-- Be natural and engaging
+- Be conversational
+- Give insights
 - Explain clearly
+- Give recommendations
 - Answer ONLY from context
 
 CONTEXT:
