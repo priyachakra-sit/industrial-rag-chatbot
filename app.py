@@ -1,7 +1,7 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
 # PREMIUM AI ANALYTICS PLATFORM
-# FULL UPDATED VERSION
+# COMPLETE FINAL PREMIUM VERSION
 # ============================================================
 
 import pandas as pd
@@ -33,7 +33,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
@@ -66,15 +66,15 @@ LAYOUT
 
 .block-container {
 
-    padding-top: 1.2rem;
+    padding-top: 1.5rem;
 
-    padding-left: 2rem;
+    padding-left: 2.5rem;
 
-    padding-right: 2rem;
+    padding-right: 2.5rem;
 
-    padding-bottom: 120px;
+    padding-bottom: 140px;
 
-    max-width: 1450px;
+    max-width: 1500px;
 }
 
 /* =========================================================
@@ -86,6 +86,8 @@ SIDEBAR
     background: white;
 
     border-right: 1px solid rgba(0,0,0,0.06);
+
+    padding-top: 1rem;
 }
 
 [data-testid="stSidebar"] * {
@@ -98,13 +100,15 @@ LOGO
 
 .sidebar-logo {
 
-    font-size: 24px;
+    font-size: 30px;
 
-    font-weight: 700;
+    font-weight: 800;
 
     color: #4F46E5;
 
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+
+    letter-spacing: -1px;
 }
 
 /* =========================================================
@@ -113,19 +117,19 @@ MENU
 
 .menu-item {
 
-    padding: 14px 16px;
+    padding: 18px 18px;
 
-    border-radius: 14px;
+    border-radius: 18px;
 
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 
-    font-size: 15px;
+    font-size: 18px;
 
-    font-weight: 500;
+    font-weight: 600;
 
     cursor: pointer;
 
-    transition: 0.2s;
+    transition: 0.25s;
 }
 
 .menu-item:hover {
@@ -134,20 +138,20 @@ MENU
 
     color: #4F46E5;
 
-    transform: translateX(3px);
+    transform: translateX(4px);
 }
 
 /* =========================================================
-BUTTONS
+BUTTONS PREMIUM
 ========================================================= */
 
 .stButton button {
 
     width: 100%;
 
-    height: 52px;
+    height: 70px;
 
-    border-radius: 16px;
+    border-radius: 22px;
 
     border: none;
 
@@ -155,13 +159,17 @@ BUTTONS
 
     color: #111827 !important;
 
-    font-weight: 600;
+    font-weight: 700;
+
+    font-size: 18px;
 
     border: 1px solid rgba(0,0,0,0.06);
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 
-    transition: 0.2s;
+    transition: 0.25s;
+
+    padding: 0 24px;
 }
 
 .stButton button:hover {
@@ -170,7 +178,9 @@ BUTTONS
 
     color: #4F46E5 !important;
 
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+
+    box-shadow: 0 14px 30px rgba(79,70,229,0.12);
 }
 
 /* =========================================================
@@ -179,15 +189,19 @@ TITLE
 
 .title {
 
-    font-size: 48px;
+    font-size: 72px;
 
-    font-weight: 700;
+    font-weight: 800;
 
     color: #111827;
 
     margin-top: 10px;
 
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+
+    letter-spacing: -3px;
+
+    line-height: 1.05;
 }
 
 /* =========================================================
@@ -198,15 +212,15 @@ MODE BOX
 
     background: white;
 
-    border-radius: 18px;
+    border-radius: 24px;
 
-    padding: 16px 20px;
+    padding: 22px 24px;
 
     border: 1px solid rgba(0,0,0,0.06);
 
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
 }
 
 /* =========================================================
@@ -214,8 +228,10 @@ RADIO PREMIUM
 ========================================================= */
 
 .stRadio > div {
+
     display: flex;
-    gap: 14px;
+
+    gap: 18px;
 }
 
 .stRadio label {
@@ -224,20 +240,26 @@ RADIO PREMIUM
 
     border: 1px solid rgba(0,0,0,0.08);
 
-    padding: 14px 20px;
+    padding: 18px 26px;
 
-    border-radius: 14px;
+    border-radius: 18px;
 
-    transition: 0.2s;
+    transition: 0.25s;
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+
+    font-size: 18px !important;
+
+    font-weight: 700 !important;
 }
 
 .stRadio label:hover {
 
     border: 1px solid #4F46E5;
 
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 24px rgba(79,70,229,0.10);
 }
 
 /* =========================================================
@@ -248,21 +270,25 @@ CHAT
 
     background: white;
 
-    border-radius: 22px;
+    border-radius: 28px;
 
-    padding: 18px;
+    padding: 26px;
 
-    margin-bottom: 18px;
+    margin-bottom: 22px;
 
     border: 1px solid rgba(0,0,0,0.05);
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
 
-    max-width: 900px;
+    max-width: 980px;
 
     margin-left: auto;
 
     margin-right: auto;
+
+    font-size: 18px;
+
+    line-height: 1.8;
 }
 
 /* =========================================================
@@ -273,13 +299,13 @@ CHAT INPUT
 
     position: fixed;
 
-    bottom: 20px;
+    bottom: 24px;
 
     left: 50%;
 
     transform: translateX(-50%);
 
-    width: 70%;
+    width: 74%;
 
     z-index: 999;
 }
@@ -288,13 +314,13 @@ CHAT INPUT
 
     background: white;
 
-    border-radius: 24px;
+    border-radius: 28px;
 
     border: 1px solid rgba(0,0,0,0.08);
 
-    padding: 10px 14px;
+    padding: 14px 18px;
 
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .stChatInput input {
@@ -303,7 +329,9 @@ CHAT INPUT
 
     color: #111827 !important;
 
-    font-size: 15px;
+    font-size: 18px !important;
+
+    font-weight: 500;
 }
 
 /* =========================================================
@@ -316,11 +344,23 @@ UPLOAD BOX
 
     border: 2px dashed rgba(79,70,229,0.2);
 
-    border-radius: 20px;
+    border-radius: 28px;
 
-    padding: 30px;
+    padding: 40px;
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+
+[data-testid="stFileUploader"] small {
+
+    font-size: 16px !important;
+
+    color: #6B7280 !important;
+}
+
+[data-testid="stFileUploader"] section {
+
+    font-size: 18px !important;
 }
 
 /* =========================================================
@@ -329,11 +369,24 @@ DATAFRAME
 
 [data-testid="stDataFrame"] {
 
-    border-radius: 18px;
+    border-radius: 20px;
 
     overflow: hidden;
 
     border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* =========================================================
+SUBHEADERS
+========================================================= */
+
+h1, h2, h3 {
+
+    font-size: 34px !important;
+
+    font-weight: 700 !important;
+
+    color: #111827 !important;
 }
 
 /* =========================================================
@@ -520,10 +573,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     temp_path = tmp.name
 
-                # ====================================================
-                # PDF
-                # ====================================================
-
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
@@ -531,10 +580,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                     documents = loader.load()
 
                     all_documents.extend(documents)
-
-                # ====================================================
-                # EXCEL
-                # ====================================================
 
                 elif uploaded_file.name.endswith(".xlsx"):
 
@@ -598,10 +643,6 @@ Summary:
                         all_documents.append(
                             Document(page_content=text)
                         )
-
-                # ====================================================
-                # CSV
-                # ====================================================
 
                 elif uploaded_file.name.endswith(".csv"):
 
