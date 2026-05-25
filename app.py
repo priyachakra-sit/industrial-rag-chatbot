@@ -9,486 +9,180 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 import tempfile
 
-# -----------------------
+# =========================================
 # PAGE CONFIG
-# -----------------------
+# =========================================
 st.set_page_config(
     page_title="Industrial AI Assistant",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# -----------------------
-# PREMIUM CSS
-# -----------------------
+# =========================================
+# CUSTOM CSS
+# =========================================
 st.markdown("""
 <style>
 
-/* =========================
-   GOOGLE FONT
-========================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* =========================
-   GLOBAL
-========================= */
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* =========================
-   MAIN APP
-========================= */
+/* MAIN BACKGROUND */
 .stApp {
-
-    background:
-        radial-gradient(circle at top left, #1E1B4B 0%, transparent 25%),
-        radial-gradient(circle at top right, #312E81 0%, transparent 25%),
-        linear-gradient(180deg, #050816 0%, #0B1023 100%);
-
-    color: #F8FAFC;
+    background-color: #F4F7FB;
 }
 
-/* =========================
-   MAIN CONTAINER
-========================= */
+/* REMOVE STREAMLIT BRANDING */
+#MainMenu {visibility:hidden;}
+footer {visibility:hidden;}
+header {visibility:hidden;}
+
+/* MAIN CONTAINER */
 .block-container {
-
-    max-width: 1350px;
-
-    padding-top: 1.2rem;
-
-    padding-left: 3rem;
-
-    padding-right: 3rem;
-
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 1400px;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 [data-testid="stSidebar"] {
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(10,15,30,0.98),
-            rgba(5,8,22,0.98)
-        );
-
-    border-right:
-        1px solid rgba(255,255,255,0.06);
-
-    backdrop-filter: blur(18px);
-
-    box-shadow:
-        4px 0px 30px rgba(0,0,0,0.35);
+    background: white;
+    border-right: 1px solid #E5E7EB;
 }
 
 [data-testid="stSidebar"] * {
-    color: #F8FAFC !important;
+    color: #111827 !important;
 }
 
-/* =========================
-   HERO TITLE
-========================= */
-h1 {
-
-    font-size: 4rem !important;
-
-    font-weight: 800 !important;
-
-    letter-spacing: -2px;
-
-    margin-bottom: 0.5rem;
-
-    background:
-        linear-gradient(
-            90deg,
-            #A855F7,
-            #6366F1,
-            #38BDF8
-        );
-
-    -webkit-background-clip: text;
-
-    -webkit-text-fill-color: transparent;
-}
-
-/* =========================
-   TEXT
-========================= */
-p, label, span, div {
-    color: #E2E8F0;
-}
-
-/* =========================
-   GLASS CARDS
-========================= */
-.kpi-card {
-
-    background:
-        rgba(255,255,255,0.05);
-
-    backdrop-filter:
-        blur(16px);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        24px;
-
-    padding:
-        26px;
-
-    transition:
-        all 0.3s ease;
-
-    box-shadow:
-        0px 6px 24px rgba(0,0,0,0.18);
-}
-
-.kpi-card:hover {
-
-    transform:
-        translateY(-6px);
-
-    border:
-        1px solid rgba(168,85,247,0.45);
-
-    box-shadow:
-        0px 10px 35px rgba(168,85,247,0.25);
-}
-
-/* =========================
-   CHAT MESSAGES
-========================= */
-[data-testid="stChatMessage"] {
-
-    background:
-        rgba(255,255,255,0.05);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        24px;
-
-    padding:
-        18px;
-
-    margin-bottom:
-        18px;
-
-    backdrop-filter:
-        blur(14px);
-
-    box-shadow:
-        0px 6px 22px rgba(0,0,0,0.16);
-
-    animation:
-        fadeIn 0.3s ease-in-out;
-}
-
-/* USER MESSAGE */
-[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(99,102,241,0.20),
-            rgba(168,85,247,0.18)
-        );
-}
-
-/* ASSISTANT MESSAGE */
-[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
-
-    background:
-        rgba(255,255,255,0.04);
-}
-
-/* =========================
-   CHAT INPUT
-========================= */
-.stChatInput {
-
-    position:
-        sticky;
-
-    bottom:
-        8px;
-
-    padding-top:
-        12px;
-
-    background:
-        transparent;
-}
-
-.stChatInput > div {
-
-    background:
-        rgba(15,23,42,0.88);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        24px;
-
-    padding:
-        10px;
-
-    backdrop-filter:
-        blur(16px);
-
-    box-shadow:
-        0px 8px 28px rgba(0,0,0,0.28);
-}
-
-.stChatInput input {
-
-    background:
-        transparent !important;
-
-    border:
-        none !important;
-
-    color:
-        white !important;
-
-    font-size:
-        16px !important;
-}
-
-/* =========================
-   FILE UPLOADER
-========================= */
-[data-testid="stFileUploader"] {
-
-    background:
-        rgba(255,255,255,0.04);
-
-    border:
-        1px dashed rgba(168,85,247,0.45);
-
-    border-radius:
-        24px;
-
-    padding:
-        30px;
-
-    backdrop-filter:
-        blur(16px);
-
-    transition:
-        all 0.3s ease;
-}
-
-[data-testid="stFileUploader"]:hover {
-
-    border:
-        1px dashed #A855F7;
-
-    background:
-        rgba(168,85,247,0.08);
-}
-
-/* =========================
-   BUTTONS
-========================= */
+/* SIDEBAR BUTTON */
 .stButton button {
-
-    background:
-        linear-gradient(
-            90deg,
-            #7C3AED,
-            #6366F1
-        );
-
-    border:
-        none;
-
-    border-radius:
-        16px;
-
-    padding:
-        12px 22px;
-
-    font-weight:
-        600;
-
-    color:
-        white !important;
-
-    transition:
-        all 0.3s ease;
-
-    box-shadow:
-        0px 4px 18px rgba(124,58,237,0.28);
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, #14B8A6, #06B6D4);
+    color: white !important;
+    font-weight: 600;
+    height: 45px;
+    transition: 0.3s;
 }
 
 .stButton button:hover {
-
-    transform:
-        translateY(-3px);
-
-    box-shadow:
-        0px 8px 28px rgba(124,58,237,0.45);
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
 }
 
-/* =========================
-   RADIO BUTTONS
-========================= */
+/* HERO SECTION */
+.hero-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #374151;
+    margin-top: 20px;
+}
+
+.hero-sub {
+    text-align: center;
+    color: #6B7280;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+/* MODE BOX */
+.mode-box {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid #E5E7EB;
+    margin-bottom: 25px;
+}
+
+/* KPI CARDS */
+.kpi-card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.04);
+    transition: 0.3s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+}
+
+.kpi-title {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #14B8A6;
+}
+
+/* CHAT MESSAGE */
+[data-testid="stChatMessage"] {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #E5E7EB;
+    margin-bottom: 15px;
+}
+
+/* CHAT INPUT */
+.stChatInput > div {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #D1D5DB;
+}
+
+/* FILE UPLOADER */
+[data-testid="stFileUploader"] {
+    background: white;
+    border-radius: 18px;
+    border: 2px dashed #14B8A6;
+    padding: 25px;
+}
+
+/* RADIO BUTTONS */
 .stRadio > div {
-
-    background:
-        rgba(255,255,255,0.04);
-
-    border:
-        1px solid rgba(255,255,255,0.06);
-
-    padding:
-        14px;
-
-    border-radius:
-        20px;
+    background: #F9FAFB;
+    padding: 15px;
+    border-radius: 14px;
 }
 
-/* =========================
-   ALERTS
-========================= */
-.stAlert {
-
-    border-radius:
-        18px !important;
-
-    border:
-        none !important;
-
-    backdrop-filter:
-        blur(14px);
+/* METRICS */
+[data-testid="metric-container"] {
+    background: white;
+    border-radius: 18px;
+    padding: 15px;
+    border: 1px solid #E5E7EB;
 }
 
-/* =========================
-   DATAFRAME
-========================= */
-[data-testid="stDataFrame"] {
-
-    border-radius:
-        20px;
-
-    overflow:
-        hidden;
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-}
-
-/* =========================
-   PLOTLY
-========================= */
-.js-plotly-plot {
-
-    border-radius:
-        24px;
-
-    overflow:
-        hidden;
-}
-
-/* =========================
-   SCROLLBAR
-========================= */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: #0B1023;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-
-    background:
-        linear-gradient(
-            180deg,
-            #7C3AED,
-            #38BDF8
-        );
-
-    border-radius:
-        12px;
-}
-
-/* =========================
-   REMOVE STREAMLIT BRANDING
-========================= */
-#MainMenu {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
-header {
-    visibility: hidden;
-}
-
-/* =========================
-   ANIMATION
-========================= */
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-}
-
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-
-    .block-container {
-
-        padding-left: 1rem !important;
-
-        padding-right: 1rem !important;
-    }
-
-    h1 {
-
-        font-size: 2.5rem !important;
-    }
-
-    .kpi-card {
-
-        margin-bottom: 16px;
-    }
-
-    [data-testid="stSidebar"] {
-
-        width: 250px !important;
-    }
+    background: #14B8A6;
+    border-radius: 10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------
+# =========================================
 # SESSION STATE
-# -----------------------
+# =========================================
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -505,26 +199,26 @@ if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
 
 if "chat_mode" not in st.session_state:
-    st.session_state.chat_mode = "🧠 General AI Chat"
+    st.session_state.chat_mode = "General AI Chat"
 
-# -----------------------
+# =========================================
 # SIDEBAR
-# -----------------------
+# =========================================
 with st.sidebar:
 
-    st.markdown("# ⚡ Industrial")
-    st.markdown("### Your AI Co-pilot")
+    st.markdown("## ⚡ INDUSTRIAL AI")
+
+    st.markdown("")
+
+    st.markdown("### 🏠 Dashboard")
+    st.markdown("### 📂 Files")
+    st.markdown("### 🔔 Notifications")
+    st.markdown("### 📊 Data Analysis")
+    st.markdown("### ⚙️ Settings")
 
     st.markdown("---")
 
-    st.markdown("## 📊 Dashboard")
-    st.markdown("## 📁 Files")
-    st.markdown("## 🤖 AI Insights")
-    st.markdown("## 📈 Analytics")
-
-    st.markdown("---")
-
-    if st.button("🔄 New Analysis"):
+    if st.button("➕ New Analysis"):
 
         st.session_state.chat_history = []
         st.session_state.vectorstore = None
@@ -534,84 +228,56 @@ with st.sidebar:
 
         st.rerun()
 
-# -----------------------
+# =========================================
 # HERO SECTION
-# -----------------------
+# =========================================
 st.markdown("""
-<h1>
+<div class="hero-title">
 ⚡ Industrial AI Assistant
-</h1>
+</div>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-### AI-powered Industrial Analytics & RAG Platform
-""")
+<div class="hero-sub">
+AI-powered Industrial Analytics & RAG Platform
+</div>
+""", unsafe_allow_html=True)
 
-# -----------------------
-# GREETING
-# -----------------------
-st.info("""
-👋 Hello! Welcome to Industrial AI Assistant.
-
-Choose what you want to do today:
-""")
-
-# -----------------------
+# =========================================
 # MODE SELECTION
-# -----------------------
+# =========================================
+st.markdown('<div class="mode-box">', unsafe_allow_html=True)
+
 chat_mode = st.radio(
     "Select AI Mode",
     [
-        "🧠 General AI Chat",
-        "📂 Upload & Analyze Reports"
+        "General AI Chat",
+        "Upload & Analyze Reports"
     ],
     horizontal=True
 )
 
 st.session_state.chat_mode = chat_mode
 
-# -----------------------
-# MODE MESSAGE
-# -----------------------
-if st.session_state.chat_mode == "🧠 General AI Chat":
+st.markdown('</div>', unsafe_allow_html=True)
 
-    st.success(
-        "You are now using General AI Chat Mode."
-    )
-
-else:
-
-    st.success(
-        "Upload industrial reports to activate analytics and RAG intelligence."
-    )
-
-# -----------------------
-# KPI VALUES
-# -----------------------
+# =========================================
+# KPI SECTION
+# =========================================
 report_count = st.session_state.report_count
 query_count = len(st.session_state.chat_history)
 
-if query_count == 0:
-    efficiency = 100
+efficiency = 100 if query_count == 0 else min(100, 95 + query_count)
 
-elif query_count <= 5:
-    efficiency = 95 + query_count
+status = "Connected" if st.session_state.files_processed else "Waiting"
 
-else:
-    efficiency = 99
-
-status = "Active" if st.session_state.files_processed else "Waiting"
-
-# -----------------------
-# KPI CARDS
-# -----------------------
 col1, col2, col3, col4 = st.columns(4)
 
 cards = [
-    ("📄 Reports", str(report_count), "#FFFFFF"),
-    ("🤖 AI Queries", str(query_count), "#FFFFFF"),
-    ("⚡ Efficiency", f"{efficiency}%", "#10B981"),
-    ("📈 Status", status, "#38BDF8")
+    ("📄 Reports", report_count),
+    ("🤖 AI Queries", query_count),
+    ("⚡ Efficiency", f"{efficiency}%"),
+    ("🟢 Status", status)
 ]
 
 for col, card in zip([col1, col2, col3, col4], cards):
@@ -620,23 +286,20 @@ for col, card in zip([col1, col2, col3, col4], cards):
 
         st.markdown(f"""
         <div class="kpi-card">
-        <h4 style="color:#CBD5E1;">{card[0]}</h4>
-        <h2 style="color:{card[2]};">{card[1]}</h2>
+            <div class="kpi-title">{card[0]}</div>
+            <div class="kpi-value">{card[1]}</div>
         </div>
         """, unsafe_allow_html=True)
 
-# -----------------------
+# =========================================
 # FILE UPLOADER
-# -----------------------
-if (
-    st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
-):
+# =========================================
+if st.session_state.chat_mode == "Upload & Analyze Reports":
 
     st.markdown("## 📂 Upload Industrial Reports")
 
     uploaded_files = st.file_uploader(
-        "Upload Reports",
+        "Upload reports",
         type=["pdf", "xlsx", "csv"],
         accept_multiple_files=True
     )
@@ -659,15 +322,12 @@ if (
                 ) as tmp:
 
                     tmp.write(uploaded_file.read())
-
                     temp_path = tmp.name
 
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
-
                     documents = loader.load()
-
                     all_documents.extend(documents)
 
                 elif uploaded_file.name.endswith(".xlsx"):
@@ -682,7 +342,6 @@ if (
                     for sheet_name, df in excel_data.items():
 
                         text += f"\n\nSheet: {sheet_name}\n"
-
                         text += df.to_string(index=False)
 
                     all_documents.append(
@@ -693,10 +352,10 @@ if (
 
                     df = pd.read_csv(temp_path)
 
-                    text = df.to_string(index=False)
-
                     all_documents.append(
-                        Document(page_content=text)
+                        Document(
+                            page_content=df.to_string(index=False)
+                        )
                     )
 
             splitter = RecursiveCharacterTextSplitter(
@@ -722,21 +381,18 @@ if (
 
             st.session_state.files_processed = True
 
-            st.success(
-                f"✅ {len(uploaded_files)} file(s) processed successfully!"
-            )
+            st.success("✅ Files processed successfully!")
 
         except Exception as e:
 
-            st.error(f"Error processing file: {e}")
+            st.error(f"Error: {e}")
 
-# -----------------------
-# ANALYTICS DASHBOARD
-# -----------------------
+# =========================================
+# ANALYTICS
+# =========================================
 if (
     st.session_state.files_processed
-    and st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
+    and st.session_state.chat_mode == "Upload & Analyze Reports"
 ):
 
     st.markdown("## 📊 Analytics Dashboard")
@@ -745,98 +401,71 @@ if (
 
         uploaded_files = st.session_state.uploaded_files
 
-        if uploaded_files:
+        for uploaded_file in uploaded_files:
 
-            for uploaded_file in uploaded_files:
+            uploaded_file.seek(0)
 
-                uploaded_file.seek(0)
+            if uploaded_file.name.endswith(".csv"):
 
-                if uploaded_file.name.endswith(".csv"):
+                df = pd.read_csv(uploaded_file)
 
-                    df = pd.read_csv(uploaded_file)
+            elif uploaded_file.name.endswith(".xlsx"):
 
-                elif uploaded_file.name.endswith(".xlsx"):
+                df = pd.read_excel(uploaded_file)
 
-                    df = pd.read_excel(uploaded_file)
+            else:
+                continue
 
-                else:
-                    continue
+            st.dataframe(df.head())
 
-                st.markdown(f"### 📄 {uploaded_file.name}")
+            numeric_cols = df.select_dtypes(include='number').columns
 
-                st.dataframe(df.head())
+            if len(numeric_cols) > 0:
 
-                numeric_cols = df.select_dtypes(
-                    include='number'
-                ).columns
+                target_col = numeric_cols[0]
 
-                if len(numeric_cols) > 0:
+                fig = px.line(
+                    df,
+                    y=target_col,
+                    title=f"{target_col} Trend Analysis"
+                )
 
-                    target_col = numeric_cols[0]
-
-                    c1, c2, c3 = st.columns(3)
-
-                    with c1:
-                        st.metric(
-                            "Average",
-                            round(df[target_col].mean(), 2)
-                        )
-
-                    with c2:
-                        st.metric(
-                            "Maximum",
-                            round(df[target_col].max(), 2)
-                        )
-
-                    with c3:
-                        st.metric(
-                            "Minimum",
-                            round(df[target_col].min(), 2)
-                        )
-
-                    fig1 = px.line(
-                        df,
-                        y=target_col,
-                        title=f"{target_col} Trend"
-                    )
-
-                    st.plotly_chart(
-                        fig1,
-                        use_container_width=True
-                    )
+                st.plotly_chart(
+                    fig,
+                    use_container_width=True
+                )
 
     except Exception as e:
 
         st.error(f"Analytics unavailable: {e}")
 
-# -----------------------
-# DISPLAY CHAT
-# -----------------------
+# =========================================
+# CHAT HISTORY
+# =========================================
 for chat in st.session_state.chat_history:
 
-    with st.chat_message("user", avatar="👨‍💻"):
+    with st.chat_message("user"):
         st.write(chat["question"])
 
-    with st.chat_message("assistant", avatar="🤖"):
+    with st.chat_message("assistant"):
         st.write(chat["answer"])
 
-# -----------------------
+# =========================================
 # CHAT INPUT
-# -----------------------
+# =========================================
 question = st.chat_input(
-    "Ask your question..."
+    "Ask your industrial AI question..."
 )
 
-# -----------------------
-# GENERAL AI CHAT
-# -----------------------
+# =========================================
+# GENERAL CHAT
+# =========================================
 if (
     question
-    and st.session_state.chat_mode
-    == "🧠 General AI Chat"
+    and st.session_state.chat_mode == "General AI Chat"
 ):
 
-    with st.chat_message("user", avatar="👨‍💻"):
+    with st.chat_message("user"):
         st.write(question)
 
     api_key = st.secrets["GROQ_API_KEY"]
@@ -847,40 +476,33 @@ if (
         {
             "role": "system",
             "content": """
-You are a highly intelligent, friendly, and conversational AI assistant.
+You are a modern AI assistant.
 
-Speak naturally like ChatGPT.
-Be smooth, modern, engaging, and helpful.
+Be conversational and intelligent.
 """
         }
     ]
 
     for chat in st.session_state.chat_history[-5:]:
 
-        messages.append(
-            {
-                "role": "user",
-                "content": chat["question"]
-            }
-        )
-
-        messages.append(
-            {
-                "role": "assistant",
-                "content": chat["answer"]
-            }
-        )
-
-    messages.append(
-        {
+        messages.append({
             "role": "user",
-            "content": question
-        }
-    )
+            "content": chat["question"]
+        })
 
-    with st.chat_message("assistant", avatar="🤖"):
+        messages.append({
+            "role": "assistant",
+            "content": chat["answer"]
+        })
 
-        message_placeholder = st.empty()
+    messages.append({
+        "role": "user",
+        "content": question
+    })
+
+    with st.chat_message("assistant"):
+
+        placeholder = st.empty()
 
         full_response = ""
 
@@ -899,31 +521,25 @@ Be smooth, modern, engaging, and helpful.
             if delta:
 
                 full_response += delta
+                placeholder.markdown(full_response + "▌")
 
-                message_placeholder.markdown(
-                    full_response + "▌"
-                )
+        placeholder.markdown(full_response)
 
-        message_placeholder.markdown(full_response)
+    st.session_state.chat_history.append({
+        "question": question,
+        "answer": full_response
+    })
 
-    st.session_state.chat_history.append(
-        {
-            "question": question,
-            "answer": full_response
-        }
-    )
-
-# -----------------------
-# RAG AI RESPONSE
-# -----------------------
+# =========================================
+# RAG CHAT
+# =========================================
 if (
     question
     and st.session_state.vectorstore is not None
-    and st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
+    and st.session_state.chat_mode == "Upload & Analyze Reports"
 ):
 
-    with st.chat_message("user", avatar="👨‍💻"):
+    with st.chat_message("user"):
         st.write(question)
 
     docs = st.session_state.vectorstore.similarity_search(
@@ -936,14 +552,9 @@ if (
     )
 
     prompt = f"""
-You are an advanced industrial AI analyst assistant.
+You are an industrial AI analyst.
 
-Rules:
-- Be conversational
-- Give insights
-- Explain clearly
-- Give recommendations
-- Answer ONLY from context
+Answer ONLY from context.
 
 CONTEXT:
 {context}
@@ -956,9 +567,9 @@ QUESTION:
 
     client = Groq(api_key=api_key)
 
-    with st.chat_message("assistant", avatar="🤖"):
+    with st.chat_message("assistant"):
 
-        message_placeholder = st.empty()
+        placeholder = st.empty()
 
         full_response = ""
 
@@ -982,16 +593,11 @@ QUESTION:
             if delta:
 
                 full_response += delta
+                placeholder.markdown(full_response + "▌")
 
-                message_placeholder.markdown(
-                    full_response + "▌"
-                )
+        placeholder.markdown(full_response)
 
-        message_placeholder.markdown(full_response)
-
-    st.session_state.chat_history.append(
-        {
-            "question": question,
-            "answer": full_response
-        }
-    )
+    st.session_state.chat_history.append({
+        "question": question,
+        "answer": full_response
+    })
