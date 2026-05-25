@@ -1,9 +1,11 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# PREMIUM LIGHT MODERN AI UI
+# PREMIUM AI ANALYTICS PLATFORM
+# FULL UPDATED VERSION
 # ============================================================
 
 import pandas as pd
+import plotly.express as px
 from langchain_core.documents import Document
 import streamlit as st
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -25,7 +27,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# PREMIUM LIGHT UI CSS
+# PREMIUM CSS
 # ============================================================
 
 st.markdown("""
@@ -59,12 +61,12 @@ header, footer, #MainMenu {
 }
 
 /* =========================================================
-MAIN LAYOUT
+LAYOUT
 ========================================================= */
 
 .block-container {
 
-    padding-top: 1.5rem;
+    padding-top: 1.2rem;
 
     padding-left: 2rem;
 
@@ -106,7 +108,7 @@ LOGO
 }
 
 /* =========================================================
-MENU ITEMS
+MENU
 ========================================================= */
 
 .menu-item {
@@ -143,50 +145,49 @@ BUTTONS
 
     width: 100%;
 
-    height: 46px;
+    height: 52px;
 
-    border-radius: 14px;
+    border-radius: 16px;
 
     border: none;
 
-    background: #4F46E5;
+    background: white;
 
-    color: white !important;
+    color: #111827 !important;
 
     font-weight: 600;
 
-    box-shadow: 0 4px 14px rgba(79,70,229,0.18);
+    border: 1px solid rgba(0,0,0,0.06);
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+
+    transition: 0.2s;
 }
 
 .stButton button:hover {
 
-    background: #4338CA;
+    border: 1px solid #4F46E5;
+
+    color: #4F46E5 !important;
+
+    transform: translateY(-2px);
 }
 
 /* =========================================================
-WELCOME
+TITLE
 ========================================================= */
 
-.welcome-title {
+.title {
 
-    font-size: 42px;
+    font-size: 48px;
 
     font-weight: 700;
 
     color: #111827;
 
-    margin-top: 20px;
+    margin-top: 10px;
 
-    margin-bottom: 10px;
-}
-
-.welcome-subtitle {
-
-    color: #6B7280;
-
-    font-size: 18px;
-
-    margin-bottom: 35px;
+    margin-bottom: 30px;
 }
 
 /* =========================================================
@@ -199,49 +200,48 @@ MODE BOX
 
     border-radius: 18px;
 
-    padding: 12px 18px;
+    padding: 16px 20px;
 
     border: 1px solid rgba(0,0,0,0.06);
 
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 
     box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
 /* =========================================================
-RADIO BUTTONS
+RADIO PREMIUM
 ========================================================= */
 
 .stRadio > div {
-    background: transparent !important;
-    border: none !important;
+    display: flex;
+    gap: 14px;
 }
 
-/* =========================================================
-QUICK ACTIONS
-========================================================= */
+.stRadio label {
 
-.quick-action {
+    background: white !important;
 
-    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
 
-    border-radius: 18px;
+    padding: 14px 20px;
 
-    padding: 18px;
+    border-radius: 14px;
 
-    border: 1px solid rgba(0,0,0,0.05);
-
-    text-align: center;
-
-    font-weight: 600;
-
-    margin-bottom: 20px;
+    transition: 0.2s;
 
     box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
+.stRadio label:hover {
+
+    border: 1px solid #4F46E5;
+
+    transform: translateY(-2px);
+}
+
 /* =========================================================
-CHAT MESSAGES
+CHAT
 ========================================================= */
 
 [data-testid="stChatMessage"] {
@@ -307,7 +307,7 @@ CHAT INPUT
 }
 
 /* =========================================================
-FILE UPLOADER
+UPLOAD BOX
 ========================================================= */
 
 [data-testid="stFileUploader"] {
@@ -324,16 +324,24 @@ FILE UPLOADER
 }
 
 /* =========================================================
-SUCCESS MESSAGE
+DATAFRAME
 ========================================================= */
 
-.stSuccess {
+[data-testid="stDataFrame"] {
 
-    background: #ECFDF5 !important;
+    border-radius: 18px;
 
-    color: #065F46 !important;
+    overflow: hidden;
 
-    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* =========================================================
+REMOVE LINES
+========================================================= */
+
+hr {
+    display: none;
 }
 
 /* =========================================================
@@ -370,6 +378,9 @@ if "uploaded_files" not in st.session_state:
 
 if "chat_mode" not in st.session_state:
     st.session_state.chat_mode = "🧠 General AI Chat"
+
+if "quick_prompt" not in st.session_state:
+    st.session_state.quick_prompt = ""
 
 # ============================================================
 # SIDEBAR
@@ -418,16 +429,12 @@ with st.sidebar:
         st.rerun()
 
 # ============================================================
-# WELCOME SECTION
+# TITLE
 # ============================================================
 
 st.markdown("""
-<div class="welcome-title">
-Industrial AI Workspace
-</div>
-
-<div class="welcome-subtitle">
-Analyze reports, detect anomalies, generate insights and interact with your AI assistant.
+<div class="title">
+⚡ Industrial AI Workspace
 </div>
 """, unsafe_allow_html=True)
 
@@ -457,28 +464,28 @@ st.markdown('</div>', unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown(
-        '<div class="quick-action">⚡ Analyze Reports</div>',
-        unsafe_allow_html=True
-    )
+    if st.button("⚡ Analyze Reports"):
+        st.session_state.quick_prompt = (
+            "Analyze uploaded reports and provide key findings."
+        )
 
 with col2:
-    st.markdown(
-        '<div class="quick-action">📊 Generate Insights</div>',
-        unsafe_allow_html=True
-    )
+    if st.button("📊 Generate Insights"):
+        st.session_state.quick_prompt = (
+            "Generate insights from uploaded industrial data."
+        )
 
 with col3:
-    st.markdown(
-        '<div class="quick-action">🧠 Summarize Data</div>',
-        unsafe_allow_html=True
-    )
+    if st.button("🧠 Summarize Data"):
+        st.session_state.quick_prompt = (
+            "Summarize uploaded reports clearly."
+        )
 
 with col4:
-    st.markdown(
-        '<div class="quick-action">📈 Detect Anomalies</div>',
-        unsafe_allow_html=True
-    )
+    if st.button("📈 Detect Anomalies"):
+        st.session_state.quick_prompt = (
+            "Detect anomalies in uploaded reports."
+        )
 
 # ============================================================
 # FILE UPLOAD
@@ -486,7 +493,7 @@ with col4:
 
 if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
-    st.markdown("### 📂 Upload Industrial Reports")
+    st.markdown("## 📂 Upload Industrial Reports")
 
     uploaded_files = st.file_uploader(
         "Upload Reports",
@@ -513,6 +520,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     temp_path = tmp.name
 
+                # ====================================================
+                # PDF
+                # ====================================================
+
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
@@ -521,6 +532,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     all_documents.extend(documents)
 
+                # ====================================================
+                # EXCEL
+                # ====================================================
+
                 elif uploaded_file.name.endswith(".xlsx"):
 
                     excel_data = pd.read_excel(
@@ -528,23 +543,99 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                         sheet_name=None
                     )
 
-                    text = ""
-
                     for sheet_name, df in excel_data.items():
 
-                        text += f"\n\nSheet: {sheet_name}\n"
+                        st.subheader(f"📄 Sheet: {sheet_name}")
 
-                        text += df.to_string(index=False)
+                        st.dataframe(df)
 
-                    all_documents.append(
-                        Document(page_content=text)
-                    )
+                        numeric_cols = df.select_dtypes(
+                            include='number'
+                        ).columns
+
+                        if len(numeric_cols) >= 2:
+
+                            st.subheader("📈 Trend Analysis")
+
+                            fig1 = px.line(
+                                df,
+                                x=numeric_cols[0],
+                                y=numeric_cols[1],
+                                title="Industrial Trend Analysis"
+                            )
+
+                            st.plotly_chart(
+                                fig1,
+                                use_container_width=True
+                            )
+
+                            st.subheader("📊 Consumption Analysis")
+
+                            fig2 = px.bar(
+                                df,
+                                x=numeric_cols[0],
+                                y=numeric_cols[1],
+                                title="Consumption Comparison"
+                            )
+
+                            st.plotly_chart(
+                                fig2,
+                                use_container_width=True
+                            )
+
+                        summary = df.describe().to_string()
+
+                        text = f"""
+Sheet Name: {sheet_name}
+
+Data:
+{df.to_string(index=False)}
+
+Summary:
+{summary}
+"""
+
+                        all_documents.append(
+                            Document(page_content=text)
+                        )
+
+                # ====================================================
+                # CSV
+                # ====================================================
 
                 elif uploaded_file.name.endswith(".csv"):
 
                     df = pd.read_csv(temp_path)
 
-                    text = df.to_string(index=False)
+                    st.dataframe(df)
+
+                    numeric_cols = df.select_dtypes(
+                        include='number'
+                    ).columns
+
+                    if len(numeric_cols) >= 2:
+
+                        fig = px.line(
+                            df,
+                            x=numeric_cols[0],
+                            y=numeric_cols[1],
+                            title="CSV Data Analysis"
+                        )
+
+                        st.plotly_chart(
+                            fig,
+                            use_container_width=True
+                        )
+
+                    summary = df.describe().to_string()
+
+                    text = f"""
+CSV Data:
+{df.to_string(index=False)}
+
+Summary:
+{summary}
+"""
 
                     all_documents.append(
                         Document(page_content=text)
@@ -598,8 +689,12 @@ for chat in st.session_state.chat_history:
 # ============================================================
 
 question = st.chat_input(
-    "Ask anything about industrial reports, analytics or insights..."
+    "Ask anything about industrial reports..."
 )
+
+if not question and st.session_state.quick_prompt:
+    question = st.session_state.quick_prompt
+    st.session_state.quick_prompt = ""
 
 # ============================================================
 # GENERAL AI CHAT
@@ -624,33 +719,14 @@ if (
             "content": """
 You are an advanced industrial AI assistant.
 
-Be intelligent, conversational, professional and modern.
+Be intelligent, modern and professional.
 """
-        }
-    ]
-
-    for chat in st.session_state.chat_history[-5:]:
-
-        messages.append(
-            {
-                "role": "user",
-                "content": chat["question"]
-            }
-        )
-
-        messages.append(
-            {
-                "role": "assistant",
-                "content": chat["answer"]
-            }
-        )
-
-    messages.append(
+        },
         {
             "role": "user",
             "content": question
         }
-    )
+    ]
 
     with st.chat_message("assistant"):
 
@@ -674,9 +750,7 @@ Be intelligent, conversational, professional and modern.
 
                 full_response += delta
 
-                placeholder.markdown(
-                    full_response + "▌"
-                )
+                placeholder.markdown(full_response + "▌")
 
         placeholder.markdown(full_response)
 
@@ -686,7 +760,7 @@ Be intelligent, conversational, professional and modern.
     })
 
 # ============================================================
-# RAG AI RESPONSE
+# RAG RESPONSE
 # ============================================================
 
 if (
@@ -709,14 +783,16 @@ if (
     )
 
     prompt = f"""
-You are an advanced industrial AI analyst assistant.
+You are an advanced industrial AI analyst.
 
 Rules:
 - Be conversational
-- Give insights
-- Explain clearly
+- Give accurate insights
+- Mention anomalies
+- Mention trends
 - Give recommendations
 - Answer ONLY from context
+- Do NOT generate fake image links
 
 CONTEXT:
 {context}
@@ -756,9 +832,7 @@ QUESTION:
 
                 full_response += delta
 
-                placeholder.markdown(
-                    full_response + "▌"
-                )
+                placeholder.markdown(full_response + "▌")
 
         placeholder.markdown(full_response)
 
