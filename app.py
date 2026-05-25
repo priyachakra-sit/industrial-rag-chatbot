@@ -16,7 +16,7 @@ st.set_page_config(
     page_title="Industrial AI Assistant",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # =========================================
@@ -31,25 +31,55 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* MAIN BACKGROUND */
+/* =========================================
+MAIN APP
+========================================= */
 .stApp {
-    background-color: #F4F7FB;
+    background: #F4F7FB;
 }
 
-/* REMOVE STREAMLIT BRANDING */
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-header {visibility:hidden;}
+/* =========================================
+REMOVE STREAMLIT DEFAULT HEADER
+========================================= */
+header {
+    visibility: hidden;
+    height: 0px;
+}
 
-/* MAIN CONTAINER */
+[data-testid="stHeader"] {
+    display: none;
+}
+
+[data-testid="stToolbar"] {
+    display: none;
+}
+
+[data-testid="stDecoration"] {
+    display: none;
+}
+
+footer {
+    visibility: hidden;
+}
+
+#MainMenu {
+    visibility: hidden;
+}
+
+/* =========================================
+REMOVE TOP GAP
+========================================= */
 .block-container {
-    padding-top: 1rem;
+    padding-top: 0rem !important;
     padding-left: 2rem;
     padding-right: 2rem;
+    padding-bottom: 2rem;
     max-width: 1400px;
 }
 
-/* SIDEBAR */
+/* =========================================
+SIDEBAR
+========================================= */
 [data-testid="stSidebar"] {
     background: white;
     border-right: 1px solid #E5E7EB;
@@ -59,7 +89,36 @@ header {visibility:hidden;}
     color: #111827 !important;
 }
 
-/* SIDEBAR BUTTON */
+/* =========================================
+SIDEBAR TITLE
+========================================= */
+.sidebar-logo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 30px;
+}
+
+/* =========================================
+MENU ITEMS
+========================================= */
+.menu-item {
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #374151;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background: #F3F4F6;
+}
+
+/* =========================================
+BUTTONS
+========================================= */
 .stButton button {
     width: 100%;
     border-radius: 12px;
@@ -76,35 +135,42 @@ header {visibility:hidden;}
     box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
 }
 
-/* HERO SECTION */
+/* =========================================
+HERO SECTION
+========================================= */
 .hero-title {
     text-align: center;
     font-size: 3rem;
     font-weight: 700;
     color: #374151;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-.hero-sub {
+.hero-subtitle {
     text-align: center;
     color: #6B7280;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     font-size: 1.1rem;
 }
 
-/* MODE BOX */
+/* =========================================
+MODE BOX
+========================================= */
 .mode-box {
     background: white;
-    padding: 20px;
+    padding: 22px;
     border-radius: 18px;
     border: 1px solid #E5E7EB;
     margin-bottom: 25px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.04);
 }
 
-/* KPI CARDS */
+/* =========================================
+KPI CARDS
+========================================= */
 .kpi-card {
     background: white;
-    padding: 22px;
+    padding: 24px;
     border-radius: 18px;
     border: 1px solid #E5E7EB;
     box-shadow: 0px 2px 10px rgba(0,0,0,0.04);
@@ -112,39 +178,46 @@ header {visibility:hidden;}
 }
 
 .kpi-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+    box-shadow: 0px 10px 28px rgba(0,0,0,0.08);
 }
 
 .kpi-title {
     color: #6B7280;
     font-size: 15px;
     font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .kpi-value {
+    color: #14B8A6;
     font-size: 32px;
     font-weight: 700;
-    color: #14B8A6;
 }
 
-/* CHAT MESSAGE */
+/* =========================================
+CHAT MESSAGE
+========================================= */
 [data-testid="stChatMessage"] {
     background: white;
     border-radius: 16px;
-    padding: 16px;
     border: 1px solid #E5E7EB;
+    padding: 16px;
     margin-bottom: 15px;
 }
 
-/* CHAT INPUT */
+/* =========================================
+CHAT INPUT
+========================================= */
 .stChatInput > div {
     background: white;
     border-radius: 16px;
     border: 1px solid #D1D5DB;
 }
 
-/* FILE UPLOADER */
+/* =========================================
+FILE UPLOADER
+========================================= */
 [data-testid="stFileUploader"] {
     background: white;
     border-radius: 18px;
@@ -152,22 +225,27 @@ header {visibility:hidden;}
     padding: 25px;
 }
 
-/* RADIO BUTTONS */
+/* =========================================
+RADIO BUTTONS
+========================================= */
 .stRadio > div {
     background: #F9FAFB;
     padding: 15px;
     border-radius: 14px;
 }
 
-/* METRICS */
-[data-testid="metric-container"] {
-    background: white;
+/* =========================================
+DATAFRAME
+========================================= */
+[data-testid="stDataFrame"] {
     border-radius: 18px;
-    padding: 15px;
+    overflow: hidden;
     border: 1px solid #E5E7EB;
 }
 
-/* SCROLLBAR */
+/* =========================================
+SCROLLBAR
+========================================= */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -206,17 +284,19 @@ if "chat_mode" not in st.session_state:
 # =========================================
 with st.sidebar:
 
-    st.markdown("## ⚡ INDUSTRIAL AI")
+    st.markdown("""
+    <div class="sidebar-logo">
+    ⚡ INDUSTRIAL AI
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown("")
+    st.markdown('<div class="menu-item">🏠 Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="menu-item">📂 Files</div>', unsafe_allow_html=True)
+    st.markdown('<div class="menu-item">🔔 Notifications</div>', unsafe_allow_html=True)
+    st.markdown('<div class="menu-item">📊 Data Analysis</div>', unsafe_allow_html=True)
+    st.markdown('<div class="menu-item">⚙️ Settings</div>', unsafe_allow_html=True)
 
-    st.markdown("### 🏠 Dashboard")
-    st.markdown("### 📂 Files")
-    st.markdown("### 🔔 Notifications")
-    st.markdown("### 📊 Data Analysis")
-    st.markdown("### ⚙️ Settings")
-
-    st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     if st.button("➕ New Analysis"):
 
@@ -238,7 +318,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div class="hero-sub">
+<div class="hero-subtitle">
 AI-powered Industrial Analytics & RAG Platform
 </div>
 """, unsafe_allow_html=True)
@@ -416,6 +496,8 @@ if (
             else:
                 continue
 
+            st.markdown(f"### 📄 {uploaded_file.name}")
+
             st.dataframe(df.head())
 
             numeric_cols = df.select_dtypes(include='number').columns
@@ -423,6 +505,26 @@ if (
             if len(numeric_cols) > 0:
 
                 target_col = numeric_cols[0]
+
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
+                    st.metric(
+                        "Average",
+                        round(df[target_col].mean(), 2)
+                    )
+
+                with col2:
+                    st.metric(
+                        "Maximum",
+                        round(df[target_col].max(), 2)
+                    )
+
+                with col3:
+                    st.metric(
+                        "Minimum",
+                        round(df[target_col].min(), 2)
+                    )
 
                 fig = px.line(
                     df,
@@ -440,7 +542,7 @@ if (
         st.error(f"Analytics unavailable: {e}")
 
 # =========================================
-# CHAT HISTORY
+# DISPLAY CHAT HISTORY
 # =========================================
 for chat in st.session_state.chat_history:
 
@@ -458,7 +560,7 @@ question = st.chat_input(
 )
 
 # =========================================
-# GENERAL CHAT
+# GENERAL AI CHAT
 # =========================================
 if (
     question
@@ -478,7 +580,7 @@ if (
             "content": """
 You are a modern AI assistant.
 
-Be conversational and intelligent.
+Be conversational, intelligent and helpful.
 """
         }
     ]
@@ -521,6 +623,7 @@ Be conversational and intelligent.
             if delta:
 
                 full_response += delta
+
                 placeholder.markdown(full_response + "▌")
 
         placeholder.markdown(full_response)
@@ -531,7 +634,7 @@ Be conversational and intelligent.
     })
 
 # =========================================
-# RAG CHAT
+# RAG AI CHAT
 # =========================================
 if (
     question
@@ -552,9 +655,14 @@ if (
     )
 
     prompt = f"""
-You are an industrial AI analyst.
+You are an advanced industrial AI analyst.
 
-Answer ONLY from context.
+Rules:
+- Answer ONLY from context
+- Be conversational
+- Give insights
+- Explain clearly
+- Suggest improvements
 
 CONTEXT:
 {context}
@@ -593,6 +701,7 @@ QUESTION:
             if delta:
 
                 full_response += delta
+
                 placeholder.markdown(full_response + "▌")
 
         placeholder.markdown(full_response)
