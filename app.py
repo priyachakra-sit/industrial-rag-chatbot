@@ -493,44 +493,106 @@ if (
 
     client = Groq(api_key=api_key)
 
-    with st.spinner("🤖 AI is thinking..."):
+    # -----------------------
+    # CONVERSATIONAL MEMORY
+    # -----------------------
+    messages = [
+        {
+            "role": "system",
+            "content": """
+You are a highly intelligent, friendly, and conversational AI assistant.
+
+Your personality is:
+- smooth
+- modern
+- engaging
+- professional
+- helpful
+
+You speak naturally like ChatGPT.
+
+You can:
+- answer general questions
+- explain AI concepts
+- help with coding
+- discuss industrial engineering
+- explain analytics
+- solve technical doubts
+- guide users professionally
+
+Rules:
+- Keep conversations natural
+- Avoid robotic replies
+- Be engaging and intelligent
+- Explain clearly
+- Use examples when useful
+- Maintain conversational flow
+- Talk like a modern AI assistant
+"""
+        }
+    ]
+
+    # ADD PREVIOUS CHAT HISTORY
+    for chat in st.session_state.chat_history[-5:]:
+
+        messages.append(
+            {
+                "role": "user",
+                "content": chat["question"]
+            }
+        )
+
+        messages.append(
+            {
+                "role": "assistant",
+                "content": chat["answer"]
+            }
+        )
+
+    # CURRENT QUESTION
+    messages.append(
+        {
+            "role": "user",
+            "content": question
+        }
+    )
+
+    # -----------------------
+    # STREAMING RESPONSE
+    # -----------------------
+    with st.chat_message("assistant", avatar="🤖"):
+
+        message_placeholder = st.empty()
+
+        full_response = ""
 
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "system",
-                    "content": """
-You are a professional AI assistant.
-
-You can answer:
-- AI questions
-- engineering concepts
-- industrial topics
-- coding questions
-- general knowledge
-
-Give clear and professional responses.
-"""
-                },
-                {
-                    "role": "user",
-                    "content": question
-                }
-            ],
-            temperature=0.5,
-            max_tokens=1200
+            messages=messages,
+            temperature=0.7,
+            max_tokens=1500,
+            stream=True
         )
 
-    answer = response.choices[0].message.content
+        for chunk in response:
 
-    with st.chat_message("assistant", avatar="🤖"):
-        st.write(answer)
+            delta = chunk.choices[0].delta.content
 
+            if delta:
+
+                full_response += delta
+
+                message_placeholder.markdown(
+                    full_response + "▌"
+                )
+
+        message_placeholder.markdown(full_response)
+
+    # SAVE CHAT HISTORY
     st.session_state.chat_history.append(
         {
             "question": question,
-            "answer": answer
+            "answer": full_response
         }
     )
 
@@ -559,13 +621,18 @@ if (
     prompt = f"""
 You are an advanced industrial AI analyst assistant.
 
-Your job is to deeply analyze uploaded reports.
+Your personality is:
+- conversational
+- intelligent
+- professional
+- smooth
 
 Rules:
 - Give detailed explanations
 - Mention trends
 - Give recommendations
-- Use professional formatting
+- Be natural and engaging
+- Explain clearly
 - Answer ONLY from context
 
 CONTEXT:
@@ -579,7 +646,11 @@ QUESTION:
 
     client = Groq(api_key=api_key)
 
-    with st.spinner("🤖 AI is analyzing reports..."):
+    with st.chat_message("assistant", avatar="🤖"):
+
+        message_placeholder = st.empty()
+
+        full_response = ""
 
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
@@ -589,19 +660,28 @@ QUESTION:
                     "content": prompt
                 }
             ],
-            temperature=0.2,
-            max_tokens=1800
+            temperature=0.3,
+            max_tokens=1800,
+            stream=True
         )
 
-    answer = response.choices[0].message.content
+        for chunk in response:
 
-    with st.chat_message("assistant", avatar="🤖"):
-        st.write(answer)
+            delta = chunk.choices[0].delta.content
+
+            if delta:
+
+                full_response += delta
+
+                message_placeholder.markdown(
+                    full_response + "▌"
+                )
+
+        message_placeholder.markdown(full_response)
 
     st.session_state.chat_history.append(
         {
             "question": question,
-            "answer": answer
+            "answer": full_response
         }
     )
-    
