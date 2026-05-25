@@ -1,10 +1,9 @@
 # ============================================================
-# FUTURISTIC GLASSMORPHISM INDUSTRIAL AI ASSISTANT
-# COMPLETE PREMIUM CHATGPT STYLE UI
+# INDUSTRIAL AI WORKSPACE
+# PREMIUM LIGHT MODERN AI UI
 # ============================================================
 
 import pandas as pd
-import plotly.express as px
 from langchain_core.documents import Document
 import streamlit as st
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -19,52 +18,39 @@ import tempfile
 # ============================================================
 
 st.set_page_config(
-    page_title="Industrial AI Assistant",
+    page_title="Industrial AI Workspace",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ============================================================
-# CUSTOM CSS
+# PREMIUM LIGHT UI CSS
 # ============================================================
 
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* ============================================================
-BACKGROUND
-============================================================ */
+/* =========================================================
+APP
+========================================================= */
 
 .stApp {
-
-    background:
-        radial-gradient(circle at top left, rgba(168,85,247,0.18), transparent 25%),
-        radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 25%),
-        linear-gradient(180deg, #050816 0%, #0B1023 100%);
-
-    color: white;
+    background: #F6F8FC;
+    color: #111827;
 }
 
-/* ============================================================
-REMOVE STREAMLIT DEFAULT
-============================================================ */
+/* =========================================================
+REMOVE STREAMLIT
+========================================================= */
 
-header {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
-#MainMenu {
+header, footer, #MainMenu {
     visibility: hidden;
 }
 
@@ -72,456 +58,295 @@ footer {
     display: none;
 }
 
-[data-testid="stToolbar"] {
-    display: none;
-}
-
-/* ============================================================
-MAIN CONTAINER
-============================================================ */
+/* =========================================================
+MAIN LAYOUT
+========================================================= */
 
 .block-container {
 
-    padding-top: 1rem !important;
+    padding-top: 1.5rem;
 
     padding-left: 2rem;
 
     padding-right: 2rem;
 
-    max-width: 1500px;
+    padding-bottom: 120px;
+
+    max-width: 1450px;
 }
 
-/* ============================================================
+/* =========================================================
 SIDEBAR
-============================================================ */
+========================================================= */
 
 [data-testid="stSidebar"] {
 
-    background:
-        rgba(15,23,42,0.72);
+    background: white;
 
-    backdrop-filter:
-        blur(20px);
-
-    border-right:
-        1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid rgba(0,0,0,0.06);
 }
 
 [data-testid="stSidebar"] * {
-    color: white !important;
+    color: #111827 !important;
 }
 
-/* ============================================================
-SIDEBAR LOGO
-============================================================ */
+/* =========================================================
+LOGO
+========================================================= */
 
 .sidebar-logo {
 
-    font-size: 28px;
+    font-size: 24px;
 
-    font-weight: 800;
+    font-weight: 700;
+
+    color: #4F46E5;
 
     margin-bottom: 40px;
-
-    background:
-        linear-gradient(90deg,#A855F7,#38BDF8);
-
-    -webkit-background-clip: text;
-
-    -webkit-text-fill-color: transparent;
 }
 
-/* ============================================================
+/* =========================================================
 MENU ITEMS
-============================================================ */
+========================================================= */
 
 .menu-item {
 
-    padding: 14px 18px;
+    padding: 14px 16px;
 
     border-radius: 14px;
 
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 
     font-size: 15px;
 
     font-weight: 500;
 
-    transition: 0.3s;
-
     cursor: pointer;
 
-    background:
-        rgba(255,255,255,0.03);
-
-    border:
-        1px solid rgba(255,255,255,0.04);
+    transition: 0.2s;
 }
 
 .menu-item:hover {
 
-    transform:
-        translateX(5px);
+    background: #EEF2FF;
 
-    background:
-        rgba(168,85,247,0.15);
+    color: #4F46E5;
 
-    border:
-        1px solid rgba(168,85,247,0.25);
+    transform: translateX(3px);
 }
 
-/* ============================================================
-HERO SECTION
-============================================================ */
-
-.hero-title {
-
-    text-align: center;
-
-    font-size: 4rem;
-
-    font-weight: 800;
-
-    margin-top: 10px;
-
-    background:
-        linear-gradient(90deg,#A855F7,#38BDF8);
-
-    -webkit-background-clip: text;
-
-    -webkit-text-fill-color: transparent;
-}
-
-.hero-subtitle {
-
-    text-align: center;
-
-    color: #CBD5E1;
-
-    margin-bottom: 40px;
-
-    font-size: 1.1rem;
-}
-
-/* ============================================================
-SEARCH BAR
-============================================================ */
-
-.stTextInput > div > div > input {
-
-    background:
-        rgba(255,255,255,0.05);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        20px;
-
-    height:
-        55px;
-
-    color:
-        white !important;
-
-    backdrop-filter:
-        blur(12px);
-
-    box-shadow:
-        0px 10px 30px rgba(0,0,0,0.25);
-}
-
-/* ============================================================
-MODE BOX
-============================================================ */
-
-.mode-box {
-
-    background:
-        rgba(255,255,255,0.04);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        22px;
-
-    padding:
-        20px;
-
-    backdrop-filter:
-        blur(18px);
-
-    margin-bottom:
-        30px;
-
-    box-shadow:
-        0px 10px 30px rgba(0,0,0,0.2);
-}
-
-/* ============================================================
-KPI CARDS
-============================================================ */
-
-.kpi-card {
-
-    background:
-        rgba(255,255,255,0.05);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        24px;
-
-    padding:
-        24px;
-
-    backdrop-filter:
-        blur(18px);
-
-    min-height:
-        160px;
-
-    transition:
-        0.35s;
-
-    box-shadow:
-        0px 10px 30px rgba(0,0,0,0.25);
-}
-
-.kpi-card:hover {
-
-    transform:
-        translateY(-6px);
-
-    border:
-        1px solid rgba(168,85,247,0.35);
-
-    box-shadow:
-        0px 20px 40px rgba(168,85,247,0.18);
-}
-
-.kpi-title {
-
-    color:
-        #CBD5E1;
-
-    font-size:
-        13px;
-
-    font-weight:
-        700;
-
-    margin-bottom:
-        14px;
-}
-
-.kpi-value {
-
-    font-size:
-        2.2rem;
-
-    font-weight:
-        800;
-
-    color:
-        white;
-}
-
-/* ============================================================
-CHAT MESSAGES
-============================================================ */
-
-[data-testid="stChatMessage"] {
-
-    background:
-        rgba(255,255,255,0.05);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        22px;
-
-    padding:
-        18px;
-
-    margin-bottom:
-        16px;
-
-    backdrop-filter:
-        blur(18px);
-
-    box-shadow:
-        0px 8px 25px rgba(0,0,0,0.22);
-
-    animation:
-        fadeIn 0.3s ease;
-}
-
-/* ============================================================
-CHAT INPUT
-============================================================ */
-
-.stChatInput {
-
-    position:
-        sticky;
-
-    bottom:
-        8px;
-
-    padding-top:
-        12px;
-}
-
-.stChatInput > div {
-
-    background:
-        rgba(15,23,42,0.85);
-
-    border:
-        1px solid rgba(255,255,255,0.08);
-
-    border-radius:
-        24px;
-
-    backdrop-filter:
-        blur(18px);
-
-    padding:
-        8px;
-
-    box-shadow:
-        0px 12px 30px rgba(0,0,0,0.28);
-}
-
-.stChatInput input {
-
-    background:
-        transparent !important;
-
-    color:
-        white !important;
-}
-
-/* ============================================================
+/* =========================================================
 BUTTONS
-============================================================ */
+========================================================= */
 
 .stButton button {
 
-    width:
-        100%;
+    width: 100%;
 
-    border-radius:
-        18px;
+    height: 46px;
 
-    border:
-        none;
+    border-radius: 14px;
 
-    background:
-        linear-gradient(135deg,#7C3AED,#4F46E5);
+    border: none;
 
-    color:
-        white !important;
+    background: #4F46E5;
 
-    font-weight:
-        600;
+    color: white !important;
 
-    height:
-        50px;
+    font-weight: 600;
 
-    transition:
-        0.3s;
-
-    box-shadow:
-        0px 10px 25px rgba(124,58,237,0.28);
+    box-shadow: 0 4px 14px rgba(79,70,229,0.18);
 }
 
 .stButton button:hover {
 
-    transform:
-        translateY(-3px);
-
-    box-shadow:
-        0px 16px 35px rgba(124,58,237,0.4);
+    background: #4338CA;
 }
 
-/* ============================================================
+/* =========================================================
+WELCOME
+========================================================= */
+
+.welcome-title {
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-top: 20px;
+
+    margin-bottom: 10px;
+}
+
+.welcome-subtitle {
+
+    color: #6B7280;
+
+    font-size: 18px;
+
+    margin-bottom: 35px;
+}
+
+/* =========================================================
+MODE BOX
+========================================================= */
+
+.mode-box {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 12px 18px;
+
+    border: 1px solid rgba(0,0,0,0.06);
+
+    margin-bottom: 25px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+/* =========================================================
+RADIO BUTTONS
+========================================================= */
+
+.stRadio > div {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* =========================================================
+QUICK ACTIONS
+========================================================= */
+
+.quick-action {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    border: 1px solid rgba(0,0,0,0.05);
+
+    text-align: center;
+
+    font-weight: 600;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+/* =========================================================
+CHAT MESSAGES
+========================================================= */
+
+[data-testid="stChatMessage"] {
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 18px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(0,0,0,0.05);
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+
+    max-width: 900px;
+
+    margin-left: auto;
+
+    margin-right: auto;
+}
+
+/* =========================================================
+CHAT INPUT
+========================================================= */
+
+.stChatInput {
+
+    position: fixed;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 70%;
+
+    z-index: 999;
+}
+
+.stChatInput > div {
+
+    background: white;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(0,0,0,0.08);
+
+    padding: 10px 14px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.stChatInput input {
+
+    background: transparent !important;
+
+    color: #111827 !important;
+
+    font-size: 15px;
+}
+
+/* =========================================================
 FILE UPLOADER
-============================================================ */
+========================================================= */
 
 [data-testid="stFileUploader"] {
 
-    background:
-        rgba(255,255,255,0.05);
+    background: white;
 
-    border:
-        2px dashed rgba(168,85,247,0.45);
+    border: 2px dashed rgba(79,70,229,0.2);
 
-    border-radius:
-        22px;
+    border-radius: 20px;
 
-    padding:
-        30px;
+    padding: 30px;
 
-    backdrop-filter:
-        blur(18px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
-/* ============================================================
-RADIO BUTTON
-============================================================ */
+/* =========================================================
+SUCCESS MESSAGE
+========================================================= */
 
-.stRadio > div {
+.stSuccess {
 
-    background:
-        rgba(255,255,255,0.04);
+    background: #ECFDF5 !important;
 
-    border:
-        1px solid rgba(255,255,255,0.06);
+    color: #065F46 !important;
 
-    padding:
-        15px;
-
-    border-radius:
-        18px;
+    border-radius: 12px;
 }
 
-/* ============================================================
-ANIMATION
-============================================================ */
-
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-}
-
-/* ============================================================
+/* =========================================================
 SCROLLBAR
-============================================================ */
+========================================================= */
 
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-
-    background:
-        linear-gradient(180deg,#7C3AED,#38BDF8);
-
-    border-radius:
-        10px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 10px;
 }
 
 </style>
@@ -539,9 +364,6 @@ if "vectorstore" not in st.session_state:
 
 if "files_processed" not in st.session_state:
     st.session_state.files_processed = False
-
-if "report_count" not in st.session_state:
-    st.session_state.report_count = 0
 
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
@@ -561,55 +383,56 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="menu-item">🏠 Dashboard</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="menu-item">💬 New Chat</div>',
+        unsafe_allow_html=True
+    )
 
-    st.markdown('<div class="menu-item">📂 Reports</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="menu-item">📄 Recent Reports</div>',
+        unsafe_allow_html=True
+    )
 
-    st.markdown('<div class="menu-item">🤖 AI Analytics</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="menu-item">🧠 AI Workspace</div>',
+        unsafe_allow_html=True
+    )
 
-    st.markdown('<div class="menu-item">📊 Insights</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="menu-item">⚙️ Settings</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="menu-item">📚 Documents</div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.button("➕ New Analysis"):
+    if st.button("➕ Start New Chat"):
 
         st.session_state.chat_history = []
+
         st.session_state.vectorstore = None
+
         st.session_state.files_processed = False
-        st.session_state.report_count = 0
+
         st.session_state.uploaded_files = []
 
         st.rerun()
 
 # ============================================================
-# HERO SECTION
+# WELCOME SECTION
 # ============================================================
 
 st.markdown("""
-<div class="hero-title">
-⚡ Industrial AI Assistant
+<div class="welcome-title">
+Industrial AI Workspace
+</div>
+
+<div class="welcome-subtitle">
+Analyze reports, detect anomalies, generate insights and interact with your AI assistant.
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="hero-subtitle">
-AI-powered Industrial Analytics & RAG Platform
-</div>
-""", unsafe_allow_html=True)
-
 # ============================================================
-# SEARCH BAR
-# ============================================================
-
-st.text_input(
-    "",
-    placeholder="Search reports, analytics, AI insights..."
-)
-
-# ============================================================
-# MODE SECTION
+# MODE SELECTION
 # ============================================================
 
 st.markdown('<div class="mode-box">', unsafe_allow_html=True)
@@ -628,43 +451,42 @@ st.session_state.chat_mode = chat_mode
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================
-# KPI CARDS
+# QUICK ACTIONS
 # ============================================================
-
-report_count = st.session_state.report_count
-query_count = len(st.session_state.chat_history)
-
-efficiency = 100 if query_count == 0 else min(100, 95 + query_count)
-
-status = "ACTIVE" if st.session_state.files_processed else "WAITING"
 
 col1, col2, col3, col4 = st.columns(4)
 
-cards = [
-    ("📄 REPORTS", report_count),
-    ("🤖 AI QUERIES", query_count),
-    ("⚡ EFFICIENCY", f"{efficiency}%"),
-    ("🛰 STATUS", status)
-]
+with col1:
+    st.markdown(
+        '<div class="quick-action">⚡ Analyze Reports</div>',
+        unsafe_allow_html=True
+    )
 
-for col, card in zip([col1,col2,col3,col4], cards):
+with col2:
+    st.markdown(
+        '<div class="quick-action">📊 Generate Insights</div>',
+        unsafe_allow_html=True
+    )
 
-    with col:
+with col3:
+    st.markdown(
+        '<div class="quick-action">🧠 Summarize Data</div>',
+        unsafe_allow_html=True
+    )
 
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-title">{card[0]}</div>
-            <div class="kpi-value">{card[1]}</div>
-        </div>
-        """, unsafe_allow_html=True)
+with col4:
+    st.markdown(
+        '<div class="quick-action">📈 Detect Anomalies</div>',
+        unsafe_allow_html=True
+    )
 
 # ============================================================
-# FILE UPLOADER
+# FILE UPLOAD
 # ============================================================
 
 if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
-    st.markdown("## 📂 Upload Industrial Reports")
+    st.markdown("### 📂 Upload Industrial Reports")
 
     uploaded_files = st.file_uploader(
         "Upload Reports",
@@ -677,8 +499,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
         st.session_state.uploaded_files = uploaded_files
 
         try:
-
-            st.session_state.report_count = len(uploaded_files)
 
             all_documents = []
 
@@ -778,7 +598,7 @@ for chat in st.session_state.chat_history:
 # ============================================================
 
 question = st.chat_input(
-    "Ask your Industrial AI question..."
+    "Ask anything about industrial reports, analytics or insights..."
 )
 
 # ============================================================
@@ -802,9 +622,9 @@ if (
         {
             "role": "system",
             "content": """
-You are a futuristic industrial AI assistant.
+You are an advanced industrial AI assistant.
 
-Be modern, intelligent, conversational and professional.
+Be intelligent, conversational, professional and modern.
 """
         }
     ]
