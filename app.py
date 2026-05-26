@@ -1,7 +1,7 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# EMERALD ECO SYSTEM THEME
-# FULL UPDATED VERSION
+# LIGHT EMERALD GLASS THEME
+# FULL UPDATED PREMIUM VERSION
 # ============================================================
 
 import pandas as pd
@@ -27,7 +27,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# EMERALD ECO SYSTEM CSS
+# LIGHT EMERALD GLASS CSS
 # ============================================================
 
 st.markdown("""
@@ -46,8 +46,11 @@ BACKGROUND
 .stApp {
 
     background:
-    linear-gradient(rgba(3,18,12,0.82), rgba(2,10,7,0.92)),
-    url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1974&auto=format&fit=crop");
+    linear-gradient(
+        rgba(240,255,248,0.82),
+        rgba(228,248,238,0.88)
+    ),
+    url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1974&auto=format&fit=crop");
 
     background-size: cover;
 
@@ -55,7 +58,7 @@ BACKGROUND
 
     background-attachment: fixed;
 
-    color: #EFFFF5;
+    color: #103B2C;
 }
 
 /* =========================================================
@@ -93,19 +96,19 @@ MAIN GLASS PANEL
 
 .main > div {
 
-    background: rgba(8,22,15,0.38);
+    background: rgba(255,255,255,0.34);
 
     backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(120,255,190,0.10);
+    border: 1px solid rgba(255,255,255,0.45);
 
     border-radius: 28px;
 
     padding: 25px;
 
     box-shadow:
-    0 8px 40px rgba(0,0,0,0.45),
-    inset 0 1px 1px rgba(255,255,255,0.04);
+    0 8px 40px rgba(16,59,44,0.10),
+    inset 0 1px 1px rgba(255,255,255,0.55);
 }
 
 /* =========================================================
@@ -114,15 +117,15 @@ SIDEBAR
 
 [data-testid="stSidebar"] {
 
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.30);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(18px);
 
-    border-right: 1px solid rgba(120,255,190,0.08);
+    border-right: 1px solid rgba(255,255,255,0.45);
 }
 
 [data-testid="stSidebar"] * {
-    color: #EFFFF5 !important;
+    color: #103B2C !important;
 }
 
 /* =========================================================
@@ -135,7 +138,7 @@ SIDEBAR LOGO
 
     font-weight: 800;
 
-    color: #D7FFE8;
+    color: #0F5132;
 
     margin-top: 20px;
 
@@ -143,7 +146,7 @@ SIDEBAR LOGO
 
     letter-spacing: -1px;
 
-    text-shadow: 0 0 18px rgba(0,255,140,0.6);
+    text-shadow: 0 0 12px rgba(0,180,110,0.18);
 }
 
 /* =========================================================
@@ -158,34 +161,33 @@ BUTTONS
 
     border-radius: 22px;
 
-    border: 1px solid rgba(120,255,190,0.16);
+    border: 1px solid rgba(0,180,110,0.18);
 
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.34);
 
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
 
-    color: #EFFFF5 !important;
+    color: #103B2C !important;
 
     font-weight: 700;
 
     font-size: 17px;
 
     box-shadow:
-    0 0 20px rgba(0,255,140,0.15),
-    inset 0 0 10px rgba(255,255,255,0.04);
+    0 0 15px rgba(0,180,110,0.08),
+    inset 0 0 8px rgba(255,255,255,0.35);
 
     transition: 0.25s;
 }
 
 .stButton button:hover {
 
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 
-    border: 1px solid rgba(120,255,190,0.70);
+    border: 1px solid rgba(0,180,110,0.45);
 
     box-shadow:
-    0 0 30px rgba(0,255,140,0.35),
-    inset 0 0 18px rgba(255,255,255,0.06);
+    0 0 20px rgba(0,180,110,0.18);
 }
 
 /* =========================================================
@@ -203,9 +205,9 @@ RADIO BUTTONS
 
 .stRadio label {
 
-    background: rgba(255,255,255,0.06) !important;
+    background: rgba(255,255,255,0.38) !important;
 
-    border: 1px solid rgba(120,255,190,0.16);
+    border: 1px solid rgba(0,180,110,0.14);
 
     padding: 16px 24px;
 
@@ -213,11 +215,10 @@ RADIO BUTTONS
 
     backdrop-filter: blur(12px);
 
-    color: #D7FFE8 !important;
+    color: #103B2C !important;
 
     box-shadow:
-    0 0 18px rgba(0,255,140,0.14),
-    inset 0 0 12px rgba(255,255,255,0.04);
+    0 0 12px rgba(0,180,110,0.06);
 
     transition: 0.25s;
 }
@@ -226,10 +227,10 @@ RADIO BUTTONS
 
     transform: translateY(-2px);
 
-    border: 1px solid rgba(120,255,190,0.8);
+    border: 1px solid rgba(0,180,110,0.35);
 
     box-shadow:
-    0 0 28px rgba(0,255,140,0.35);
+    0 0 18px rgba(0,180,110,0.12);
 }
 
 /* =========================================================
@@ -238,9 +239,9 @@ CHAT MESSAGE
 
 [data-testid="stChatMessage"] {
 
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.36);
 
-    border: 1px solid rgba(120,255,190,0.08);
+    border: 1px solid rgba(255,255,255,0.42);
 
     backdrop-filter: blur(14px);
 
@@ -250,10 +251,10 @@ CHAT MESSAGE
 
     margin-bottom: 18px;
 
-    color: #EFFFF5;
+    color: #103B2C;
 
     box-shadow:
-    0 0 20px rgba(0,255,140,0.08);
+    0 0 18px rgba(0,180,110,0.06);
 
     max-width: 980px;
 
@@ -285,26 +286,25 @@ CHAT INPUT
 
 .stChatInput > div {
 
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.42);
 
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(16px);
 
-    border: 1px solid rgba(120,255,190,0.14);
+    border: 1px solid rgba(255,255,255,0.48);
 
     border-radius: 32px;
 
     padding: 14px 18px;
 
     box-shadow:
-    0 0 25px rgba(0,255,140,0.18),
-    inset 0 0 10px rgba(255,255,255,0.04);
+    0 0 18px rgba(0,180,110,0.10);
 }
 
 .stChatInput input {
 
     background: transparent !important;
 
-    color: #EFFFF5 !important;
+    color: #103B2C !important;
 
     font-size: 17px !important;
 
@@ -317,9 +317,9 @@ UPLOAD BOX
 
 [data-testid="stFileUploader"] {
 
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.30);
 
-    border: 1px dashed rgba(120,255,190,0.30);
+    border: 1px dashed rgba(0,180,110,0.28);
 
     border-radius: 26px;
 
@@ -327,7 +327,7 @@ UPLOAD BOX
 
     padding: 40px;
 
-    color: #EFFFF5 !important;
+    color: #103B2C !important;
 }
 
 /* =========================================================
@@ -340,7 +340,7 @@ DATAFRAME
 
     overflow: hidden;
 
-    border: 1px solid rgba(120,255,190,0.08);
+    border: 1px solid rgba(0,180,110,0.08);
 }
 
 /* =========================================================
@@ -349,7 +349,7 @@ TEXT COLORS
 
 h1, h2, h3, h4, h5, h6, p, span, label {
 
-    color: #EFFFF5 !important;
+    color: #103B2C !important;
 }
 
 /* =========================================================
@@ -362,7 +362,7 @@ SCROLLBAR
 
 ::-webkit-scrollbar-thumb {
 
-    background: rgba(0,255,140,0.45);
+    background: rgba(0,180,110,0.25);
 
     border-radius: 10px;
 }
