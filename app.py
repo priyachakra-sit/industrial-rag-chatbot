@@ -1,6 +1,7 @@
 # ============================================================
-# OBSIDIAN GLASS AI WORKSPACE
-# MONOCHROME PURPLE THEME
+# INDUSTRIAL AI WORKSPACE
+# EMERALD ECO SYSTEM THEME
+# FULL UPDATED VERSION
 # ============================================================
 
 import pandas as pd
@@ -26,7 +27,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# GLASSMORPHISM CSS
+# EMERALD ECO SYSTEM CSS
 # ============================================================
 
 st.markdown("""
@@ -45,8 +46,8 @@ BACKGROUND
 .stApp {
 
     background:
-    linear-gradient(rgba(8,8,18,0.82), rgba(8,8,18,0.90)),
-    url("https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1974&auto=format&fit=crop");
+    linear-gradient(rgba(3,18,12,0.82), rgba(2,10,7,0.92)),
+    url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1974&auto=format&fit=crop");
 
     background-size: cover;
 
@@ -54,7 +55,7 @@ BACKGROUND
 
     background-attachment: fixed;
 
-    color: #F5EFFF;
+    color: #EFFFF5;
 }
 
 /* =========================================================
@@ -92,11 +93,11 @@ MAIN GLASS PANEL
 
 .main > div {
 
-    background: rgba(15,15,25,0.35);
+    background: rgba(8,22,15,0.38);
 
     backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid rgba(120,255,190,0.10);
 
     border-radius: 28px;
 
@@ -104,7 +105,7 @@ MAIN GLASS PANEL
 
     box-shadow:
     0 8px 40px rgba(0,0,0,0.45),
-    inset 0 1px 1px rgba(255,255,255,0.08);
+    inset 0 1px 1px rgba(255,255,255,0.04);
 }
 
 /* =========================================================
@@ -113,15 +114,15 @@ SIDEBAR
 
 [data-testid="stSidebar"] {
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05);
 
     backdrop-filter: blur(20px);
 
-    border-right: 1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid rgba(120,255,190,0.08);
 }
 
 [data-testid="stSidebar"] * {
-    color: #F5EFFF !important;
+    color: #EFFFF5 !important;
 }
 
 /* =========================================================
@@ -134,7 +135,7 @@ SIDEBAR LOGO
 
     font-weight: 800;
 
-    color: #F8E9FF;
+    color: #D7FFE8;
 
     margin-top: 20px;
 
@@ -142,7 +143,7 @@ SIDEBAR LOGO
 
     letter-spacing: -1px;
 
-    text-shadow: 0 0 15px rgba(200,120,255,0.6);
+    text-shadow: 0 0 18px rgba(0,255,140,0.6);
 }
 
 /* =========================================================
@@ -157,21 +158,21 @@ BUTTONS
 
     border-radius: 22px;
 
-    border: 1px solid rgba(255,255,255,0.16);
+    border: 1px solid rgba(120,255,190,0.16);
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
 
     backdrop-filter: blur(12px);
 
-    color: #F5EFFF !important;
+    color: #EFFFF5 !important;
 
     font-weight: 700;
 
     font-size: 17px;
 
     box-shadow:
-    0 0 18px rgba(180,100,255,0.20),
-    inset 0 0 10px rgba(255,255,255,0.06);
+    0 0 20px rgba(0,255,140,0.15),
+    inset 0 0 10px rgba(255,255,255,0.04);
 
     transition: 0.25s;
 }
@@ -180,11 +181,11 @@ BUTTONS
 
     transform: translateY(-3px);
 
-    border: 1px solid rgba(210,140,255,0.7);
+    border: 1px solid rgba(120,255,190,0.70);
 
     box-shadow:
-    0 0 25px rgba(190,120,255,0.55),
-    inset 0 0 18px rgba(255,255,255,0.12);
+    0 0 30px rgba(0,255,140,0.35),
+    inset 0 0 18px rgba(255,255,255,0.06);
 }
 
 /* =========================================================
@@ -202,9 +203,9 @@ RADIO BUTTONS
 
 .stRadio label {
 
-    background: rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.06) !important;
 
-    border: 1px solid rgba(255,255,255,0.14);
+    border: 1px solid rgba(120,255,190,0.16);
 
     padding: 16px 24px;
 
@@ -212,11 +213,11 @@ RADIO BUTTONS
 
     backdrop-filter: blur(12px);
 
-    color: #F8E9FF !important;
+    color: #D7FFE8 !important;
 
     box-shadow:
-    0 0 18px rgba(180,100,255,0.25),
-    inset 0 0 12px rgba(255,255,255,0.05);
+    0 0 18px rgba(0,255,140,0.14),
+    inset 0 0 12px rgba(255,255,255,0.04);
 
     transition: 0.25s;
 }
@@ -225,10 +226,10 @@ RADIO BUTTONS
 
     transform: translateY(-2px);
 
-    border: 1px solid rgba(220,160,255,0.75);
+    border: 1px solid rgba(120,255,190,0.8);
 
     box-shadow:
-    0 0 30px rgba(190,120,255,0.55);
+    0 0 28px rgba(0,255,140,0.35);
 }
 
 /* =========================================================
@@ -237,9 +238,9 @@ CHAT MESSAGE
 
 [data-testid="stChatMessage"] {
 
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.05);
 
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid rgba(120,255,190,0.08);
 
     backdrop-filter: blur(14px);
 
@@ -249,10 +250,10 @@ CHAT MESSAGE
 
     margin-bottom: 18px;
 
-    color: #F8EFFF;
+    color: #EFFFF5;
 
     box-shadow:
-    0 0 22px rgba(180,100,255,0.12);
+    0 0 20px rgba(0,255,140,0.08);
 
     max-width: 980px;
 
@@ -284,26 +285,26 @@ CHAT INPUT
 
 .stChatInput > div {
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.07);
 
     backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255,255,255,0.14);
+    border: 1px solid rgba(120,255,190,0.14);
 
     border-radius: 32px;
 
     padding: 14px 18px;
 
     box-shadow:
-    0 0 25px rgba(180,100,255,0.25),
-    inset 0 0 12px rgba(255,255,255,0.06);
+    0 0 25px rgba(0,255,140,0.18),
+    inset 0 0 10px rgba(255,255,255,0.04);
 }
 
 .stChatInput input {
 
     background: transparent !important;
 
-    color: #F8EFFF !important;
+    color: #EFFFF5 !important;
 
     font-size: 17px !important;
 
@@ -316,9 +317,9 @@ UPLOAD BOX
 
 [data-testid="stFileUploader"] {
 
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.05);
 
-    border: 1px dashed rgba(220,160,255,0.45);
+    border: 1px dashed rgba(120,255,190,0.30);
 
     border-radius: 26px;
 
@@ -326,7 +327,7 @@ UPLOAD BOX
 
     padding: 40px;
 
-    color: #F5EFFF !important;
+    color: #EFFFF5 !important;
 }
 
 /* =========================================================
@@ -339,7 +340,7 @@ DATAFRAME
 
     overflow: hidden;
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(120,255,190,0.08);
 }
 
 /* =========================================================
@@ -348,7 +349,7 @@ TEXT COLORS
 
 h1, h2, h3, h4, h5, h6, p, span, label {
 
-    color: #F8EFFF !important;
+    color: #EFFFF5 !important;
 }
 
 /* =========================================================
@@ -361,7 +362,7 @@ SCROLLBAR
 
 ::-webkit-scrollbar-thumb {
 
-    background: rgba(190,120,255,0.5);
+    background: rgba(0,255,140,0.45);
 
     border-radius: 10px;
 }
@@ -487,7 +488,146 @@ with col4:
         )
 
 # ============================================================
-# CHAT DISPLAY
+# FILE UPLOAD
+# ============================================================
+
+if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
+
+    st.markdown("## 📂 Upload Industrial Reports")
+
+    uploaded_files = st.file_uploader(
+        "Upload Reports",
+        type=["pdf", "xlsx", "csv"],
+        accept_multiple_files=True
+    )
+
+    if uploaded_files:
+
+        st.session_state.uploaded_files = uploaded_files
+
+        try:
+
+            all_documents = []
+
+            for uploaded_file in uploaded_files:
+
+                with tempfile.NamedTemporaryFile(
+                    delete=False,
+                    suffix=f".{uploaded_file.name.split('.')[-1]}"
+                ) as tmp:
+
+                    tmp.write(uploaded_file.read())
+
+                    temp_path = tmp.name
+
+                if uploaded_file.name.endswith(".pdf"):
+
+                    loader = PyPDFLoader(temp_path)
+
+                    documents = loader.load()
+
+                    all_documents.extend(documents)
+
+                elif uploaded_file.name.endswith(".xlsx"):
+
+                    excel_data = pd.read_excel(
+                        temp_path,
+                        sheet_name=None
+                    )
+
+                    for sheet_name, df in excel_data.items():
+
+                        st.subheader(f"📄 Sheet: {sheet_name}")
+
+                        st.dataframe(df)
+
+                        numeric_cols = df.select_dtypes(
+                            include='number'
+                        ).columns
+
+                        if len(numeric_cols) >= 2:
+
+                            fig1 = px.line(
+                                df,
+                                x=numeric_cols[0],
+                                y=numeric_cols[1],
+                                title="Industrial Trend Analysis"
+                            )
+
+                            st.plotly_chart(
+                                fig1,
+                                use_container_width=True
+                            )
+
+                        summary = df.describe().to_string()
+
+                        text = f"""
+Sheet Name: {sheet_name}
+
+Data:
+{df.to_string(index=False)}
+
+Summary:
+{summary}
+"""
+
+                        all_documents.append(
+                            Document(page_content=text)
+                        )
+
+                elif uploaded_file.name.endswith(".csv"):
+
+                    df = pd.read_csv(temp_path)
+
+                    st.dataframe(df)
+
+                    summary = df.describe().to_string()
+
+                    text = f"""
+CSV Data:
+{df.to_string(index=False)}
+
+Summary:
+{summary}
+"""
+
+                    all_documents.append(
+                        Document(page_content=text)
+                    )
+
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=700,
+                chunk_overlap=150
+            )
+
+            chunks = splitter.split_documents(all_documents)
+
+            @st.cache_resource
+            def load_embeddings():
+
+                return HuggingFaceEmbeddings(
+                    model_name="BAAI/bge-small-en-v1.5"
+                )
+
+            embeddings = load_embeddings()
+
+            st.session_state.vectorstore = FAISS.from_documents(
+                chunks,
+                embeddings
+            )
+
+            st.session_state.files_processed = True
+
+            st.success(
+                f"✅ {len(uploaded_files)} file(s) processed successfully!"
+            )
+
+        except Exception as e:
+
+            st.error(f"Error processing file: {e}")
+
+# ============================================================
+# DISPLAY CHAT
 # ============================================================
 
 for chat in st.session_state.chat_history:
