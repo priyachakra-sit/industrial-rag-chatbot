@@ -345,6 +345,7 @@ RULES:
 - Maintain conversation memory
 - Avoid sounding like an interviewer
 - Do NOT ask follow-up questions unless necessary
+- Never ask follow-up questions after greetings or introductions
 - For simple introductions, reply briefly
 - Avoid unnecessary conversation extension
 - Use structure only for technical topics
@@ -794,7 +795,7 @@ LATEST WEB INFORMATION:
 
             messages=messages,
 
-            temperature=0.2,
+            temperature=0.1,
 
             max_tokens=4000,
 
