@@ -321,6 +321,9 @@ if "vectorstore" not in st.session_state:
 if "quick_prompt" not in st.session_state:
     st.session_state.quick_prompt = ""
 
+if "analysis_ready" not in st.session_state:
+    st.session_state.analysis_ready = False
+
 # ============================================================
 # ADVANCED DATA ANALYSIS ENGINE
 # ============================================================
@@ -461,6 +464,7 @@ chat_mode = st.radio(
     label_visibility="collapsed"
 )
 
+
 # ============================================================
 # QUICK ACTION BUTTONS
 # ============================================================
@@ -474,12 +478,16 @@ with col1:
             "Analyze the uploaded industrial reports deeply."
         )
 
+        st.session_state.analysis_ready = True
+
 with col2:
     if st.button("📊 Generate Insights"):
 
         st.session_state.quick_prompt = (
             "Generate advanced insights from uploaded data."
         )
+
+        st.session_state.analysis_ready = True
 
 with col3:
     if st.button("🧠 Summarize Data"):
@@ -488,12 +496,17 @@ with col3:
             "Summarize the uploaded reports clearly."
         )
 
+        st.session_state.analysis_ready = True
+
 with col4:
     if st.button("📈 Detect Anomalies"):
 
         st.session_state.quick_prompt = (
             "Detect anomalies and unusual patterns in data."
         )
+
+        st.session_state.analysis_ready = True
+
 
 # ============================================================
 # FILE UPLOAD
@@ -507,7 +520,7 @@ if chat_mode == "📂 Upload & Analyze Reports":
         accept_multiple_files=True
     )
 
-    if uploaded_files:
+    if uploaded_files and st.session_state.analysis_ready:
 
         try:
 
@@ -643,6 +656,7 @@ ADVANCED ANALYSIS:
             )
 
             st.success("✅ Advanced analysis engine ready!")
+            st.session_state.analysis_ready = False
 
         except Exception as e:
 
