@@ -1,7 +1,8 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
+# ADVANCED AI ANALYTICS VERSION
 # PREMIUM LIGHT EMERALD GLASS UI
-# FULLY WORKING FINAL VERSION
+# FULL FINAL ENTERPRISE VERSION
 # ============================================================
 
 import pandas as pd
@@ -14,6 +15,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 import tempfile
+import numpy as np
 
 # ============================================================
 # PAGE CONFIG
@@ -152,7 +154,7 @@ SIDEBAR LOGO
 }
 
 /* =========================================================
-PREMIUM GLOW BUTTONS
+PREMIUM BUTTONS
 ========================================================= */
 
 .stButton button {
@@ -190,82 +192,15 @@ PREMIUM GLOW BUTTONS
     border 0.25s ease;
 }
 
-.stButton button::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-
-    left: -120%;
-
-    width: 80%;
-
-    height: 100%;
-
-    background:
-    linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.55),
-        transparent
-    );
-
-    transform: skewX(-25deg);
-
-    transition: 0.7s;
-}
-
 .stButton button:hover {
 
-    transform: translateY(-3px) scale(1.01);
+    transform: translateY(-3px);
 
     border: 1px solid rgba(0,180,110,0.45);
 
     box-shadow:
     0 12px 30px rgba(0,180,110,0.16),
-    0 0 24px rgba(0,180,110,0.18),
-    inset 0 1px 1px rgba(255,255,255,0.8);
-}
-
-.stButton button:hover::before {
-
-    left: 140%;
-}
-
-/* =========================================================
-RADIO BUTTONS
-========================================================= */
-
-.stRadio > div {
-
-    display: flex;
-
-    gap: 22px;
-
-    margin-bottom: 30px;
-}
-
-.stRadio label {
-
-    background: rgba(255,255,255,0.34) !important;
-
-    border: 1px solid rgba(255,255,255,0.55);
-
-    padding: 16px 24px;
-
-    border-radius: 20px;
-
-    backdrop-filter: blur(12px);
-
-    color: #103B2C !important;
-
-    box-shadow:
-    0 6px 18px rgba(16,59,44,0.06),
-    inset 0 1px 1px rgba(255,255,255,0.7);
-
-    transition: 0.25s;
+    0 0 24px rgba(0,180,110,0.18);
 }
 
 /* =========================================================
@@ -278,14 +213,14 @@ CHAT ANIMATION
 
         opacity: 0;
 
-        transform: translateY(18px) scale(0.98);
+        transform: translateY(18px);
     }
 
     to {
 
         opacity: 1;
 
-        transform: translateY(0px) scale(1);
+        transform: translateY(0px);
     }
 }
 
@@ -312,8 +247,7 @@ CHAT MESSAGE
     color: #103B2C;
 
     box-shadow:
-    0 8px 24px rgba(16,59,44,0.06),
-    inset 0 1px 1px rgba(255,255,255,0.75);
+    0 8px 24px rgba(16,59,44,0.06);
 
     max-width: 980px;
 
@@ -357,9 +291,7 @@ CHAT INPUT
 
     box-shadow:
     0 12px 30px rgba(16,59,44,0.10),
-    0 0 20px rgba(0,180,110,0.08),
-    inset 0 1px 1px rgba(255,255,255,0.9),
-    inset 0 -1px 1px rgba(255,255,255,0.25);
+    0 0 20px rgba(0,180,110,0.08);
 }
 
 .stChatInput input {
@@ -371,25 +303,6 @@ CHAT INPUT
     font-size: 17px !important;
 
     font-weight: 500;
-}
-
-/* =========================================================
-UPLOAD BOX
-========================================================= */
-
-[data-testid="stFileUploader"] {
-
-    background: rgba(255,255,255,0.30);
-
-    border: 1px dashed rgba(0,180,110,0.28);
-
-    border-radius: 26px;
-
-    backdrop-filter: blur(12px);
-
-    padding: 40px;
-
-    color: #103B2C !important;
 }
 
 </style>
@@ -405,17 +318,114 @@ if "chat_history" not in st.session_state:
 if "vectorstore" not in st.session_state:
     st.session_state.vectorstore = None
 
-if "files_processed" not in st.session_state:
-    st.session_state.files_processed = False
-
-if "uploaded_files" not in st.session_state:
-    st.session_state.uploaded_files = []
-
-if "chat_mode" not in st.session_state:
-    st.session_state.chat_mode = "🧠 General AI Chat"
-
 if "quick_prompt" not in st.session_state:
     st.session_state.quick_prompt = ""
+
+# ============================================================
+# ADVANCED DATA ANALYSIS ENGINE
+# ============================================================
+
+def advanced_dataframe_analysis(df):
+
+    analysis = {}
+
+    analysis["rows"] = df.shape[0]
+    analysis["columns"] = df.shape[1]
+
+    # Missing values
+
+    missing = df.isnull().sum()
+
+    analysis["missing_values"] = (
+        missing[missing > 0].to_dict()
+    )
+
+    numeric_df = df.select_dtypes(include='number')
+
+    if not numeric_df.empty:
+
+        # Summary
+
+        analysis["summary_statistics"] = (
+            numeric_df.describe().to_dict()
+        )
+
+        # Trends
+
+        trends = {}
+
+        for col in numeric_df.columns:
+
+            try:
+
+                first = numeric_df[col].iloc[0]
+                last = numeric_df[col].iloc[-1]
+
+                if last > first:
+                    trends[col] = "Increasing"
+
+                elif last < first:
+                    trends[col] = "Decreasing"
+
+                else:
+                    trends[col] = "Stable"
+
+            except:
+                trends[col] = "Unknown"
+
+        analysis["trends"] = trends
+
+        # Anomalies
+
+        anomalies = {}
+
+        for col in numeric_df.columns:
+
+            mean = numeric_df[col].mean()
+
+            std = numeric_df[col].std()
+
+            upper = mean + (2 * std)
+
+            lower = mean - (2 * std)
+
+            outliers = numeric_df[
+                (numeric_df[col] > upper)
+                | (numeric_df[col] < lower)
+            ]
+
+            anomalies[col] = len(outliers)
+
+        analysis["anomalies"] = anomalies
+
+        # Correlations
+
+        try:
+
+            corr = numeric_df.corr()
+
+            strong_corr = []
+
+            for col1 in corr.columns:
+
+                for col2 in corr.columns:
+
+                    if col1 != col2:
+
+                        value = corr.loc[col1, col2]
+
+                        if abs(value) > 0.7:
+
+                            strong_corr.append(
+                                f"{col1} ↔ {col2} = {value:.2f}"
+                            )
+
+            analysis["strong_correlations"] = strong_corr
+
+        except:
+            analysis["strong_correlations"] = []
+
+    return analysis
 
 # ============================================================
 # SIDEBAR
@@ -429,22 +439,16 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
-
     if st.button("➕ Start New Chat"):
 
         st.session_state.chat_history = []
 
         st.session_state.vectorstore = None
 
-        st.session_state.files_processed = False
-
-        st.session_state.uploaded_files = []
-
         st.rerun()
 
 # ============================================================
-# MODE SELECTION
+# MODE
 # ============================================================
 
 chat_mode = st.radio(
@@ -457,35 +461,11 @@ chat_mode = st.radio(
     label_visibility="collapsed"
 )
 
-st.session_state.chat_mode = chat_mode
-
 # ============================================================
-# QUICK ACTIONS
+# FILE UPLOAD
 # ============================================================
 
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    if st.button("⚡ Analyze Reports"):
-        st.session_state.quick_prompt = "Analyze uploaded reports"
-
-with col2:
-    if st.button("📊 Generate Insights"):
-        st.session_state.quick_prompt = "Generate insights"
-
-with col3:
-    if st.button("🧠 Summarize Data"):
-        st.session_state.quick_prompt = "Summarize uploaded reports"
-
-with col4:
-    if st.button("📈 Detect Anomalies"):
-        st.session_state.quick_prompt = "Detect anomalies"
-
-# ============================================================
-# FILE UPLOAD + RAG
-# ============================================================
-
-if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
+if chat_mode == "📂 Upload & Analyze Reports":
 
     uploaded_files = st.file_uploader(
         "Upload Reports",
@@ -510,6 +490,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     temp_path = tmp.name
 
+                # ====================================================
+                # PDF
+                # ====================================================
+
                 if uploaded_file.name.endswith(".pdf"):
 
                     loader = PyPDFLoader(temp_path)
@@ -517,6 +501,10 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
                     documents = loader.load()
 
                     all_documents.extend(documents)
+
+                # ====================================================
+                # EXCEL
+                # ====================================================
 
                 elif uploaded_file.name.endswith(".xlsx"):
 
@@ -527,13 +515,45 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     for sheet_name, df in excel_data.items():
 
+                        st.subheader(f"📄 {sheet_name}")
+
                         st.dataframe(df)
 
-                        text = df.to_string(index=False)
+                        numeric_cols = df.select_dtypes(
+                            include='number'
+                        ).columns
+
+                        if len(numeric_cols) >= 2:
+
+                            fig = px.line(
+                                df,
+                                x=numeric_cols[0],
+                                y=numeric_cols[1],
+                                title="Industrial Trend Analysis"
+                            )
+
+                            st.plotly_chart(
+                                fig,
+                                use_container_width=True
+                            )
+
+                        analysis = advanced_dataframe_analysis(df)
+
+                        text = f"""
+DATASET:
+{df.to_string(index=False)}
+
+ADVANCED ANALYSIS:
+{analysis}
+"""
 
                         all_documents.append(
                             Document(page_content=text)
                         )
+
+                # ====================================================
+                # CSV
+                # ====================================================
 
                 elif uploaded_file.name.endswith(".csv"):
 
@@ -541,18 +561,34 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                     st.dataframe(df)
 
-                    text = df.to_string(index=False)
+                    analysis = advanced_dataframe_analysis(df)
+
+                    text = f"""
+DATASET:
+{df.to_string(index=False)}
+
+ADVANCED ANALYSIS:
+{analysis}
+"""
 
                     all_documents.append(
                         Document(page_content=text)
                     )
 
+            # ========================================================
+            # SPLITTING
+            # ========================================================
+
             splitter = RecursiveCharacterTextSplitter(
-                chunk_size=700,
-                chunk_overlap=150
+                chunk_size=1200,
+                chunk_overlap=250
             )
 
             chunks = splitter.split_documents(all_documents)
+
+            # ========================================================
+            # EMBEDDINGS
+            # ========================================================
 
             @st.cache_resource
             def load_embeddings():
@@ -563,12 +599,16 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
             embeddings = load_embeddings()
 
+            # ========================================================
+            # VECTOR STORE
+            # ========================================================
+
             st.session_state.vectorstore = FAISS.from_documents(
                 chunks,
                 embeddings
             )
 
-            st.success("✅ Files processed successfully!")
+            st.success("✅ Advanced analysis engine ready!")
 
         except Exception as e:
 
@@ -591,23 +631,16 @@ for chat in st.session_state.chat_history:
 # ============================================================
 
 question = st.chat_input(
-    "Ask anything..."
+    "Ask anything about industrial reports..."
 )
 
-if not question and st.session_state.quick_prompt:
-
-    question = st.session_state.quick_prompt
-
-    st.session_state.quick_prompt = ""
-
 # ============================================================
-# GENERAL AI CHAT
+# GENERAL CHAT
 # ============================================================
 
 if (
     question
-    and st.session_state.chat_mode
-    == "🧠 General AI Chat"
+    and chat_mode == "🧠 General AI Chat"
 ):
 
     with st.chat_message("user"):
@@ -629,6 +662,7 @@ if (
                     "content": question
                 }
             ],
+            temperature=0.7,
             stream=True
         )
 
@@ -650,19 +684,21 @@ if (
     })
 
 # ============================================================
-# RAG CHATBOT
+# ADVANCED RAG CHATBOT
 # ============================================================
 
 if (
     question
     and st.session_state.vectorstore is not None
-    and st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
+    and chat_mode == "📂 Upload & Analyze Reports"
 ):
+
+    with st.chat_message("user"):
+        st.write(question)
 
     docs = st.session_state.vectorstore.similarity_search(
         question,
-        k=5
+        k=8
     )
 
     context = "\n\n".join(
@@ -670,10 +706,34 @@ if (
     )
 
     prompt = f"""
-Context:
+You are an advanced industrial AI analytics engine.
+
+Your responsibilities:
+- deeply analyze industrial datasets
+- identify anomalies
+- detect trends
+- explain statistics
+- identify operational risks
+- identify KPI movement
+- explain correlations
+- provide recommendations
+- avoid hallucination
+- answer ONLY from context
+
+ANALYSIS RULES:
+1. Mention trends
+2. Mention anomalies
+3. Mention strong correlations
+4. Mention missing values
+5. Explain operational impact
+6. Give recommendations
+7. Be precise and data-driven
+8. Never guess missing information
+
+DATA CONTEXT:
 {context}
 
-Question:
+USER QUESTION:
 {question}
 """
 
@@ -693,6 +753,8 @@ Question:
                     "content": prompt
                 }
             ],
+            temperature=0.2,
+            max_tokens=2000,
             stream=True
         )
 
