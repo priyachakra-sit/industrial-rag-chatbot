@@ -485,7 +485,24 @@ if (
 
         full_response = ""
 
-        web_context = web_search(question)
+        latest_keywords = [
+    "latest",
+    "news",
+    "today",
+    "current",
+    "recent",
+    "update",
+    "2025",
+    "trend"
+]
+
+        if any(word in question.lower() for word in latest_keywords):
+
+            web_context = web_search(question)
+
+        else:
+
+            web_context = ""
 
         messages = [
             {
