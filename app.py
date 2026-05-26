@@ -1,13 +1,12 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# ULTRA AI VERSION
-# MEMORY + WEB SEARCH + RAG + SEQUENCE AI
+# FINAL STABLE VERSION
+# MEMORY + WEB SEARCH + RAG + PREMIUM UI
 # ============================================================
 
 import pandas as pd
-import plotly.express as px
-from langchain_core.documents import Document
 import streamlit as st
+from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
@@ -15,7 +14,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 from tavily import TavilyClient
 import tempfile
-import numpy as np
 
 # ============================================================
 # PAGE CONFIG
@@ -27,8 +25,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
 # ============================================================
-# PREMIUM LIGHT EMERALD GLASS CSS
+# PREMIUM GLASS UI
 # ============================================================
 
 st.markdown("""
@@ -40,12 +39,7 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* =========================================================
-BACKGROUND
-========================================================= */
-
 .stApp {
-
     background:
     linear-gradient(
         rgba(240,255,248,0.82),
@@ -54,17 +48,10 @@ BACKGROUND
     url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1974&auto=format&fit=crop");
 
     background-size: cover;
-
     background-position: center;
-
     background-attachment: fixed;
-
     color: #103B2C;
 }
-
-/* =========================================================
-REMOVE STREAMLIT
-========================================================= */
 
 header, footer, #MainMenu {
     visibility: hidden;
@@ -74,56 +61,25 @@ header, footer, #MainMenu {
     display: none;
 }
 
-/* =========================================================
-LAYOUT
-========================================================= */
-
 .block-container {
-
     padding-top: 1rem;
-
     padding-left: 2rem;
-
     padding-right: 2rem;
-
     padding-bottom: 170px;
-
     max-width: 1500px;
 }
 
-/* =========================================================
-MAIN GLASS PANEL
-========================================================= */
-
 .main > div {
-
     background: rgba(255,255,255,0.28);
-
     backdrop-filter: blur(20px);
-
     border: 1px solid rgba(255,255,255,0.55);
-
     border-radius: 30px;
-
     padding: 25px;
-
-    box-shadow:
-    0 10px 45px rgba(16,59,44,0.10),
-    0 0 30px rgba(0,180,110,0.06),
-    inset 0 1px 1px rgba(255,255,255,0.7),
-    inset 0 -1px 1px rgba(255,255,255,0.15);
 }
 
-/* =========================================================
-SIDEBAR
-========================================================= */
-
 [data-testid="stSidebar"] {
-
     background: rgba(255,255,255,0.30);
-
     backdrop-filter: blur(18px);
-
     border-right: 1px solid rgba(255,255,255,0.45);
 }
 
@@ -131,181 +87,51 @@ SIDEBAR
     color: #103B2C !important;
 }
 
-/* =========================================================
-SIDEBAR LOGO
-========================================================= */
-
-.sidebar-logo {
-
-    font-size: 32px;
-
-    font-weight: 800;
-
-    color: #0F5132;
-
-    margin-top: 20px;
-
-    margin-bottom: 80px;
-
-    letter-spacing: -1px;
-
-    text-shadow: 0 0 12px rgba(0,180,110,0.18);
-}
-
-/* =========================================================
-PREMIUM BUTTONS
-========================================================= */
-
 .stButton button {
-
-    position: relative;
-
-    overflow: hidden;
-
     width: 100%;
-
-    height: 65px;
-
-    border-radius: 22px;
-
+    height: 60px;
+    border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.55);
-
     background: rgba(255,255,255,0.24);
-
     backdrop-filter: blur(12px);
-
     color: #103B2C !important;
-
     font-weight: 700;
-
-    font-size: 17px;
-
-    box-shadow:
-    0 6px 18px rgba(16,59,44,0.08),
-    0 0 15px rgba(0,180,110,0.08),
-    inset 0 1px 1px rgba(255,255,255,0.7);
-
-    transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border 0.25s ease;
 }
-
-.stButton button:hover {
-
-    transform: translateY(-3px);
-
-    border: 1px solid rgba(0,180,110,0.45);
-
-    box-shadow:
-    0 12px 30px rgba(0,180,110,0.16),
-    0 0 24px rgba(0,180,110,0.18);
-}
-
-/* =========================================================
-CHAT ANIMATION
-========================================================= */
-
-@keyframes smoothFadeIn {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(18px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0px);
-    }
-}
-
-/* =========================================================
-CHAT MESSAGE
-========================================================= */
 
 [data-testid="stChatMessage"] {
-
-    animation: smoothFadeIn 0.45s ease;
-
     background: rgba(255,255,255,0.34);
-
     border: 1px solid rgba(255,255,255,0.55);
-
     backdrop-filter: blur(16px);
-
     border-radius: 26px;
-
     padding: 22px;
-
     margin-bottom: 18px;
-
     color: #103B2C;
-
-    box-shadow:
-    0 8px 24px rgba(16,59,44,0.06);
-
     max-width: 980px;
-
     margin-left: auto;
-
     margin-right: auto;
 }
 
-/* =========================================================
-CHAT INPUT
-========================================================= */
-
 .stChatInput {
-
     position: fixed;
-
     bottom: 24px;
-
     left: calc(50% + 60px);
-
     transform: translateX(-50%);
-
     width: calc(100% - 420px);
-
     max-width: 1050px;
-
     z-index: 999;
 }
 
 .stChatInput > div {
-
     background: rgba(255,255,255,0.50);
-
     backdrop-filter: blur(18px);
-
     border: 1px solid rgba(255,255,255,0.75);
-
     border-radius: 34px;
-
     padding: 14px 18px;
-
-    box-shadow:
-    0 12px 30px rgba(16,59,44,0.10),
-    0 0 20px rgba(0,180,110,0.08);
-}
-
-.stChatInput input {
-
-    background: transparent !important;
-
-    color: #103B2C !important;
-
-    font-size: 17px !important;
-
-    font-weight: 500;
 }
 
 </style>
 """, unsafe_allow_html=True)
+
 # ============================================================
 # API CLIENTS
 # ============================================================
@@ -393,7 +219,7 @@ URL:
         return ""
 
 # ============================================================
-# ADVANCED DATA ANALYSIS ENGINE
+# DATA ANALYSIS
 # ============================================================
 
 def advanced_dataframe_analysis(df):
@@ -417,51 +243,6 @@ def advanced_dataframe_analysis(df):
             numeric_df.describe().to_dict()
         )
 
-        trends = {}
-
-        for col in numeric_df.columns:
-
-            try:
-
-                first = numeric_df[col].iloc[0]
-                last = numeric_df[col].iloc[-1]
-
-                if last > first:
-                    trends[col] = "Increasing"
-
-                elif last < first:
-                    trends[col] = "Decreasing"
-
-                else:
-                    trends[col] = "Stable"
-
-            except:
-
-                trends[col] = "Unknown"
-
-        analysis["trends"] = trends
-
-        anomalies = {}
-
-        for col in numeric_df.columns:
-
-            mean = numeric_df[col].mean()
-
-            std = numeric_df[col].std()
-
-            upper = mean + (2 * std)
-
-            lower = mean - (2 * std)
-
-            outliers = numeric_df[
-                (numeric_df[col] > upper)
-                | (numeric_df[col] < lower)
-            ]
-
-            anomalies[col] = len(outliers)
-
-        analysis["anomalies"] = anomalies
-
     return analysis
 
 # ============================================================
@@ -475,7 +256,6 @@ with st.sidebar:
     if st.button("➕ Start New Chat"):
 
         st.session_state.chat_history = []
-
         st.session_state.vectorstore = None
 
         st.rerun()
@@ -495,7 +275,7 @@ chat_mode = st.radio(
 )
 
 # ============================================================
-# QUICK ACTION BUTTONS
+# QUICK BUTTONS
 # ============================================================
 
 col1, col2, col3, col4 = st.columns(4)
@@ -567,17 +347,11 @@ if chat_mode == "📂 Upload & Analyze Reports":
 
                 temp_path = tmp.name
 
-            # PDF
-
             if uploaded_file.name.endswith(".pdf"):
 
                 loader = PyPDFLoader(temp_path)
-
                 documents = loader.load()
-
                 all_documents.extend(documents)
-
-            # XLSX
 
             elif uploaded_file.name.endswith(".xlsx"):
 
@@ -589,7 +363,6 @@ if chat_mode == "📂 Upload & Analyze Reports":
                 for sheet_name, df in excel_data.items():
 
                     st.subheader(f"📄 {sheet_name}")
-
                     st.dataframe(df)
 
                     analysis = advanced_dataframe_analysis(df)
@@ -607,8 +380,6 @@ ANALYSIS:
                     all_documents.append(
                         Document(page_content=text)
                     )
-
-            # CSV
 
             elif uploaded_file.name.endswith(".csv"):
 
@@ -666,11 +437,9 @@ recent_history = st.session_state.chat_history[-4:]
 for chat in recent_history:
 
     with st.chat_message("user"):
-
         st.write(chat["question"])
 
     with st.chat_message("assistant"):
-
         st.write(chat["answer"])
 
 # ============================================================
@@ -699,9 +468,6 @@ if user_input:
 # ============================================================
 # GENERAL AI CHAT
 # ============================================================
-# ============================================================
-# GENERAL AI CHAT
-# ============================================================
 
 if (
     question
@@ -718,30 +484,18 @@ if (
 
         full_response = ""
 
-        # ====================================================
-        # WEB SEARCH
-        # ====================================================
-
         web_context = web_search(question)
 
-        # ====================================================
-        # MEMORY SYSTEM
-        # ====================================================
-
         messages = [
-
             {
                 "role": "system",
                 "content": SYSTEM_PROMPT
             }
-
         ]
 
-        # ====================================================
-        # CHAT HISTORY MEMORY
-        # ====================================================
+        recent_history = st.session_state.chat_history[-4:]
 
-        for chat in st.session_state.chat_history:
+        for chat in recent_history:
 
             messages.append({
                 "role": "user",
@@ -753,16 +507,10 @@ if (
                 "content": chat["answer"]
             })
 
-        # ====================================================
-        # WEB CONTEXT
-        # ====================================================
-
         if web_context:
 
             messages.append({
-
                 "role": "system",
-
                 "content": f"""
 
 LATEST WEB INFORMATION:
@@ -772,64 +520,55 @@ LATEST WEB INFORMATION:
 """
             })
 
-        # ====================================================
-        # CURRENT QUESTION
-        # ====================================================
-
         messages.append({
-
             "role": "user",
-
             "content": question
         })
 
-        # ====================================================
-        # DEBUG CHECK
-        # ====================================================
+        try:
 
-        
+            response = client.chat.completions.create(
 
-        # ====================================================
-        # AI RESPONSE
-        # ====================================================
+                model="llama-3.1-8b-instant",
 
-        response = client.chat.completions.create(
+                messages=messages,
 
-            model="llama-3.3-70b-versatile",
+                temperature=0.1,
 
-            messages=messages,
+                max_tokens=1200,
 
-            temperature=0.1,
+                stream=True
+            )
 
-            max_tokens=1200,
+            for chunk in response:
 
-            stream=True
-        )
+                delta = chunk.choices[0].delta.content
 
-        for chunk in response:
+                if delta:
 
-            delta = chunk.choices[0].delta.content
+                    full_response += delta
 
-            if delta:
+                    placeholder.markdown(
+                        full_response + "▌"
+                    )
 
-                full_response += delta
+            placeholder.markdown(full_response)
 
-                placeholder.markdown(
-                    full_response + "▌"
-                )
+        except Exception:
 
-        placeholder.markdown(full_response)
+            placeholder.error(
+                "⚠️ AI service is temporarily busy. Please try again in a few seconds."
+            )
 
-    # ========================================================
-    # SAVE CHAT HISTORY
-    # ========================================================
+    if full_response:
 
-    st.session_state.chat_history.append({
+        st.session_state.chat_history.append({
 
-        "question": question,
+            "question": question,
 
-        "answer": full_response
-    })
+            "answer": full_response
+        })
+
 # ============================================================
 # RAG CHATBOT
 # ============================================================
@@ -864,17 +603,13 @@ QUESTION:
 {question}
 
 RULES:
-1. Answer step-by-step
-2. Mention trends
-3. Mention anomalies
-4. Mention correlations
-5. Mention missing values
-6. Give recommendations
-7. Never hallucinate
-8. Use only provided data
-9. Avoid repeating the same information
-10. Keep answers concise unless detailed analysis is requested
-11. Focus on actionable insights
+1. Mention trends
+2. Mention anomalies
+3. Mention recommendations
+4. Never hallucinate
+5. Use only provided data
+6. Keep answers concise
+7. Focus on actionable insights
 
 """
 
@@ -884,45 +619,56 @@ RULES:
 
         full_response = ""
 
-        response = client.chat.completions.create(
+        try:
 
-            model="llama-3.3-70b-versatile",
+            response = client.chat.completions.create(
 
-            messages=[
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
+                model="llama-3.1-8b-instant",
 
-            temperature=0.2,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": SYSTEM_PROMPT
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
 
-            max_tokens=1000,
+                temperature=0.1,
 
-            stream=True
-        )
+                max_tokens=1000,
 
-        for chunk in response:
+                stream=True
+            )
 
-            delta = chunk.choices[0].delta.content
+            for chunk in response:
 
-            if delta:
+                delta = chunk.choices[0].delta.content
 
-                full_response += delta
+                if delta:
 
-                placeholder.markdown(
-                    full_response + "▌"
-                )
+                    full_response += delta
 
-        placeholder.markdown(full_response)
+                    placeholder.markdown(
+                        full_response + "▌"
+                    )
 
-    st.session_state.chat_history.append({
+            placeholder.markdown(full_response)
 
-        "question": question,
+        except Exception:
 
-        "answer": full_response
-    })
+            placeholder.error(
+                "⚠️ AI service is temporarily busy. Please try again in a few seconds."
+            )
+
+    if full_response:
+
+        st.session_state.chat_history.append({
+
+            "question": question,
+
+            "answer": full_response
+        })
+
