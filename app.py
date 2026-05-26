@@ -1,7 +1,7 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# LIGHT EMERALD GLASS THEME
-# FULL UPDATED PREMIUM VERSION
+# LIGHT EMERALD PREMIUM GLASS UI
+# FULL FINAL UPDATED VERSION
 # ============================================================
 
 import pandas as pd
@@ -27,7 +27,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# LIGHT EMERALD GLASS CSS
+# PREMIUM LIGHT EMERALD GLASS CSS
 # ============================================================
 
 st.markdown("""
@@ -96,19 +96,21 @@ MAIN GLASS PANEL
 
 .main > div {
 
-    background: rgba(255,255,255,0.34);
+    background: rgba(255,255,255,0.28);
 
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px);
 
-    border: 1px solid rgba(255,255,255,0.45);
+    border: 1px solid rgba(255,255,255,0.55);
 
-    border-radius: 28px;
+    border-radius: 30px;
 
     padding: 25px;
 
     box-shadow:
-    0 8px 40px rgba(16,59,44,0.10),
-    inset 0 1px 1px rgba(255,255,255,0.55);
+    0 10px 45px rgba(16,59,44,0.10),
+    0 0 30px rgba(0,180,110,0.06),
+    inset 0 1px 1px rgba(255,255,255,0.7),
+    inset 0 -1px 1px rgba(255,255,255,0.15);
 }
 
 /* =========================================================
@@ -161,11 +163,11 @@ BUTTONS
 
     border-radius: 22px;
 
-    border: 1px solid rgba(0,180,110,0.18);
+    border: 1px solid rgba(255,255,255,0.55);
 
-    background: rgba(255,255,255,0.34);
+    background: rgba(255,255,255,0.24);
 
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
 
     color: #103B2C !important;
 
@@ -174,8 +176,9 @@ BUTTONS
     font-size: 17px;
 
     box-shadow:
+    0 6px 18px rgba(16,59,44,0.08),
     0 0 15px rgba(0,180,110,0.08),
-    inset 0 0 8px rgba(255,255,255,0.35);
+    inset 0 1px 1px rgba(255,255,255,0.7);
 
     transition: 0.25s;
 }
@@ -184,10 +187,11 @@ BUTTONS
 
     transform: translateY(-2px);
 
-    border: 1px solid rgba(0,180,110,0.45);
+    border: 1px solid rgba(0,180,110,0.35);
 
     box-shadow:
-    0 0 20px rgba(0,180,110,0.18);
+    0 10px 25px rgba(0,180,110,0.12),
+    0 0 20px rgba(0,180,110,0.14);
 }
 
 /* =========================================================
@@ -205,9 +209,9 @@ RADIO BUTTONS
 
 .stRadio label {
 
-    background: rgba(255,255,255,0.38) !important;
+    background: rgba(255,255,255,0.34) !important;
 
-    border: 1px solid rgba(0,180,110,0.14);
+    border: 1px solid rgba(255,255,255,0.55);
 
     padding: 16px 24px;
 
@@ -218,7 +222,8 @@ RADIO BUTTONS
     color: #103B2C !important;
 
     box-shadow:
-    0 0 12px rgba(0,180,110,0.06);
+    0 6px 18px rgba(16,59,44,0.06),
+    inset 0 1px 1px rgba(255,255,255,0.7);
 
     transition: 0.25s;
 }
@@ -230,7 +235,7 @@ RADIO BUTTONS
     border: 1px solid rgba(0,180,110,0.35);
 
     box-shadow:
-    0 0 18px rgba(0,180,110,0.12);
+    0 10px 22px rgba(0,180,110,0.10);
 }
 
 /* =========================================================
@@ -239,13 +244,13 @@ CHAT MESSAGE
 
 [data-testid="stChatMessage"] {
 
-    background: rgba(255,255,255,0.36);
+    background: rgba(255,255,255,0.34);
 
-    border: 1px solid rgba(255,255,255,0.42);
+    border: 1px solid rgba(255,255,255,0.55);
 
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(16px);
 
-    border-radius: 24px;
+    border-radius: 26px;
 
     padding: 22px;
 
@@ -254,7 +259,8 @@ CHAT MESSAGE
     color: #103B2C;
 
     box-shadow:
-    0 0 18px rgba(0,180,110,0.06);
+    0 8px 24px rgba(16,59,44,0.06),
+    inset 0 1px 1px rgba(255,255,255,0.75);
 
     max-width: 980px;
 
@@ -286,18 +292,21 @@ CHAT INPUT
 
 .stChatInput > div {
 
-    background: rgba(255,255,255,0.42);
+    background: rgba(255,255,255,0.50);
 
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255,255,255,0.48);
+    border: 1px solid rgba(255,255,255,0.75);
 
-    border-radius: 32px;
+    border-radius: 34px;
 
     padding: 14px 18px;
 
     box-shadow:
-    0 0 18px rgba(0,180,110,0.10);
+    0 12px 30px rgba(16,59,44,0.10),
+    0 0 20px rgba(0,180,110,0.08),
+    inset 0 1px 1px rgba(255,255,255,0.9),
+    inset 0 -1px 1px rgba(255,255,255,0.25);
 }
 
 .stChatInput input {
@@ -486,145 +495,6 @@ with col4:
         st.session_state.quick_prompt = (
             "Detect anomalies in uploaded reports."
         )
-
-# ============================================================
-# FILE UPLOAD
-# ============================================================
-
-if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
-
-    st.markdown("## 📂 Upload Industrial Reports")
-
-    uploaded_files = st.file_uploader(
-        "Upload Reports",
-        type=["pdf", "xlsx", "csv"],
-        accept_multiple_files=True
-    )
-
-    if uploaded_files:
-
-        st.session_state.uploaded_files = uploaded_files
-
-        try:
-
-            all_documents = []
-
-            for uploaded_file in uploaded_files:
-
-                with tempfile.NamedTemporaryFile(
-                    delete=False,
-                    suffix=f".{uploaded_file.name.split('.')[-1]}"
-                ) as tmp:
-
-                    tmp.write(uploaded_file.read())
-
-                    temp_path = tmp.name
-
-                if uploaded_file.name.endswith(".pdf"):
-
-                    loader = PyPDFLoader(temp_path)
-
-                    documents = loader.load()
-
-                    all_documents.extend(documents)
-
-                elif uploaded_file.name.endswith(".xlsx"):
-
-                    excel_data = pd.read_excel(
-                        temp_path,
-                        sheet_name=None
-                    )
-
-                    for sheet_name, df in excel_data.items():
-
-                        st.subheader(f"📄 Sheet: {sheet_name}")
-
-                        st.dataframe(df)
-
-                        numeric_cols = df.select_dtypes(
-                            include='number'
-                        ).columns
-
-                        if len(numeric_cols) >= 2:
-
-                            fig1 = px.line(
-                                df,
-                                x=numeric_cols[0],
-                                y=numeric_cols[1],
-                                title="Industrial Trend Analysis"
-                            )
-
-                            st.plotly_chart(
-                                fig1,
-                                use_container_width=True
-                            )
-
-                        summary = df.describe().to_string()
-
-                        text = f"""
-Sheet Name: {sheet_name}
-
-Data:
-{df.to_string(index=False)}
-
-Summary:
-{summary}
-"""
-
-                        all_documents.append(
-                            Document(page_content=text)
-                        )
-
-                elif uploaded_file.name.endswith(".csv"):
-
-                    df = pd.read_csv(temp_path)
-
-                    st.dataframe(df)
-
-                    summary = df.describe().to_string()
-
-                    text = f"""
-CSV Data:
-{df.to_string(index=False)}
-
-Summary:
-{summary}
-"""
-
-                    all_documents.append(
-                        Document(page_content=text)
-                    )
-
-            splitter = RecursiveCharacterTextSplitter(
-                chunk_size=700,
-                chunk_overlap=150
-            )
-
-            chunks = splitter.split_documents(all_documents)
-
-            @st.cache_resource
-            def load_embeddings():
-
-                return HuggingFaceEmbeddings(
-                    model_name="BAAI/bge-small-en-v1.5"
-                )
-
-            embeddings = load_embeddings()
-
-            st.session_state.vectorstore = FAISS.from_documents(
-                chunks,
-                embeddings
-            )
-
-            st.session_state.files_processed = True
-
-            st.success(
-                f"✅ {len(uploaded_files)} file(s) processed successfully!"
-            )
-
-        except Exception as e:
-
-            st.error(f"Error processing file: {e}")
 
 # ============================================================
 # DISPLAY CHAT
