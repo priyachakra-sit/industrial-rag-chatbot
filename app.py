@@ -366,7 +366,7 @@ def web_search(query):
         results = tavily.search(
             query=query,
             search_depth="advanced",
-            max_results=5
+            max_results=2
         )
 
         web_context = ""
@@ -661,7 +661,9 @@ ANALYSIS:
 # DISPLAY CHAT
 # ============================================================
 
-for chat in st.session_state.chat_history:
+recent_history = st.session_state.chat_history[-4:]
+
+for chat in recent_history:
 
     with st.chat_message("user"):
 
@@ -799,7 +801,7 @@ LATEST WEB INFORMATION:
 
             temperature=0.1,
 
-            max_tokens=4000,
+            max_tokens=1200,
 
             stream=True
         )
@@ -844,7 +846,7 @@ if (
 
     docs = st.session_state.vectorstore.similarity_search(
         question,
-        k=8
+        k=4
     )
 
     context = "\n\n".join(
@@ -899,7 +901,7 @@ RULES:
 
             temperature=0.2,
 
-            max_tokens=3000,
+            max_tokens=1000,
 
             stream=True
         )
