@@ -462,6 +462,40 @@ chat_mode = st.radio(
 )
 
 # ============================================================
+# QUICK ACTION BUTTONS
+# ============================================================
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    if st.button("⚡ Analyze Reports"):
+
+        st.session_state.quick_prompt = (
+            "Analyze the uploaded industrial reports deeply."
+        )
+
+with col2:
+    if st.button("📊 Generate Insights"):
+
+        st.session_state.quick_prompt = (
+            "Generate advanced insights from uploaded data."
+        )
+
+with col3:
+    if st.button("🧠 Summarize Data"):
+
+        st.session_state.quick_prompt = (
+            "Summarize the uploaded reports clearly."
+        )
+
+with col4:
+    if st.button("📈 Detect Anomalies"):
+
+        st.session_state.quick_prompt = (
+            "Detect anomalies and unusual patterns in data."
+        )
+
+# ============================================================
 # FILE UPLOAD
 # ============================================================
 
@@ -629,10 +663,29 @@ for chat in st.session_state.chat_history:
 # ============================================================
 # CHAT INPUT
 # ============================================================
+# ============================================================
+# QUICK PROMPT HANDLER
+# ============================================================
 
-question = st.chat_input(
+if (
+    "quick_prompt" in st.session_state
+    and st.session_state.quick_prompt
+):
+
+    question = st.session_state.quick_prompt
+
+    st.session_state.quick_prompt = ""
+
+else:
+
+    question = None
+
+user_input = st.chat_input(
     "Ask anything about industrial reports..."
 )
+
+if user_input:
+    question = user_input
 
 # ============================================================
 # GENERAL CHAT
