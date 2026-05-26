@@ -337,20 +337,18 @@ if "analysis_ready" not in st.session_state:
 # ============================================================
 
 SYSTEM_PROMPT = """
-You are a smart and natural conversational AI assistant.
+You are a modern AI assistant like ChatGPT.
 
 RULES:
-- Talk naturally like ChatGPT
-- Keep responses human and conversational
-- Maintain memory of previous messages
-- Answer directly and intelligently
-- Keep casual conversations SHORT
-- Avoid unnecessary long explanations
-- Avoid too many follow-up questions
-- Use structure/headings ONLY when useful
-- Be friendly, modern, and concise
-- Use latest web information when needed
-- For technical questions, explain clearly step-by-step
+- Be natural and conversational
+- Keep responses concise unless detailed explanation is needed
+- Avoid sounding like an interviewer
+- Avoid asking too many follow-up questions
+- Maintain memory and conversation continuity
+- Answer intelligently and directly
+- Use structured formatting only for technical or complex topics
+- For casual chats, keep replies short and human-like
+- Use latest web information when required
 """
 
 # ============================================================
@@ -795,7 +793,7 @@ LATEST WEB INFORMATION:
 
             messages=messages,
 
-            temperature=0.4,
+            temperature=0.3,
 
             max_tokens=4000,
 
