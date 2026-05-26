@@ -1,6 +1,6 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# CLEAN CHATGPT STYLE VERSION
+# PERFECT CHATGPT STYLE VERSION
 # ============================================================
 
 import pandas as pd
@@ -67,11 +67,11 @@ LAYOUT
 
     padding-top: 1rem;
 
-    padding-left: 2rem;
+    padding-left: 2.5rem;
 
-    padding-right: 2rem;
+    padding-right: 2.5rem;
 
-    padding-bottom: 140px;
+    padding-bottom: 170px;
 
     max-width: 1500px;
 }
@@ -162,7 +162,7 @@ RADIO BUTTONS
 
     gap: 18px;
 
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 .stRadio label {
@@ -223,20 +223,22 @@ CHAT
 }
 
 /* =========================================================
-CHAT INPUT
+CHAT INPUT PERFECT ALIGNMENT
 ========================================================= */
 
 .stChatInput {
 
     position: fixed;
 
-    bottom: 20px;
+    bottom: 24px;
 
-    left: 50%;
+    left: calc(50% + 60px);
 
     transform: translateX(-50%);
 
-    width: 74%;
+    width: calc(100% - 420px);
+
+    max-width: 1050px;
 
     z-index: 999;
 }
@@ -245,14 +247,16 @@ CHAT INPUT
 
     background: white;
 
-    border-radius: 28px;
+    border-radius: 30px;
 
     border: 1px solid rgba(0,0,0,0.08);
 
-    padding: 12px 18px;
+    padding: 14px 18px;
 
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
+
+/* INPUT FIELD */
 
 .stChatInput input {
 
@@ -263,6 +267,21 @@ CHAT INPUT
     font-size: 17px !important;
 
     font-weight: 500;
+
+    padding-left: 8px;
+}
+
+/* SEND BUTTON */
+
+.stChatInput button {
+
+    margin-right: 6px;
+
+    border-radius: 50% !important;
+
+    height: 42px !important;
+
+    width: 42px !important;
 }
 
 /* =========================================================
@@ -314,6 +333,27 @@ SCROLLBAR
 ::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.12);
     border-radius: 10px;
+}
+
+/* =========================================================
+MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .stChatInput {
+
+        width: calc(100% - 40px);
+
+        left: 50%;
+    }
+
+    .block-container {
+
+        padding-left: 1rem;
+
+        padding-right: 1rem;
+    }
 }
 
 </style>
