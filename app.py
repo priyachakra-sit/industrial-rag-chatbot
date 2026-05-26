@@ -1,8 +1,7 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
 # PREMIUM LIGHT EMERALD GLASS UI
-# WITH ANIMATED GLOW BUTTONS
-# FULL UPDATED VERSION
+# FULLY WORKING FINAL VERSION
 # ============================================================
 
 import pandas as pd
@@ -191,8 +190,6 @@ PREMIUM GLOW BUTTONS
     border 0.25s ease;
 }
 
-/* ANIMATED LIGHT SWEEP */
-
 .stButton button::before {
 
     content: "";
@@ -220,8 +217,6 @@ PREMIUM GLOW BUTTONS
     transition: 0.7s;
 }
 
-/* HOVER EFFECT */
-
 .stButton button:hover {
 
     transform: translateY(-3px) scale(1.01);
@@ -233,8 +228,6 @@ PREMIUM GLOW BUTTONS
     0 0 24px rgba(0,180,110,0.18),
     inset 0 1px 1px rgba(255,255,255,0.8);
 }
-
-/* LIGHT SWEEP ANIMATION */
 
 .stButton button:hover::before {
 
@@ -275,14 +268,25 @@ RADIO BUTTONS
     transition: 0.25s;
 }
 
-.stRadio label:hover {
+/* =========================================================
+CHAT ANIMATION
+========================================================= */
 
-    transform: translateY(-2px);
+@keyframes smoothFadeIn {
 
-    border: 1px solid rgba(0,180,110,0.35);
+    from {
 
-    box-shadow:
-    0 10px 22px rgba(0,180,110,0.10);
+        opacity: 0;
+
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0px) scale(1);
+    }
 }
 
 /* =========================================================
@@ -290,6 +294,8 @@ CHAT MESSAGE
 ========================================================= */
 
 [data-testid="stChatMessage"] {
+
+    animation: smoothFadeIn 0.45s ease;
 
     background: rgba(255,255,255,0.34);
 
@@ -386,64 +392,6 @@ UPLOAD BOX
     color: #103B2C !important;
 }
 
-/* =========================================================
-DATAFRAME
-========================================================= */
-
-[data-testid="stDataFrame"] {
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    border: 1px solid rgba(0,180,110,0.08);
-}
-
-/* =========================================================
-TEXT COLORS
-========================================================= */
-
-h1, h2, h3, h4, h5, h6, p, span, label {
-
-    color: #103B2C !important;
-}
-
-/* =========================================================
-SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-
-    background: rgba(0,180,110,0.25);
-
-    border-radius: 10px;
-}
-
-/* =========================================================
-MOBILE
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .stChatInput {
-
-        width: calc(100% - 40px);
-
-        left: 50%;
-    }
-
-    .block-container {
-
-        padding-left: 1rem;
-
-        padding-right: 1rem;
-    }
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -499,8 +447,6 @@ with st.sidebar:
 # MODE SELECTION
 # ============================================================
 
-st.markdown("<br>", unsafe_allow_html=True)
-
 chat_mode = st.radio(
     "",
     [
@@ -521,27 +467,112 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     if st.button("⚡ Analyze Reports"):
-        st.session_state.quick_prompt = (
-            "Analyze uploaded reports and provide key findings."
-        )
+        st.session_state.quick_prompt = "Analyze uploaded reports"
 
 with col2:
     if st.button("📊 Generate Insights"):
-        st.session_state.quick_prompt = (
-            "Generate insights from uploaded industrial data."
-        )
+        st.session_state.quick_prompt = "Generate insights"
 
 with col3:
     if st.button("🧠 Summarize Data"):
-        st.session_state.quick_prompt = (
-            "Summarize uploaded reports clearly."
-        )
+        st.session_state.quick_prompt = "Summarize uploaded reports"
 
 with col4:
     if st.button("📈 Detect Anomalies"):
-        st.session_state.quick_prompt = (
-            "Detect anomalies in uploaded reports."
-        )
+        st.session_state.quick_prompt = "Detect anomalies"
+
+# ============================================================
+# FILE UPLOAD + RAG
+# ============================================================
+
+if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
+
+    uploaded_files = st.file_uploader(
+        "Upload Reports",
+        type=["pdf", "xlsx", "csv"],
+        accept_multiple_files=True
+    )
+
+    if uploaded_files:
+
+        try:
+
+            all_documents = []
+
+            for uploaded_file in uploaded_files:
+
+                with tempfile.NamedTemporaryFile(
+                    delete=False,
+                    suffix=f".{uploaded_file.name.split('.')[-1]}"
+                ) as tmp:
+
+                    tmp.write(uploaded_file.read())
+
+                    temp_path = tmp.name
+
+                if uploaded_file.name.endswith(".pdf"):
+
+                    loader = PyPDFLoader(temp_path)
+
+                    documents = loader.load()
+
+                    all_documents.extend(documents)
+
+                elif uploaded_file.name.endswith(".xlsx"):
+
+                    excel_data = pd.read_excel(
+                        temp_path,
+                        sheet_name=None
+                    )
+
+                    for sheet_name, df in excel_data.items():
+
+                        st.dataframe(df)
+
+                        text = df.to_string(index=False)
+
+                        all_documents.append(
+                            Document(page_content=text)
+                        )
+
+                elif uploaded_file.name.endswith(".csv"):
+
+                    df = pd.read_csv(temp_path)
+
+                    st.dataframe(df)
+
+                    text = df.to_string(index=False)
+
+                    all_documents.append(
+                        Document(page_content=text)
+                    )
+
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=700,
+                chunk_overlap=150
+            )
+
+            chunks = splitter.split_documents(all_documents)
+
+            @st.cache_resource
+            def load_embeddings():
+
+                return HuggingFaceEmbeddings(
+                    model_name="BAAI/bge-small-en-v1.5"
+                )
+
+            embeddings = load_embeddings()
+
+            st.session_state.vectorstore = FAISS.from_documents(
+                chunks,
+                embeddings
+            )
+
+            st.success("✅ Files processed successfully!")
+
+        except Exception as e:
+
+            st.error(f"Error: {e}")
 
 # ============================================================
 # DISPLAY CHAT
@@ -560,11 +591,13 @@ for chat in st.session_state.chat_history:
 # ============================================================
 
 question = st.chat_input(
-    "Ask anything about Industrial reports..."
+    "Ask anything..."
 )
 
 if not question and st.session_state.quick_prompt:
+
     question = st.session_state.quick_prompt
+
     st.session_state.quick_prompt = ""
 
 # ============================================================
@@ -580,23 +613,7 @@ if (
     with st.chat_message("user"):
         st.write(question)
 
-    api_key = st.secrets["GROQ_API_KEY"]
-
-    client = Groq(api_key=api_key)
-
-    messages = [
-        {
-            "role": "system",
-            "content": """
-You are an advanced industrial AI assistant.
-Be intelligent, futuristic and professional.
-"""
-        },
-        {
-            "role": "user",
-            "content": question
-        }
-    ]
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
     with st.chat_message("assistant"):
 
@@ -606,9 +623,76 @@ Be intelligent, futuristic and professional.
 
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
-            messages=messages,
-            temperature=0.7,
-            max_tokens=1500,
+            messages=[
+                {
+                    "role": "user",
+                    "content": question
+                }
+            ],
+            stream=True
+        )
+
+        for chunk in response:
+
+            delta = chunk.choices[0].delta.content
+
+            if delta:
+
+                full_response += delta
+
+                placeholder.markdown(full_response + "▌")
+
+        placeholder.markdown(full_response)
+
+    st.session_state.chat_history.append({
+        "question": question,
+        "answer": full_response
+    })
+
+# ============================================================
+# RAG CHATBOT
+# ============================================================
+
+if (
+    question
+    and st.session_state.vectorstore is not None
+    and st.session_state.chat_mode
+    == "📂 Upload & Analyze Reports"
+):
+
+    docs = st.session_state.vectorstore.similarity_search(
+        question,
+        k=5
+    )
+
+    context = "\n\n".join(
+        [doc.page_content for doc in docs]
+    )
+
+    prompt = f"""
+Context:
+{context}
+
+Question:
+{question}
+"""
+
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+
+    with st.chat_message("assistant"):
+
+        placeholder = st.empty()
+
+        full_response = ""
+
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
             stream=True
         )
 
