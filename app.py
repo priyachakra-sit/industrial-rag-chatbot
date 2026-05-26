@@ -1,7 +1,6 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# PREMIUM AI ANALYTICS PLATFORM
-# COMPLETE FINAL PREMIUM VERSION
+# CLEAN CHATGPT STYLE VERSION
 # ============================================================
 
 import pandas as pd
@@ -20,7 +19,7 @@ import tempfile
 # ============================================================
 
 st.set_page_config(
-    page_title="Industrial AI Workspace",
+    page_title="Industrial AI",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -66,11 +65,11 @@ LAYOUT
 
 .block-container {
 
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 
-    padding-left: 2.5rem;
+    padding-left: 2rem;
 
-    padding-right: 2.5rem;
+    padding-right: 2rem;
 
     padding-bottom: 140px;
 
@@ -100,56 +99,26 @@ LOGO
 
 .sidebar-logo {
 
-    font-size: 30px;
+    font-size: 28px;
 
     font-weight: 800;
 
     color: #4F46E5;
 
-    margin-bottom: 50px;
+    margin-bottom: 80px;
 
     letter-spacing: -1px;
 }
 
 /* =========================================================
-MENU
-========================================================= */
-
-.menu-item {
-
-    padding: 18px 18px;
-
-    border-radius: 18px;
-
-    margin-bottom: 14px;
-
-    font-size: 18px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: 0.25s;
-}
-
-.menu-item:hover {
-
-    background: #EEF2FF;
-
-    color: #4F46E5;
-
-    transform: translateX(4px);
-}
-
-/* =========================================================
-BUTTONS PREMIUM
+BUTTONS
 ========================================================= */
 
 .stButton button {
 
     width: 100%;
 
-    height: 70px;
+    height: 65px;
 
     border-radius: 22px;
 
@@ -161,7 +130,7 @@ BUTTONS PREMIUM
 
     font-weight: 700;
 
-    font-size: 18px;
+    font-size: 17px;
 
     border: 1px solid rgba(0,0,0,0.06);
 
@@ -178,53 +147,13 @@ BUTTONS PREMIUM
 
     color: #4F46E5 !important;
 
-    transform: translateY(-4px);
+    transform: translateY(-3px);
 
     box-shadow: 0 14px 30px rgba(79,70,229,0.12);
 }
 
 /* =========================================================
-TITLE
-========================================================= */
-
-.title {
-
-    font-size: 72px;
-
-    font-weight: 800;
-
-    color: #111827;
-
-    margin-top: 10px;
-
-    margin-bottom: 40px;
-
-    letter-spacing: -3px;
-
-    line-height: 1.05;
-}
-
-/* =========================================================
-MODE BOX
-========================================================= */
-
-.mode-box {
-
-    background: white;
-
-    border-radius: 24px;
-
-    padding: 22px 24px;
-
-    border: 1px solid rgba(0,0,0,0.06);
-
-    margin-bottom: 35px;
-
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-
-/* =========================================================
-RADIO PREMIUM
+RADIO BUTTONS
 ========================================================= */
 
 .stRadio > div {
@@ -232,6 +161,8 @@ RADIO PREMIUM
     display: flex;
 
     gap: 18px;
+
+    margin-bottom: 25px;
 }
 
 .stRadio label {
@@ -240,7 +171,7 @@ RADIO PREMIUM
 
     border: 1px solid rgba(0,0,0,0.08);
 
-    padding: 18px 26px;
+    padding: 16px 24px;
 
     border-radius: 18px;
 
@@ -248,7 +179,7 @@ RADIO PREMIUM
 
     box-shadow: 0 4px 14px rgba(0,0,0,0.03);
 
-    font-size: 18px !important;
+    font-size: 17px !important;
 
     font-weight: 700 !important;
 }
@@ -257,7 +188,7 @@ RADIO PREMIUM
 
     border: 1px solid #4F46E5;
 
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 
     box-shadow: 0 12px 24px rgba(79,70,229,0.10);
 }
@@ -270,11 +201,11 @@ CHAT
 
     background: white;
 
-    border-radius: 28px;
+    border-radius: 26px;
 
-    padding: 26px;
+    padding: 24px;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 
     border: 1px solid rgba(0,0,0,0.05);
 
@@ -286,7 +217,7 @@ CHAT
 
     margin-right: auto;
 
-    font-size: 18px;
+    font-size: 17px;
 
     line-height: 1.8;
 }
@@ -299,7 +230,7 @@ CHAT INPUT
 
     position: fixed;
 
-    bottom: 24px;
+    bottom: 20px;
 
     left: 50%;
 
@@ -318,7 +249,7 @@ CHAT INPUT
 
     border: 1px solid rgba(0,0,0,0.08);
 
-    padding: 14px 18px;
+    padding: 12px 18px;
 
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
@@ -329,7 +260,7 @@ CHAT INPUT
 
     color: #111827 !important;
 
-    font-size: 18px !important;
+    font-size: 17px !important;
 
     font-weight: 500;
 }
@@ -351,18 +282,6 @@ UPLOAD BOX
     box-shadow: 0 4px 16px rgba(0,0,0,0.04);
 }
 
-[data-testid="stFileUploader"] small {
-
-    font-size: 16px !important;
-
-    color: #6B7280 !important;
-}
-
-[data-testid="stFileUploader"] section {
-
-    font-size: 18px !important;
-}
-
 /* =========================================================
 DATAFRAME
 ========================================================= */
@@ -377,20 +296,7 @@ DATAFRAME
 }
 
 /* =========================================================
-SUBHEADERS
-========================================================= */
-
-h1, h2, h3 {
-
-    font-size: 34px !important;
-
-    font-weight: 700 !important;
-
-    color: #111827 !important;
-}
-
-/* =========================================================
-REMOVE LINES
+REMOVE LINE
 ========================================================= */
 
 hr {
@@ -447,27 +353,7 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown(
-        '<div class="menu-item">💬 New Chat</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="menu-item">📄 Recent Reports</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="menu-item">🧠 AI Workspace</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="menu-item">📚 Documents</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
 
     if st.button("➕ Start New Chat"):
 
@@ -482,33 +368,22 @@ with st.sidebar:
         st.rerun()
 
 # ============================================================
-# TITLE
-# ============================================================
-
-st.markdown("""
-<div class="title">
-⚡ Industrial AI Workspace
-</div>
-""", unsafe_allow_html=True)
-
-# ============================================================
 # MODE SELECTION
 # ============================================================
 
-st.markdown('<div class="mode-box">', unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 chat_mode = st.radio(
-    "Select AI Mode",
+    "",
     [
         "🧠 General AI Chat",
         "📂 Upload & Analyze Reports"
     ],
-    horizontal=True
+    horizontal=True,
+    label_visibility="collapsed"
 )
 
 st.session_state.chat_mode = chat_mode
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================
 # QUICK ACTIONS
@@ -600,8 +475,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                         if len(numeric_cols) >= 2:
 
-                            st.subheader("📈 Trend Analysis")
-
                             fig1 = px.line(
                                 df,
                                 x=numeric_cols[0],
@@ -611,20 +484,6 @@ if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
 
                             st.plotly_chart(
                                 fig1,
-                                use_container_width=True
-                            )
-
-                            st.subheader("📊 Consumption Analysis")
-
-                            fig2 = px.bar(
-                                df,
-                                x=numeric_cols[0],
-                                y=numeric_cols[1],
-                                title="Consumption Comparison"
-                            )
-
-                            st.plotly_chart(
-                                fig2,
                                 use_container_width=True
                             )
 
@@ -649,24 +508,6 @@ Summary:
                     df = pd.read_csv(temp_path)
 
                     st.dataframe(df)
-
-                    numeric_cols = df.select_dtypes(
-                        include='number'
-                    ).columns
-
-                    if len(numeric_cols) >= 2:
-
-                        fig = px.line(
-                            df,
-                            x=numeric_cols[0],
-                            y=numeric_cols[1],
-                            title="CSV Data Analysis"
-                        )
-
-                        st.plotly_chart(
-                            fig,
-                            use_container_width=True
-                        )
 
                     summary = df.describe().to_string()
 
@@ -833,7 +674,6 @@ Rules:
 - Mention trends
 - Give recommendations
 - Answer ONLY from context
-- Do NOT generate fake image links
 
 CONTEXT:
 {context}
