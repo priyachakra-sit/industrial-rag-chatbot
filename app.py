@@ -1,6 +1,6 @@
 # ============================================================
-# INDUSTRIAL AI WORKSPACE
-# PERFECT CHATGPT STYLE VERSION
+# OBSIDIAN GLASS AI WORKSPACE
+# MONOCHROME PURPLE THEME
 # ============================================================
 
 import pandas as pd
@@ -26,7 +26,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# PREMIUM CSS
+# GLASSMORPHISM CSS
 # ============================================================
 
 st.markdown("""
@@ -39,12 +39,22 @@ html, body, [class*="css"] {
 }
 
 /* =========================================================
-APP
+BACKGROUND
 ========================================================= */
 
 .stApp {
-    background: #F6F8FC;
-    color: #111827;
+
+    background:
+    linear-gradient(rgba(8,8,18,0.82), rgba(8,8,18,0.90)),
+    url("https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1974&auto=format&fit=crop");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-attachment: fixed;
+
+    color: #F5EFFF;
 }
 
 /* =========================================================
@@ -67,13 +77,34 @@ LAYOUT
 
     padding-top: 1rem;
 
-    padding-left: 2.5rem;
+    padding-left: 2rem;
 
-    padding-right: 2.5rem;
+    padding-right: 2rem;
 
     padding-bottom: 170px;
 
     max-width: 1500px;
+}
+
+/* =========================================================
+MAIN GLASS PANEL
+========================================================= */
+
+.main > div {
+
+    background: rgba(15,15,25,0.35);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.10);
+
+    border-radius: 28px;
+
+    padding: 25px;
+
+    box-shadow:
+    0 8px 40px rgba(0,0,0,0.45),
+    inset 0 1px 1px rgba(255,255,255,0.08);
 }
 
 /* =========================================================
@@ -82,32 +113,36 @@ SIDEBAR
 
 [data-testid="stSidebar"] {
 
-    background: white;
+    background: rgba(255,255,255,0.08);
 
-    border-right: 1px solid rgba(0,0,0,0.06);
+    backdrop-filter: blur(20px);
 
-    padding-top: 1rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
 }
 
 [data-testid="stSidebar"] * {
-    color: #111827 !important;
+    color: #F5EFFF !important;
 }
 
 /* =========================================================
-LOGO
+SIDEBAR LOGO
 ========================================================= */
 
 .sidebar-logo {
 
-    font-size: 28px;
+    font-size: 32px;
 
     font-weight: 800;
 
-    color: #4F46E5;
+    color: #F8E9FF;
+
+    margin-top: 20px;
 
     margin-bottom: 80px;
 
     letter-spacing: -1px;
+
+    text-shadow: 0 0 15px rgba(200,120,255,0.6);
 }
 
 /* =========================================================
@@ -122,34 +157,34 @@ BUTTONS
 
     border-radius: 22px;
 
-    border: none;
+    border: 1px solid rgba(255,255,255,0.16);
 
-    background: white;
+    background: rgba(255,255,255,0.08);
 
-    color: #111827 !important;
+    backdrop-filter: blur(12px);
+
+    color: #F5EFFF !important;
 
     font-weight: 700;
 
     font-size: 17px;
 
-    border: 1px solid rgba(0,0,0,0.06);
-
-    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    box-shadow:
+    0 0 18px rgba(180,100,255,0.20),
+    inset 0 0 10px rgba(255,255,255,0.06);
 
     transition: 0.25s;
-
-    padding: 0 24px;
 }
 
 .stButton button:hover {
 
-    border: 1px solid #4F46E5;
-
-    color: #4F46E5 !important;
-
     transform: translateY(-3px);
 
-    box-shadow: 0 14px 30px rgba(79,70,229,0.12);
+    border: 1px solid rgba(210,140,255,0.7);
+
+    box-shadow:
+    0 0 25px rgba(190,120,255,0.55),
+    inset 0 0 18px rgba(255,255,255,0.12);
 }
 
 /* =========================================================
@@ -160,70 +195,74 @@ RADIO BUTTONS
 
     display: flex;
 
-    gap: 18px;
+    gap: 22px;
 
-    margin-bottom: 28px;
+    margin-bottom: 30px;
 }
 
 .stRadio label {
 
-    background: white !important;
+    background: rgba(255,255,255,0.08) !important;
 
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
 
     padding: 16px 24px;
 
-    border-radius: 18px;
+    border-radius: 20px;
+
+    backdrop-filter: blur(12px);
+
+    color: #F8E9FF !important;
+
+    box-shadow:
+    0 0 18px rgba(180,100,255,0.25),
+    inset 0 0 12px rgba(255,255,255,0.05);
 
     transition: 0.25s;
-
-    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
-
-    font-size: 17px !important;
-
-    font-weight: 700 !important;
 }
 
 .stRadio label:hover {
 
-    border: 1px solid #4F46E5;
-
     transform: translateY(-2px);
 
-    box-shadow: 0 12px 24px rgba(79,70,229,0.10);
+    border: 1px solid rgba(220,160,255,0.75);
+
+    box-shadow:
+    0 0 30px rgba(190,120,255,0.55);
 }
 
 /* =========================================================
-CHAT
+CHAT MESSAGE
 ========================================================= */
 
 [data-testid="stChatMessage"] {
 
-    background: white;
+    background: rgba(255,255,255,0.07);
 
-    border-radius: 26px;
+    border: 1px solid rgba(255,255,255,0.10);
 
-    padding: 24px;
+    backdrop-filter: blur(14px);
 
-    margin-bottom: 20px;
+    border-radius: 24px;
 
-    border: 1px solid rgba(0,0,0,0.05);
+    padding: 22px;
 
-    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    margin-bottom: 18px;
+
+    color: #F8EFFF;
+
+    box-shadow:
+    0 0 22px rgba(180,100,255,0.12);
 
     max-width: 980px;
 
     margin-left: auto;
 
     margin-right: auto;
-
-    font-size: 17px;
-
-    line-height: 1.8;
 }
 
 /* =========================================================
-CHAT INPUT PERFECT ALIGNMENT
+CHAT INPUT
 ========================================================= */
 
 .stChatInput {
@@ -245,43 +284,30 @@ CHAT INPUT PERFECT ALIGNMENT
 
 .stChatInput > div {
 
-    background: white;
+    background: rgba(255,255,255,0.08);
 
-    border-radius: 30px;
+    backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+
+    border-radius: 32px;
 
     padding: 14px 18px;
 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow:
+    0 0 25px rgba(180,100,255,0.25),
+    inset 0 0 12px rgba(255,255,255,0.06);
 }
-
-/* INPUT FIELD */
 
 .stChatInput input {
 
     background: transparent !important;
 
-    color: #111827 !important;
+    color: #F8EFFF !important;
 
     font-size: 17px !important;
 
     font-weight: 500;
-
-    padding-left: 8px;
-}
-
-/* SEND BUTTON */
-
-.stChatInput button {
-
-    margin-right: 6px;
-
-    border-radius: 50% !important;
-
-    height: 42px !important;
-
-    width: 42px !important;
 }
 
 /* =========================================================
@@ -290,15 +316,17 @@ UPLOAD BOX
 
 [data-testid="stFileUploader"] {
 
-    background: white;
+    background: rgba(255,255,255,0.07);
 
-    border: 2px dashed rgba(79,70,229,0.2);
+    border: 1px dashed rgba(220,160,255,0.45);
 
-    border-radius: 28px;
+    border-radius: 26px;
+
+    backdrop-filter: blur(12px);
 
     padding: 40px;
 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    color: #F5EFFF !important;
 }
 
 /* =========================================================
@@ -307,19 +335,20 @@ DATAFRAME
 
 [data-testid="stDataFrame"] {
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     overflow: hidden;
 
-    border: 1px solid rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
 /* =========================================================
-REMOVE LINE
+TEXT COLORS
 ========================================================= */
 
-hr {
-    display: none;
+h1, h2, h3, h4, h5, h6, p, span, label {
+
+    color: #F8EFFF !important;
 }
 
 /* =========================================================
@@ -331,12 +360,14 @@ SCROLLBAR
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.12);
+
+    background: rgba(190,120,255,0.5);
+
     border-radius: 10px;
 }
 
 /* =========================================================
-MOBILE RESPONSIVE
+MOBILE
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -456,146 +487,7 @@ with col4:
         )
 
 # ============================================================
-# FILE UPLOAD
-# ============================================================
-
-if st.session_state.chat_mode == "📂 Upload & Analyze Reports":
-
-    st.markdown("## 📂 Upload Industrial Reports")
-
-    uploaded_files = st.file_uploader(
-        "Upload Reports",
-        type=["pdf", "xlsx", "csv"],
-        accept_multiple_files=True
-    )
-
-    if uploaded_files:
-
-        st.session_state.uploaded_files = uploaded_files
-
-        try:
-
-            all_documents = []
-
-            for uploaded_file in uploaded_files:
-
-                with tempfile.NamedTemporaryFile(
-                    delete=False,
-                    suffix=f".{uploaded_file.name.split('.')[-1]}"
-                ) as tmp:
-
-                    tmp.write(uploaded_file.read())
-
-                    temp_path = tmp.name
-
-                if uploaded_file.name.endswith(".pdf"):
-
-                    loader = PyPDFLoader(temp_path)
-
-                    documents = loader.load()
-
-                    all_documents.extend(documents)
-
-                elif uploaded_file.name.endswith(".xlsx"):
-
-                    excel_data = pd.read_excel(
-                        temp_path,
-                        sheet_name=None
-                    )
-
-                    for sheet_name, df in excel_data.items():
-
-                        st.subheader(f"📄 Sheet: {sheet_name}")
-
-                        st.dataframe(df)
-
-                        numeric_cols = df.select_dtypes(
-                            include='number'
-                        ).columns
-
-                        if len(numeric_cols) >= 2:
-
-                            fig1 = px.line(
-                                df,
-                                x=numeric_cols[0],
-                                y=numeric_cols[1],
-                                title="Industrial Trend Analysis"
-                            )
-
-                            st.plotly_chart(
-                                fig1,
-                                use_container_width=True
-                            )
-
-                        summary = df.describe().to_string()
-
-                        text = f"""
-Sheet Name: {sheet_name}
-
-Data:
-{df.to_string(index=False)}
-
-Summary:
-{summary}
-"""
-
-                        all_documents.append(
-                            Document(page_content=text)
-                        )
-
-                elif uploaded_file.name.endswith(".csv"):
-
-                    df = pd.read_csv(temp_path)
-
-                    st.dataframe(df)
-
-                    summary = df.describe().to_string()
-
-                    text = f"""
-CSV Data:
-{df.to_string(index=False)}
-
-Summary:
-{summary}
-"""
-
-                    all_documents.append(
-                        Document(page_content=text)
-                    )
-
-            splitter = RecursiveCharacterTextSplitter(
-                chunk_size=700,
-                chunk_overlap=150
-            )
-
-            chunks = splitter.split_documents(all_documents)
-
-            @st.cache_resource
-            def load_embeddings():
-
-                return HuggingFaceEmbeddings(
-                    model_name="BAAI/bge-small-en-v1.5"
-                )
-
-            embeddings = load_embeddings()
-
-            st.session_state.vectorstore = FAISS.from_documents(
-                chunks,
-                embeddings
-            )
-
-            st.session_state.files_processed = True
-
-            st.success(
-                f"✅ {len(uploaded_files)} file(s) processed successfully!"
-            )
-
-        except Exception as e:
-
-            st.error(f"Error processing file: {e}")
-
-# ============================================================
-# DISPLAY CHAT
+# CHAT DISPLAY
 # ============================================================
 
 for chat in st.session_state.chat_history:
@@ -611,7 +503,7 @@ for chat in st.session_state.chat_history:
 # ============================================================
 
 question = st.chat_input(
-    "Ask anything about industrial reports..."
+    "Ask anything about Industrial reports..."
 )
 
 if not question and st.session_state.quick_prompt:
@@ -640,8 +532,7 @@ if (
             "role": "system",
             "content": """
 You are an advanced industrial AI assistant.
-
-Be intelligent, modern and professional.
+Be intelligent, futuristic and professional.
 """
         },
         {
@@ -661,87 +552,6 @@ Be intelligent, modern and professional.
             messages=messages,
             temperature=0.7,
             max_tokens=1500,
-            stream=True
-        )
-
-        for chunk in response:
-
-            delta = chunk.choices[0].delta.content
-
-            if delta:
-
-                full_response += delta
-
-                placeholder.markdown(full_response + "▌")
-
-        placeholder.markdown(full_response)
-
-    st.session_state.chat_history.append({
-        "question": question,
-        "answer": full_response
-    })
-
-# ============================================================
-# RAG RESPONSE
-# ============================================================
-
-if (
-    question
-    and st.session_state.vectorstore is not None
-    and st.session_state.chat_mode
-    == "📂 Upload & Analyze Reports"
-):
-
-    with st.chat_message("user"):
-        st.write(question)
-
-    docs = st.session_state.vectorstore.similarity_search(
-        question,
-        k=5
-    )
-
-    context = "\n\n".join(
-        [doc.page_content for doc in docs]
-    )
-
-    prompt = f"""
-You are an advanced industrial AI analyst.
-
-Rules:
-- Be conversational
-- Give accurate insights
-- Mention anomalies
-- Mention trends
-- Give recommendations
-- Answer ONLY from context
-
-CONTEXT:
-{context}
-
-QUESTION:
-{question}
-"""
-
-    api_key = st.secrets["GROQ_API_KEY"]
-
-    client = Groq(api_key=api_key)
-
-    with st.chat_message("assistant"):
-
-        placeholder = st.empty()
-
-        full_response = ""
-
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.3,
-            max_tokens=1800,
             stream=True
         )
 
