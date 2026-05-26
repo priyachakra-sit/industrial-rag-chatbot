@@ -870,6 +870,9 @@ RULES:
 6. Give recommendations
 7. Never hallucinate
 8. Use only provided data
+9. Avoid repeating the same information
+10. Keep answers concise unless detailed analysis is requested
+11. Focus on actionable insights
 
 """
 
