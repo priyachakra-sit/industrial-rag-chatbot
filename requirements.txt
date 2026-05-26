@@ -11,3 +11,4 @@ pypdf
 groq
 torch
 openpyxl
+tavily-python
