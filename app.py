@@ -21,7 +21,7 @@ import tempfile
 # ============================================================
 
 st.set_page_config(
-    page_title="Industrial AI",
+    page_title="InsightForge AI",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -252,7 +252,36 @@ def advanced_dataframe_analysis(df):
 
 with st.sidebar:
 
-    st.title("⚡ Industrial AI")
+    st.title("⚡ InsightForge AI ")
+    st.markdown("---")
+
+    st.caption("🚀 AI Tech Stack")
+
+    st.markdown("""
+    ✅ Groq LLM  
+    ✅ Tavily Web Search  
+    ✅ FAISS Vector DB  
+    ✅ HuggingFace Embeddings  
+    ✅ RAG Pipeline  
+    ✅ Streamlit UI  
+    ✅ Conversational Memory  
+    ✅ Industrial Analytics AI  
+    """)
+
+    st.markdown("---")
+
+    st.caption("💡 Features")
+
+    st.markdown("""
+    • Smart AI Chat  
+    • Web Search Support  
+    • Upload PDF/Excel/CSV  
+    • AI Report Analysis  
+    • Detect Anomalies  
+    • Generate Insights  
+    • Memory Continuity  
+    • Conversational RAG  
+    """)
 
     if st.button("➕ Start New Chat"):
 
