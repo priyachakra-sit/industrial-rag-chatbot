@@ -1,7 +1,8 @@
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
-# LIGHT EMERALD PREMIUM GLASS UI
-# FULL FINAL UPDATED VERSION
+# PREMIUM LIGHT EMERALD GLASS UI
+# WITH ANIMATED GLOW BUTTONS
+# FULL UPDATED VERSION
 # ============================================================
 
 import pandas as pd
@@ -152,10 +153,14 @@ SIDEBAR LOGO
 }
 
 /* =========================================================
-BUTTONS
+PREMIUM GLOW BUTTONS
 ========================================================= */
 
 .stButton button {
+
+    position: relative;
+
+    overflow: hidden;
 
     width: 100%;
 
@@ -180,18 +185,60 @@ BUTTONS
     0 0 15px rgba(0,180,110,0.08),
     inset 0 1px 1px rgba(255,255,255,0.7);
 
-    transition: 0.25s;
+    transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border 0.25s ease;
 }
+
+/* ANIMATED LIGHT SWEEP */
+
+.stButton button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: -120%;
+
+    width: 80%;
+
+    height: 100%;
+
+    background:
+    linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.55),
+        transparent
+    );
+
+    transform: skewX(-25deg);
+
+    transition: 0.7s;
+}
+
+/* HOVER EFFECT */
 
 .stButton button:hover {
 
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.01);
 
-    border: 1px solid rgba(0,180,110,0.35);
+    border: 1px solid rgba(0,180,110,0.45);
 
     box-shadow:
-    0 10px 25px rgba(0,180,110,0.12),
-    0 0 20px rgba(0,180,110,0.14);
+    0 12px 30px rgba(0,180,110,0.16),
+    0 0 24px rgba(0,180,110,0.18),
+    inset 0 1px 1px rgba(255,255,255,0.8);
+}
+
+/* LIGHT SWEEP ANIMATION */
+
+.stButton button:hover::before {
+
+    left: 140%;
 }
 
 /* =========================================================
