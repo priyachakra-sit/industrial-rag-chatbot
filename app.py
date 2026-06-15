@@ -214,7 +214,6 @@ header, footer, #MainMenu,
 # ── TOP NAVBAR ──
 st.markdown("""
 <div class="topbar">
-    <span class="topbar-logo">⚡ InsightForge AI</span>
     <span class="topbar-sub">Your Intelligent Industrial Assistant</span>
 </div>
 """, unsafe_allow_html=True)
