@@ -1,4 +1,3 @@
-
 # ============================================================
 # INDUSTRIAL AI WORKSPACE
 # FINAL STABLE VERSION
@@ -71,7 +70,7 @@ header, footer, #MainMenu {
 }
 
 .main > div {
-    background: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.75);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.55);
     border-radius: 30px;
@@ -114,20 +113,15 @@ header, footer, #MainMenu {
 
 .stChatInput {
     position: fixed;
-    bottom: 24px;
-    left: calc(50% + 60px);
+    bottom: 30px;
+    width: 75%;
+    left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 420px);
-    max-width: 1050px;
-    z-index: 999;
 }
 
 .stChatInput > div {
-    background: rgba(255,255,255,0.50);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.75);
-    border-radius: 34px;
-    padding: 14px 18px;
+    border-radius: 40px;
+    background: white;
 }
 
 </style>
@@ -183,43 +177,6 @@ RULES:
 """
 
 # ============================================================
-# WEB SEARCH
-# ============================================================
-
-def web_search(query):
-
-    try:
-
-        results = tavily.search(
-            query=query,
-            search_depth="advanced",
-            max_results=2
-        )
-
-        web_context = ""
-
-        for result in results["results"]:
-
-            web_context += f"""
-
-TITLE:
-{result['title']}
-
-CONTENT:
-{result['content']}
-
-URL:
-{result['url']}
-
-"""
-
-        return web_context
-
-    except:
-
-        return ""
-
-# ============================================================
 # DATA ANALYSIS
 # ============================================================
 
@@ -247,191 +204,161 @@ def advanced_dataframe_analysis(df):
     return analysis
 
 # ============================================================
-# SIDEBAR
+# HEADER
 # ============================================================
 
+st.markdown("""
+<div style='text-align:center'>
 
-# ============================================================
-# MODE
-# ============================================================
-
-chat_mode = "📂 Upload & Analyze Reports"
-
-st.markdown(
-"""
-<div style="text-align:center;padding-top:20px;">
-
-<h1 style="
+<h1 style='font-size:60px;
 color:#0F5132;
-font-size:52px;
-font-weight:800;
-">
+font-weight:800;'>
+
 ⚡ InsightForge AI
+
 </h1>
 
-<h3 style="
-color:#5B6B65;
-font-weight:500;
-">
+<h3 style='color:#5B6B65;'>
+
 Your Intelligent Industrial Assistant
+
 </h3>
-
-<br>
-
-<div style="
-display:inline-block;
-padding:15px 25px;
-background:rgba(255,255,255,0.65);
-border-radius:20px;
-backdrop-filter:blur(15px);
-">
-
-📄 Upload your reports and ask me anything.
-
-</div>
 
 </div>
 """,
-unsafe_allow_html=True
-)
-# ============================================================
-# QUICK BUTTONS
-# ============================================================
-
+unsafe_allow_html=True)
 
 # ============================================================
 # FILE UPLOAD
 # ============================================================
 
-if chat_mode == "📂 Upload & Analyze Reports":
+col1, col2, col3 = st.columns([1, 2, 1])
 
+with col2:
     uploaded_files = st.file_uploader(
-    "",
-    type=["pdf","xlsx","csv"],
-    accept_multiple_files=True,
-    label_visibility="collapsed"
+        "",
+        type=["pdf", "xlsx", "csv"],
+        accept_multiple_files=True,
+        label_visibility="collapsed"
     )
-if not uploaded_files:
+
+# ============================================================
+# SHOW WELCOME MESSAGE ONLY WHEN NO FILES AND NO CHAT
+# ============================================================
+
+if not uploaded_files and len(st.session_state.chat_history) == 0:
 
     st.markdown(
-    """
-    <div style="
-    text-align:center;
-    margin-top:120px;
-    color:#0F5132;
-    ">
+        """
+        <div style="
+        text-align:center;
+        margin-top:80px;
+        color:#0F5132;
+        ">
 
-    <h1>💬</h1>
+        <div style='font-size:90px;'>💬</div>
 
-    <h2>Start a conversation</h2>
+        <h2>Start a Conversation</h2>
 
-    <p>
-    Upload your reports and ask questions
-    to get insights and answers.
-    </p>
+        <p>
+        Upload your reports and ask questions
+        to get insights and answers.<br>
+        Or just ask me anything!
+        </p>
 
-    </div>
-    """,
-    unsafe_allow_html=True
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-    if uploaded_files:
 
-        all_documents = []
+# ============================================================
+# PROCESS UPLOADED FILES
+# ============================================================
 
-        for uploaded_file in uploaded_files:
+if uploaded_files:
 
-            with tempfile.NamedTemporaryFile(
-                delete=False,
-                suffix=f".{uploaded_file.name.split('.')[-1]}"
-            ) as tmp:
+    all_documents = []
 
-                tmp.write(uploaded_file.read())
+    for uploaded_file in uploaded_files:
 
-                temp_path = tmp.name
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=f".{uploaded_file.name.split('.')[-1]}"
+        ) as tmp:
 
-            if uploaded_file.name.endswith(".pdf"):
+            tmp.write(uploaded_file.read())
+            temp_path = tmp.name
 
-                loader = PyPDFLoader(temp_path)
-                documents = loader.load()
-                all_documents.extend(documents)
+        if uploaded_file.name.endswith(".pdf"):
 
-            elif uploaded_file.name.endswith(".xlsx"):
+            loader = PyPDFLoader(temp_path)
+            documents = loader.load()
+            all_documents.extend(documents)
 
-                excel_data = pd.read_excel(
-                    temp_path,
-                    sheet_name=None
-                )
+        elif uploaded_file.name.endswith(".xlsx"):
 
-                for sheet_name, df in excel_data.items():
+            excel_data = pd.read_excel(
+                temp_path,
+                sheet_name=None
+            )
 
-                    
-                    
-
-                    analysis = advanced_dataframe_analysis(df)
-
-                    text = f"""
-
-DATASET:
-{df.head(100).to_string(index=False)}
-
-ANALYSIS:
-{analysis}
-
-"""
-
-                    all_documents.append(
-                        Document(page_content=text)
-                    )
-
-            elif uploaded_file.name.endswith(".csv"):
-
-                df = pd.read_csv(temp_path)
-
-                
+            for sheet_name, df in excel_data.items():
 
                 analysis = advanced_dataframe_analysis(df)
 
                 text = f"""
-
 DATASET:
 {df.head(100).to_string(index=False)}
 
 ANALYSIS:
 {analysis}
-
 """
 
                 all_documents.append(
                     Document(page_content=text)
                 )
 
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1200,
-            chunk_overlap=250
-        )
+        elif uploaded_file.name.endswith(".csv"):
 
-        chunks = splitter.split_documents(all_documents)
+            df = pd.read_csv(temp_path)
+            analysis = advanced_dataframe_analysis(df)
 
-        @st.cache_resource
-        def load_embeddings():
+            text = f"""
+DATASET:
+{df.head(100).to_string(index=False)}
 
-            return HuggingFaceEmbeddings(
-                model_name="BAAI/bge-small-en-v1.5"
+ANALYSIS:
+{analysis}
+"""
+
+            all_documents.append(
+                Document(page_content=text)
             )
 
-        embeddings = load_embeddings()
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1200,
+        chunk_overlap=250
+    )
 
-        st.session_state.vectorstore = FAISS.from_documents(
-            chunks,
-            embeddings
+    chunks = splitter.split_documents(all_documents)
+
+    @st.cache_resource
+    def load_embeddings():
+        return HuggingFaceEmbeddings(
+            model_name="BAAI/bge-small-en-v1.5"
         )
 
-        st.toast("Reports uploaded successfully")
+    embeddings = load_embeddings()
 
-        st.session_state.analysis_ready = False
+    st.session_state.vectorstore = FAISS.from_documents(
+        chunks,
+        embeddings
+    )
+
+    st.toast("Reports uploaded successfully ✅")
 
 # ============================================================
-# DISPLAY CHAT
+# DISPLAY CHAT HISTORY
 # ============================================================
 
 recent_history = st.session_state.chat_history[-4:]
@@ -447,158 +374,33 @@ for chat in recent_history:
 # ============================================================
 # CHAT INPUT
 # ============================================================
+
 question = st.chat_input(
-    "Ask anything about uploaded reports..."
+    "Ask anything about uploaded reports or just chat..."
 )
 
 # ============================================================
-# GENERAL AI CHAT
+# HANDLE QUESTION — RAG or NORMAL CHAT
 # ============================================================
 
-if (
-    question
-    and chat_mode == "🧠 General AI Chat"
-):
+if question:
 
     with st.chat_message("user"):
-
         st.write(question)
 
-    with st.chat_message("assistant"):
+    # FILE UPLOADED → RAG
+    if st.session_state.vectorstore is not None:
 
-        placeholder = st.empty()
+        docs = st.session_state.vectorstore.similarity_search(
+            question,
+            k=4
+        )
 
-        full_response = ""
+        context = "\n\n".join(
+            [doc.page_content for doc in docs]
+        )
 
-        latest_keywords = [
-    "latest",
-    "news",
-    "today",
-    "current",
-    "recent",
-    "update",
-    "2025",
-    "trend"
-]
-
-        if any(word in question.lower() for word in latest_keywords):
-
-            web_context = web_search(question)
-
-        else:
-
-            web_context = ""
-
-        messages = [
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT
-            }
-        ]
-
-        recent_history = st.session_state.chat_history[-4:]
-
-        for chat in recent_history:
-
-            messages.append({
-                "role": "user",
-                "content": chat["question"]
-            })
-
-            messages.append({
-                "role": "assistant",
-                "content": chat["answer"]
-            })
-
-        if web_context:
-
-            messages.append({
-                "role": "system",
-                "content": f"""
-
-LATEST WEB INFORMATION:
-
-{web_context}
-
-"""
-            })
-
-        messages.append({
-            "role": "user",
-            "content": question
-        })
-
-        try:
-
-            response = client.chat.completions.create(
-
-                model="llama-3.1-8b-instant",
-
-                messages=messages,
-
-                temperature=0.1,
-
-                max_tokens=1200,
-
-                stream=True
-            )
-
-            for chunk in response:
-
-                delta = chunk.choices[0].delta.content
-
-                if delta:
-
-                    full_response += delta
-
-                    placeholder.markdown(
-                        full_response + "▌"
-                    )
-
-            placeholder.markdown(full_response)
-
-        except Exception:
-
-            placeholder.error(
-                "⚠️ AI service is temporarily busy. Please try again in a few seconds."
-            )
-
-    if full_response:
-
-        st.session_state.chat_history.append({
-
-            "question": question,
-
-            "answer": full_response
-        })
-
-# ============================================================
-# RAG CHATBOT
-# ============================================================
-
-if (
-    question
-    and st.session_state.vectorstore is not None
-    and chat_mode == "📂 Upload & Analyze Reports"
-):
-
-    with st.chat_message("user"):
-
-        st.write(question)
-
-    docs = st.session_state.vectorstore.similarity_search(
-        question,
-        k=4
-    )
-
-    context = "\n\n".join(
-        [doc.page_content for doc in docs]
-    )
-
-    prompt = f"""
-
-You are an advanced industrial AI analytics engine.
-
+        prompt = f"""
 DATA CONTEXT:
 {context}
 
@@ -613,36 +415,48 @@ RULES:
 5. Do not generate recommendations unless asked.
 6. Keep responses concise.
 7. If data is unavailable, say "Data not available".
-
 """
+
+    # NO FILE → NORMAL CHAT
+    else:
+
+        prompt = question
+
+    # Build message history for context
+    messages = [
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+        }
+    ]
+
+    for chat in st.session_state.chat_history[-4:]:
+        messages.append({
+            "role": "user",
+            "content": chat["question"]
+        })
+        messages.append({
+            "role": "assistant",
+            "content": chat["answer"]
+        })
+
+    messages.append({
+        "role": "user",
+        "content": prompt
+    })
 
     with st.chat_message("assistant"):
 
         placeholder = st.empty()
-
         full_response = ""
 
         try:
 
             response = client.chat.completions.create(
-
-                model="llama-3.1-8b-instant",
-
-                messages=[
-                    {
-                        "role": "system",
-                        "content": SYSTEM_PROMPT
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-
+                model="llama-3.3-70b-versatile",
+                messages=messages,
                 temperature=0.1,
-
                 max_tokens=1000,
-
                 stream=True
             )
 
@@ -651,12 +465,8 @@ RULES:
                 delta = chunk.choices[0].delta.content
 
                 if delta:
-
                     full_response += delta
-
-                    placeholder.markdown(
-                        full_response + "▌"
-                    )
+                    placeholder.markdown(full_response + "▌")
 
             placeholder.markdown(full_response)
 
@@ -669,9 +479,6 @@ RULES:
     if full_response:
 
         st.session_state.chat_history.append({
-
             "question": question,
-
             "answer": full_response
         })
-
