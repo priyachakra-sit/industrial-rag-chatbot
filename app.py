@@ -107,7 +107,7 @@ header, footer, #MainMenu {
     padding: 22px;
     margin-bottom: 18px;
     color: #103B2C;
-    max-width: 980px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -250,110 +250,54 @@ def advanced_dataframe_analysis(df):
 # SIDEBAR
 # ============================================================
 
-with st.sidebar:
-
-    st.title("⚡ InsightForge AI ")
-    st.markdown("---")
-
-    st.caption("🚀 AI Tech Stack")
-
-    st.markdown("""
-    ✅ Groq LLM  
-    ✅ Tavily Web Search  
-    ✅ FAISS Vector DB  
-    ✅ HuggingFace Embeddings  
-    ✅ RAG Pipeline  
-    ✅ Streamlit UI  
-    ✅ Conversational Memory  
-    ✅ Industrial Analytics AI  
-    """)
-
-    st.markdown("---")
-
-    st.caption("💡 Features")
-
-    st.markdown("""
-    • Smart AI Chat  
-    • Web Search Support  
-    • Upload PDF/Excel/CSV  
-    • AI Report Analysis  
-    • Detect Anomalies  
-    • Generate Insights  
-    • Memory Continuity  
-    • Conversational RAG  
-    """)
-
-    if st.button("➕ Start New Chat"):
-
-        st.session_state.chat_history = []
-
-        st.session_state.vectorstore = None
-
-        st.session_state.quick_prompt = ""
-
-        st.session_state.analysis_ready = False
-
-        st.rerun()
 
 # ============================================================
 # MODE
 # ============================================================
 
-chat_mode = st.radio(
-    "",
-    [
-        "🧠 General AI Chat",
-        "📂 Upload & Analyze Reports"
-    ],
-    horizontal=True,
-    label_visibility="collapsed"
-)
+chat_mode = "📂 Upload & Analyze Reports"
 
+st.markdown(
+"""
+<div style="text-align:center;padding-top:20px;">
+
+<h1 style="
+color:#0F5132;
+font-size:52px;
+font-weight:800;
+">
+⚡ InsightForge AI
+</h1>
+
+<h3 style="
+color:#5B6B65;
+font-weight:500;
+">
+Your Intelligent Industrial Assistant
+</h3>
+
+<br>
+
+<div style="
+display:inline-block;
+padding:15px 25px;
+background:rgba(255,255,255,0.65);
+border-radius:20px;
+backdrop-filter:blur(15px);
+">
+
+📄 Upload your reports and ask me anything.
+
+</div>
+
+</div>
+""",
+unsafe_allow_html=True
+)
 # ============================================================
 # QUICK BUTTONS
 # ============================================================
 
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-
-    if st.button("⚡ Analyze Reports"):
-
-        st.session_state.quick_prompt = (
-            "Analyze the uploaded reports deeply."
-        )
-
-        st.session_state.analysis_ready = True
-
-with col2:
-
-    if st.button("📊 Generate Insights"):
-
-        st.session_state.quick_prompt = (
-            "Generate insights from uploaded data."
-        )
-
-        st.session_state.analysis_ready = True
-
-with col3:
-
-    if st.button("🧠 Summarize Data"):
-
-        st.session_state.quick_prompt = (
-            "Summarize the uploaded reports."
-        )
-
-        st.session_state.analysis_ready = True
-
-with col4:
-
-    if st.button("📈 Detect Anomalies"):
-
-        st.session_state.quick_prompt = (
-            "Detect anomalies in uploaded data."
-        )
-
-        st.session_state.analysis_ready = True
 
 # ============================================================
 # FILE UPLOAD
@@ -362,11 +306,34 @@ with col4:
 if chat_mode == "📂 Upload & Analyze Reports":
 
     uploaded_files = st.file_uploader(
-        "Upload Reports",
-        type=["pdf", "xlsx", "csv"],
-        accept_multiple_files=True
+    "",
+    type=["pdf","xlsx","csv"],
+    accept_multiple_files=True,
+    label_visibility="collapsed"
     )
+if not uploaded_files:
 
+    st.markdown(
+    """
+    <div style="
+    text-align:center;
+    margin-top:120px;
+    color:#0F5132;
+    ">
+
+    <h1>💬</h1>
+
+    <h2>Start a conversation</h2>
+
+    <p>
+    Upload your reports and ask questions
+    to get insights and answers.
+    </p>
+
+    </div>
+    """,
+    unsafe_allow_html=True
+    )
     if uploaded_files:
 
         all_documents = []
@@ -459,7 +426,7 @@ ANALYSIS:
             embeddings
         )
 
-        st.success("✅ Analysis Engine Ready!")
+        st.toast("Reports uploaded successfully")
 
         st.session_state.analysis_ready = False
 
