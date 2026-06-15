@@ -1,5 +1,5 @@
 # ============================================================
-# INSIGHTFORGE AI — CLEAN FINAL VERSION
+# INSIGHTFORGE AI — FINAL VERSION WITH NEW CHAT
 # ============================================================
 
 import pandas as pd
@@ -44,25 +44,52 @@ header, footer, #MainMenu,
     display: none !important;
 }
 
-.block-container { padding: 70px 0 160px !important; max-width: 100% !important; }
-
+.block-container { padding: 70px 0 180px !important; max-width: 100% !important; }
 [data-testid="stSidebar"] { display: none !important; }
 
-/* TOP NAV */
+/* ── TOP NAV ── */
 .topbar {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 60px;
+    position: fixed; top: 0; left: 0; right: 0; height: 60px;
     background: rgba(240,250,244,0.97);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid #d4ecdf;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px;
-    z-index: 9999;
+    padding: 0 32px; z-index: 9999;
 }
 .topbar-logo { font-size: 21px; font-weight: 800; color: #0d5c30; }
-.topbar-sub { font-size: 13px; color: #5a8a6a; }
+.topbar-sub  { font-size: 13px; color: #5a8a6a; }
 
-/* CHAT MESSAGES */
+/* ── NEW CHAT BTN — fixed top-right ── */
+div[data-testid="stButton"].new-chat-fixed {
+    position: fixed !important;
+    top: 12px !important; right: 28px !important;
+    z-index: 10000 !important;
+}
+
+/* Target the new-chat button specifically by key class we inject */
+.new-chat-area {
+    position: fixed;
+    top: 11px; right: 24px;
+    z-index: 10000;
+}
+
+.new-chat-area .stButton > button {
+    background: #2d8653 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 30px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    padding: 8px 20px !important;
+    height: auto !important;
+    width: auto !important;
+    box-shadow: 0 2px 10px rgba(45,134,83,0.25) !important;
+}
+.new-chat-area .stButton > button:hover {
+    background: #236b42 !important;
+}
+
+/* ── CHAT MESSAGES ── */
 [data-testid="stChatMessage"] {
     background: white !important;
     border: 1px solid #e0ede6 !important;
@@ -70,12 +97,11 @@ header, footer, #MainMenu,
     padding: 16px 22px !important;
     margin-bottom: 12px !important;
     max-width: 780px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-left: auto !important; margin-right: auto !important;
     box-shadow: 0 2px 8px rgba(0,100,50,0.05) !important;
 }
 
-/* CHAT INPUT */
+/* ── CHAT INPUT ── */
 [data-testid="stChatInput"] {
     position: fixed !important;
     bottom: 40px !important;
@@ -87,7 +113,6 @@ header, footer, #MainMenu,
     padding: 0 !important;
     z-index: 9998 !important;
 }
-
 [data-testid="stChatInput"] > div {
     background: white !important;
     border: 2px solid #2d8653 !important;
@@ -95,13 +120,11 @@ header, footer, #MainMenu,
     box-shadow: 0 4px 24px rgba(45,134,83,0.15) !important;
     min-height: 58px !important;
 }
-
 [data-testid="stChatInput"] textarea {
     font-size: 15px !important;
     padding: 16px 22px !important;
     color: #0d2e1c !important;
 }
-
 [data-testid="stChatInput"] button {
     background: #2d8653 !important;
     border-radius: 50% !important;
@@ -109,23 +132,19 @@ header, footer, #MainMenu,
     width: 42px !important; height: 42px !important;
 }
 
-/* DISCLAIMER */
+/* ── DISCLAIMER ── */
 .disclaimer-bar {
     position: fixed; bottom: 10px; left: 0; right: 0;
-    text-align: center;
-    font-size: 11px; color: #8aaa96;
-    z-index: 9997;
+    text-align: center; font-size: 11px; color: #8aaa96; z-index: 9997;
 }
 
-/* WEB BADGE */
+/* ── BADGES ── */
 .ws-badge {
     display: inline-flex; align-items: center; gap: 5px;
     background: #fff8e1; border: 1px solid #ffe082;
     border-radius: 12px; padding: 3px 10px;
     font-size: 11px; color: #795548; margin-bottom: 8px; font-weight: 500;
 }
-
-/* FILE BADGE */
 .file-badge {
     display: inline-flex; align-items: center; gap: 6px;
     background: #e8f7ee; border: 1px solid #b8dfc8;
@@ -133,54 +152,33 @@ header, footer, #MainMenu,
     font-size: 12px; font-weight: 600; color: #0d5c30; margin: 3px;
 }
 
-/* HERO SECTION */
+/* ── HERO ── */
 .hero-wrap {
-    text-align: center;
-    padding: 50px 20px 30px;
-    max-width: 860px;
-    margin: 0 auto;
+    text-align: center; padding: 50px 20px 30px;
+    max-width: 860px; margin: 0 auto;
 }
-
 .hero-bubble {
-    width: 90px; height: 90px;
-    background: #e2f4ea;
-    border-radius: 50%;
-    display: inline-flex;
+    width: 90px; height: 90px; background: #e2f4ea;
+    border-radius: 50%; display: inline-flex;
     align-items: center; justify-content: center;
-    font-size: 42px;
-    border: 2px solid #c2dece;
-    margin-bottom: 20px;
+    font-size: 42px; border: 2px solid #c2dece; margin-bottom: 20px;
 }
+.hero-title { font-size: 44px; font-weight: 800; color: #0d5c30; margin: 0 0 8px; letter-spacing: -1px; }
+.hero-sub   { font-size: 16px; color: #4a7a5a; margin: 0 0 36px; }
 
-.hero-title {
-    font-size: 44px; font-weight: 800;
-    color: #0d5c30; margin: 0 0 8px;
-    letter-spacing: -1px;
-}
-
-.hero-sub { font-size: 16px; color: #4a7a5a; margin: 0 0 36px; }
-
-/* FEATURE CARDS */
-.cards-row {
-    display: flex; gap: 14px; justify-content: center;
-    margin-bottom: 20px;
-}
-
+/* ── FEATURE CARDS ── */
+.cards-row { display: flex; gap: 14px; justify-content: center; margin-bottom: 20px; }
 .fcard {
-    background: white;
-    border: 1.5px solid #d4ecdf;
-    border-radius: 18px;
-    padding: 22px 18px 18px;
+    background: white; border: 1.5px solid #d4ecdf;
+    border-radius: 18px; padding: 22px 18px 18px;
     width: 168px; text-align: center;
-    box-shadow: 0 2px 12px rgba(45,134,83,0.07);
-    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(45,134,83,0.07); flex-shrink: 0;
 }
-
 .fcard .fci { font-size: 28px; margin-bottom: 10px; }
 .fcard .fct { font-weight: 700; font-size: 13px; color: #0d2e1c; margin-bottom: 4px; }
 .fcard .fcs { font-size: 11px; color: #5a8a6a; }
 
-/* ATTACH BTN */
+/* ── ATTACH + GENERAL BUTTONS ── */
 .stButton > button {
     background: white !important;
     border: 1.5px solid #c2dece !important;
@@ -189,36 +187,21 @@ header, footer, #MainMenu,
     font-weight: 600 !important;
     font-size: 13px !important;
     padding: 6px 16px !important;
-    height: auto !important;
-    width: auto !important;
+    height: auto !important; width: auto !important;
 }
-
 .stButton > button:hover {
     border-color: #2d8653 !important;
     background: #e8f7ee !important;
 }
 
-/* FILE UPLOADER */
+/* ── FILE UPLOADER ── */
 [data-testid="stFileUploader"] {
-    max-width: 780px;
-    margin: 0 auto 10px;
-    background: white;
-    border: 1.5px dashed #b8dfc8;
-    border-radius: 14px;
-    padding: 10px 16px;
+    max-width: 780px; margin: 0 auto 10px;
+    background: white; border: 1.5px dashed #b8dfc8;
+    border-radius: 14px; padding: 10px 16px;
 }
 
 </style>
-""", unsafe_allow_html=True)
-
-
-
-
-# ── DISCLAIMER ──
-st.markdown("""
-<div class="disclaimer-bar">
-    InsightForge AI can make mistakes. Verify important information. ⓘ
-</div>
 """, unsafe_allow_html=True)
 
 # ============================================================
@@ -317,6 +300,34 @@ def needs_web(q):
     return any(w in q.lower() for w in WEB_KEYWORDS)
 
 # ============================================================
+# TOP NAVBAR (HTML — logo + subtitle only)
+# ============================================================
+
+st.markdown("""
+<div class="topbar">
+    <span class="topbar-logo">⚡ InsightForge AI</span>
+    <span class="topbar-sub">Your Intelligent Industrial Assistant</span>
+</div>
+""", unsafe_allow_html=True)
+
+# ── NEW CHAT BUTTON — injected via a fixed-position div ──
+st.markdown('<div class="new-chat-area">', unsafe_allow_html=True)
+if st.button("✨  New Chat", key="new_chat_btn"):
+    st.session_state.chat_history = []
+    st.session_state.vectorstore = None
+    st.session_state.uploaded_file_names = []
+    st.session_state.show_uploader = False
+    st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ── DISCLAIMER ──
+st.markdown("""
+<div class="disclaimer-bar">
+    InsightForge AI can make mistakes. Verify important information. ⓘ
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================
 # HERO — only when no chat history
 # ============================================================
 
@@ -356,24 +367,21 @@ for chat in st.session_state.chat_history[-12:]:
         st.write(chat["answer"])
 
 # ============================================================
-# ATTACH FILE BUTTON (above chat input)
+# ATTACH FILE BUTTON + UPLOADER
 # ============================================================
 
 left, mid, right = st.columns([2, 6, 2])
 with left:
-    if st.button("📎  Attach File"):
+    if st.button("📎  Attach File", key="attach_btn"):
         st.session_state.show_uploader = not st.session_state.show_uploader
-
-# ============================================================
-# FILE UPLOADER (shown only when toggled)
-# ============================================================
 
 if st.session_state.show_uploader:
     uploaded_files = st.file_uploader(
         "Upload PDF, Excel or CSV",
         type=["pdf", "xlsx", "csv"],
         accept_multiple_files=True,
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="file_uploader"
     )
     if uploaded_files:
         with st.spinner("Processing files..."):
