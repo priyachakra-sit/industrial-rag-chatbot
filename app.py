@@ -303,12 +303,6 @@ def needs_web(q):
 # TOP NAVBAR (HTML — logo + subtitle only)
 # ============================================================
 
-st.markdown("""
-<div class="topbar">
-    <span class="topbar-logo">⚡ InsightForge AI</span>
-    <span class="topbar-sub">Your Intelligent Industrial Assistant</span>
-</div>
-""", unsafe_allow_html=True)
 
 # ── NEW CHAT BUTTON — injected via a fixed-position div ──
 st.markdown('<div class="new-chat-area">', unsafe_allow_html=True)
