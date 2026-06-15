@@ -1,6 +1,5 @@
 # ============================================================
-# INSIGHTFORGE AI
-# FINAL VERSION — ChatGPT-style UI + RAG + Web Search
+# INSIGHTFORGE AI — FINAL CLEAN VERSION
 # ============================================================
 
 import pandas as pd
@@ -27,7 +26,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# FULL UI — ChatGPT-style clean white/green design
+# CSS
 # ============================================================
 
 st.markdown("""
@@ -35,152 +34,250 @@ st.markdown("""
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-* {
+*, *::before, *::after {
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
 
 html, body, .stApp {
     background: #f0faf4 !important;
-    color: #0d2e1c;
+    color: #0d2e1c !important;
+    margin: 0;
+    padding: 0;
 }
 
+/* ── Hide ALL Streamlit chrome ── */
 header, footer, #MainMenu,
 [data-testid="stHeader"],
 [data-testid="stToolbar"],
 [data-testid="stDecoration"],
-[data-testid="collapsedControl"] {
+[data-testid="collapsedControl"],
+[data-testid="stStatusWidget"],
+.stDeployButton {
     display: none !important;
+    visibility: hidden !important;
 }
 
+/* ── Remove default block padding ── */
 .block-container {
     padding: 0 !important;
     max-width: 100% !important;
+    margin: 0 !important;
 }
 
-[data-testid="stSidebar"] {
-    display: none;
-}
+/* ── Sidebar gone ── */
+[data-testid="stSidebar"] { display: none !important; }
 
-[data-testid="stChatMessage"] {
-    background: white;
-    border: 1px solid #e4f0ea;
-    border-radius: 18px;
-    padding: 18px 22px;
-    margin-bottom: 14px;
-    color: #0d2e1c;
-    max-width: 820px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 2px 8px rgba(0,100,50,0.06);
-}
-
-[data-testid="stChatInput"] {
+/* ── TOP NAVBAR ── */
+.topbar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #f0faf4;
-    padding: 16px 20px 20px;
-    border-top: 1px solid #d4ecdf;
-    z-index: 999;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: rgba(240,250,244,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid #d4ecdf;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 9999;
 }
 
-[data-testid="stChatInput"] > div {
-    max-width: 780px;
+.topbar-logo {
+    font-size: 21px;
+    font-weight: 800;
+    color: #0d5c30;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.5px;
+}
+
+.topbar-sub {
+    font-size: 13px;
+    color: #5a8a6a;
+    font-weight: 400;
+}
+
+/* ── SCROLLABLE CHAT AREA ── */
+.chat-scroll {
+    position: fixed;
+    top: 60px;
+    left: 0; right: 0;
+    bottom: 110px;
+    overflow-y: auto;
+    padding: 40px 0 20px;
+}
+
+.chat-inner {
+    max-width: 760px;
     margin: 0 auto;
-    background: white;
-    border-radius: 50px;
-    border: 1.5px solid #2d8653;
-    box-shadow: 0 4px 20px rgba(45,134,83,0.15);
+    padding: 0 20px;
 }
 
-[data-testid="stChatInput"] textarea {
-    font-size: 15px;
-    color: #0d2e1c;
-    padding: 14px 20px;
-}
-
-[data-testid="stFileUploader"] {
-    max-width: 780px;
-    margin: 0 auto 12px;
-}
-
-.chat-area {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 76px 20px 160px;
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    max-width: 800px;
-    margin: 36px auto 0;
-}
-
-.feature-card {
-    background: white;
-    border: 1.5px solid #d4ecdf;
-    border-radius: 18px;
-    padding: 20px 16px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(45,134,83,0.07);
-}
-
-.feature-card .icon { font-size: 28px; margin-bottom: 10px; }
-.feature-card .title { font-weight: 700; font-size: 14px; color: #0d2e1c; margin-bottom: 4px; }
-.feature-card .subtitle { font-size: 12px; color: #5a8a6a; }
-
+/* ── HERO ── */
 .hero {
     text-align: center;
-    padding: 60px 20px 0;
+    padding: 60px 20px 40px;
 }
 
-.hero-icon {
-    width: 80px;
-    height: 80px;
-    background: #e8f7ee;
+.hero-bubble {
+    width: 88px;
+    height: 88px;
+    background: #e2f4ea;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
-    font-size: 36px;
-    border: 2px solid #c2e4cc;
+    font-size: 40px;
+    margin-bottom: 22px;
+    border: 2px solid #c2dece;
 }
 
 .hero h1 {
-    font-size: 44px;
+    font-size: 42px;
     font-weight: 800;
     color: #0d5c30;
     margin: 0 0 8px;
     letter-spacing: -1px;
 }
 
-.hero p { font-size: 17px; color: #4a7a5a; margin: 0; }
+.hero p {
+    font-size: 16px;
+    color: #4a7a5a;
+    margin: 0 0 40px;
+}
 
-.topbar {
+/* ── FEATURE CARDS ── */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+}
+
+.feature-card {
+    background: white;
+    border: 1.5px solid #d4ecdf;
+    border-radius: 18px;
+    padding: 22px 14px 18px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(45,134,83,0.07);
+    transition: all 0.2s;
+}
+
+.feature-card:hover {
+    border-color: #2d8653;
+    box-shadow: 0 6px 20px rgba(45,134,83,0.14);
+    transform: translateY(-2px);
+}
+
+.feature-card .fc-icon { font-size: 28px; margin-bottom: 10px; }
+.feature-card .fc-title { font-weight: 700; font-size: 13px; color: #0d2e1c; margin-bottom: 4px; }
+.feature-card .fc-sub { font-size: 11px; color: #5a8a6a; }
+
+/* ── CHAT MESSAGES ── */
+[data-testid="stChatMessage"] {
+    background: white !important;
+    border: 1px solid #e4f0ea !important;
+    border-radius: 18px !important;
+    padding: 16px 20px !important;
+    margin-bottom: 12px !important;
+    color: #0d2e1c !important;
+    box-shadow: 0 2px 8px rgba(0,100,50,0.05) !important;
+}
+
+/* ── BOTTOM BAR (input + upload + disclaimer) ── */
+.bottom-bar {
     position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 58px;
-    background: rgba(240,250,244,0.96);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #d4ecdf;
+    bottom: 0; left: 0; right: 0;
+    background: #f0faf4;
+    border-top: 1px solid #d4ecdf;
+    padding: 12px 20px 14px;
+    z-index: 9998;
+}
+
+.bottom-inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+/* ── Chat input styling ── */
+[data-testid="stChatInput"] {
+    position: static !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+[data-testid="stChatInput"] > div {
+    background: white !important;
+    border: 2px solid #2d8653 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 4px 20px rgba(45,134,83,0.12) !important;
+    min-height: 56px !important;
+}
+
+[data-testid="stChatInput"] textarea {
+    font-size: 15px !important;
+    padding: 14px 20px !important;
+    color: #0d2e1c !important;
+    min-height: 54px !important;
+    line-height: 1.5 !important;
+}
+
+[data-testid="stChatInput"] button {
+    background: #2d8653 !important;
+    border-radius: 50% !important;
+    margin: 6px !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+/* ── Upload button row ── */
+.upload-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    z-index: 1000;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.topbar-logo {
-    font-size: 20px;
-    font-weight: 800;
+.upload-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1.5px solid #c2dece;
+    border-radius: 30px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
     color: #0d5c30;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
 }
 
+.upload-trigger-btn:hover {
+    border-color: #2d8653;
+    background: #e8f7ee;
+}
+
+/* ── File uploader — hide when not in upload mode ── */
+.file-uploader-wrap [data-testid="stFileUploader"] {
+    background: white;
+    border: 1.5px dashed #b8dfc8;
+    border-radius: 14px;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+}
+
+.file-uploader-wrap [data-testid="stFileUploaderDropzoneInstructions"] {
+    display: none;
+}
+
+/* ── File badges ── */
 .file-badge {
     display: inline-flex;
     align-items: center;
@@ -188,15 +285,14 @@ header, footer, #MainMenu,
     background: #e8f7ee;
     border: 1px solid #b8dfc8;
     border-radius: 20px;
-    padding: 5px 12px;
+    padding: 4px 12px;
     font-size: 12px;
     font-weight: 600;
     color: #0d5c30;
-    margin: 4px;
+    margin-right: 6px;
 }
 
-.file-badges { text-align: center; padding: 8px 0; }
-
+/* ── Web badge ── */
 .ws-badge {
     display: inline-flex;
     align-items: center;
@@ -211,26 +307,19 @@ header, footer, #MainMenu,
     font-weight: 500;
 }
 
+/* ── Disclaimer ── */
 .disclaimer {
     text-align: center;
-    font-size: 12px;
-    color: #7aaa8a;
-    padding: 6px 0 2px;
+    font-size: 11px;
+    color: #8aaa96;
+    margin-top: 8px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ── Top Nav ──
-st.markdown("""
-<div class="topbar">
-    <span class="topbar-logo">⚡ InsightForge AI</span>
-    <span style="font-size:13px;color:#4a7a5a;font-weight:500;">Your Intelligent Industrial Assistant</span>
-</div>
-""", unsafe_allow_html=True)
-
 # ============================================================
-# API CLIENTS
+# CLIENTS
 # ============================================================
 
 groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
@@ -240,14 +329,15 @@ tavily = TavilyClient(api_key=st.secrets["TAVILY_API_KEY"])
 # SESSION STATE
 # ============================================================
 
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
-if "vectorstore" not in st.session_state:
-    st.session_state.vectorstore = None
-
-if "uploaded_file_names" not in st.session_state:
-    st.session_state.uploaded_file_names = []
+defaults = {
+    "chat_history": [],
+    "vectorstore": None,
+    "uploaded_file_names": [],
+    "show_uploader": False,
+}
+for k, v in defaults.items():
+    if k not in st.session_state:
+        st.session_state[k] = v
 
 # ============================================================
 # SYSTEM PROMPT
@@ -259,162 +349,154 @@ RULES:
 - Be concise, natural, and helpful
 - For greetings, reply briefly (1-2 lines max)
 - Never ask unnecessary follow-up questions
-- Only use structure/lists when it genuinely helps
+- Only use structure/lists when it genuinely helps clarity
 - For document questions, answer using only the provided data
 - For general questions, answer from your knowledge
 - For web search results, summarise clearly and cite sources
 - Never hallucinate data or make up numbers
-- If data is unavailable, say so honestly
+- If data is unavailable in documents, say so honestly
 """
 
 # ============================================================
-# WEB SEARCH
+# HELPERS
 # ============================================================
 
 def web_search(query):
     try:
         results = tavily.search(query=query, search_depth="advanced", max_results=3)
-        web_context = ""
-        sources = []
+        ctx = ""
+        srcs = []
         for r in results["results"]:
-            web_context += f"\nSOURCE: {r['title']}\nURL: {r['url']}\nCONTENT: {r['content']}\n"
-            sources.append(r['url'])
-        return web_context, sources
+            ctx += f"\nSOURCE: {r['title']}\nURL: {r['url']}\nCONTENT: {r['content']}\n"
+            srcs.append(r['url'])
+        return ctx, srcs
     except Exception:
         return "", []
 
-# ============================================================
-# DATA ANALYSIS
-# ============================================================
 
-def analyse_dataframe(df):
-    analysis = {
+def analyse_df(df):
+    info = {
         "rows": df.shape[0],
         "columns": df.shape[1],
         "column_names": list(df.columns),
-        "missing_values": df.isnull().sum()[df.isnull().sum() > 0].to_dict()
+        "missing": df.isnull().sum()[df.isnull().sum() > 0].to_dict(),
     }
-    numeric_df = df.select_dtypes(include='number')
-    if not numeric_df.empty:
-        analysis["statistics"] = numeric_df.describe().round(2).to_dict()
-    return analysis
+    num = df.select_dtypes(include='number')
+    if not num.empty:
+        info["statistics"] = num.describe().round(2).to_dict()
+    return info
 
-# ============================================================
-# EMBEDDINGS
-# ============================================================
 
 @st.cache_resource
 def load_embeddings():
     return HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
-# ============================================================
-# FILE PROCESSING
-# ============================================================
 
-def process_files(uploaded_files):
-    all_documents = []
+def process_files(files):
+    docs = []
     names = []
-
-    for uploaded_file in uploaded_files:
-        ext = uploaded_file.name.split('.')[-1].lower()
-        names.append(uploaded_file.name)
-
+    for f in files:
+        ext = f.name.split('.')[-1].lower()
+        names.append(f.name)
         with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as tmp:
-            tmp.write(uploaded_file.read())
-            temp_path = tmp.name
+            tmp.write(f.read())
+            path = tmp.name
 
         if ext == "pdf":
-            loader = PyPDFLoader(temp_path)
-            docs = loader.load()
-            all_documents.extend(docs)
+            loader = PyPDFLoader(path)
+            docs.extend(loader.load())
 
         elif ext == "xlsx":
-            excel_data = pd.read_excel(temp_path, sheet_name=None)
-            for sheet_name, df in excel_data.items():
-                analysis = analyse_dataframe(df)
-                text = f"SHEET: {sheet_name}\n\nDATA:\n{df.head(150).to_string(index=False)}\n\nANALYSIS:\n{analysis}"
-                all_documents.append(Document(page_content=text))
+            sheets = pd.read_excel(path, sheet_name=None)
+            for sname, df in sheets.items():
+                info = analyse_df(df)
+                text = f"SHEET: {sname}\n\nDATA:\n{df.head(150).to_string(index=False)}\n\nSTATS:\n{info}"
+                docs.append(Document(page_content=text))
 
         elif ext == "csv":
-            df = pd.read_csv(temp_path)
-            analysis = analyse_dataframe(df)
-            text = f"FILE: {uploaded_file.name}\n\nDATA:\n{df.head(150).to_string(index=False)}\n\nANALYSIS:\n{analysis}"
-            all_documents.append(Document(page_content=text))
+            df = pd.read_csv(path)
+            info = analyse_df(df)
+            text = f"FILE: {f.name}\n\nDATA:\n{df.head(150).to_string(index=False)}\n\nSTATS:\n{info}"
+            docs.append(Document(page_content=text))
 
         try:
-            os.unlink(temp_path)
+            os.unlink(path)
         except Exception:
             pass
 
     splitter = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=250)
-    chunks = splitter.split_documents(all_documents)
-    embeddings = load_embeddings()
-    vectorstore = FAISS.from_documents(chunks, embeddings)
-    return vectorstore, names
+    chunks = splitter.split_documents(docs)
+    emb = load_embeddings()
+    vs = FAISS.from_documents(chunks, emb)
+    return vs, names
 
-# ============================================================
-# WEB SEARCH DETECTION
-# ============================================================
 
 WEB_KEYWORDS = [
     "latest", "news", "today", "current", "recent", "2025", "2026",
-    "trend", "update", "price", "stock", "weather", "who is", "what happened",
-    "right now", "live", "breaking"
+    "trend", "update", "price", "stock", "weather", "who is",
+    "what happened", "right now", "live", "breaking"
 ]
 
-def needs_web_search(question):
-    q = question.lower()
-    return any(word in q for word in WEB_KEYWORDS)
+def needs_web(q):
+    return any(w in q.lower() for w in WEB_KEYWORDS)
 
 # ============================================================
-# LAYOUT
+# TOP NAVBAR
 # ============================================================
 
-st.markdown('<div class="chat-area">', unsafe_allow_html=True)
+st.markdown("""
+<div class="topbar">
+    <div class="topbar-logo">⚡ InsightForge AI</div>
+    <div class="topbar-sub">Your Intelligent Industrial Assistant</div>
+</div>
+""", unsafe_allow_html=True)
 
-# Hero
+# ============================================================
+# SCROLLABLE CHAT AREA
+# ============================================================
+
+st.markdown('<div class="chat-scroll"><div class="chat-inner">', unsafe_allow_html=True)
+
+# ── Hero — only when no chat ──
 if len(st.session_state.chat_history) == 0:
     st.markdown("""
     <div class="hero">
-        <div class="hero-icon">💬</div>
+        <div class="hero-bubble">💬</div>
         <h1>InsightForge AI</h1>
         <p>Your Intelligent Industrial Assistant</p>
-    </div>
 
-    <div class="feature-grid">
-        <div class="feature-card">
-            <div class="icon">📄</div>
-            <div class="title">Upload File</div>
-            <div class="subtitle">PDF, Excel, CSV</div>
-        </div>
-        <div class="feature-card">
-            <div class="icon">🌐</div>
-            <div class="title">Web Search</div>
-            <div class="subtitle">Search the web</div>
-        </div>
-        <div class="feature-card">
-            <div class="icon">📊</div>
-            <div class="title">Data Analysis</div>
-            <div class="subtitle">Analyse your data</div>
-        </div>
-        <div class="feature-card">
-            <div class="icon">🧠</div>
-            <div class="title">Get Insights</div>
-            <div class="subtitle">Smart insights</div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="fc-icon">📄</div>
+                <div class="fc-title">Upload File</div>
+                <div class="fc-sub">PDF, Excel, CSV</div>
+            </div>
+            <div class="feature-card">
+                <div class="fc-icon">🌐</div>
+                <div class="fc-title">Web Search</div>
+                <div class="fc-sub">Search the web</div>
+            </div>
+            <div class="feature-card">
+                <div class="fc-icon">📊</div>
+                <div class="fc-title">Data Analysis</div>
+                <div class="fc-sub">Analyse your data</div>
+            </div>
+            <div class="feature-card">
+                <div class="fc-icon">🧠</div>
+                <div class="fc-title">Get Insights</div>
+                <div class="fc-sub">Smart insights</div>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-# File badges
+# ── File badges ──
 if st.session_state.uploaded_file_names:
-    badges = "".join(
-        f'<span class="file-badge">📎 {name}</span>'
-        for name in st.session_state.uploaded_file_names
-    )
-    st.markdown(f'<div class="file-badges">{badges}</div>', unsafe_allow_html=True)
+    badges = "".join(f'<span class="file-badge">📎 {n}</span>' for n in st.session_state.uploaded_file_names)
+    st.markdown(f'<div style="text-align:center;margin-bottom:16px;">{badges}</div>', unsafe_allow_html=True)
 
-# Chat history
-for chat in st.session_state.chat_history[-10:]:
+# ── Chat messages ──
+for chat in st.session_state.chat_history[-12:]:
     with st.chat_message("user"):
         st.write(chat["question"])
     with st.chat_message("assistant"):
@@ -422,32 +504,51 @@ for chat in st.session_state.chat_history[-10:]:
             st.markdown('<span class="ws-badge">🌐 Web Search Used</span>', unsafe_allow_html=True)
         st.write(chat["answer"])
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # ============================================================
-# FILE UPLOADER
+# BOTTOM BAR
 # ============================================================
 
-uploaded_files = st.file_uploader(
-    "📎 Upload PDF, Excel, or CSV",
-    type=["pdf", "xlsx", "csv"],
-    accept_multiple_files=True,
-    key="file_uploader"
-)
+st.markdown('<div class="bottom-bar"><div class="bottom-inner">', unsafe_allow_html=True)
 
-if uploaded_files:
-    with st.spinner("Processing your files..."):
-        vectorstore, names = process_files(uploaded_files)
-        st.session_state.vectorstore = vectorstore
-        st.session_state.uploaded_file_names = names
-    st.toast(f"✅ {len(names)} file(s) ready — ask anything about them!")
-    st.rerun()
+# ── Upload toggle button + file badges inline ──
+col_btn, col_badges = st.columns([1, 4])
 
-# ============================================================
-# CHAT INPUT
-# ============================================================
+with col_btn:
+    if st.button("📎  Attach File", key="toggle_upload", use_container_width=False):
+        st.session_state.show_uploader = not st.session_state.show_uploader
 
+# ── File uploader — only visible when toggled ──
+if st.session_state.show_uploader:
+    st.markdown('<div class="file-uploader-wrap">', unsafe_allow_html=True)
+    uploaded_files = st.file_uploader(
+        "Upload PDF, Excel or CSV",
+        type=["pdf", "xlsx", "csv"],
+        accept_multiple_files=True,
+        key="file_uploader",
+        label_visibility="collapsed"
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if uploaded_files:
+        with st.spinner("Processing files..."):
+            vs, names = process_files(uploaded_files)
+            st.session_state.vectorstore = vs
+            st.session_state.uploaded_file_names = names
+            st.session_state.show_uploader = False
+        st.toast(f"✅ {len(names)} file(s) ready!")
+        st.rerun()
+else:
+    uploaded_files = None
+
+# ── Chat input ──
 question = st.chat_input("Ask me anything...")
+
+# ── Disclaimer ──
+st.markdown('<div class="disclaimer">InsightForge AI can make mistakes. Verify important information. ⓘ</div>', unsafe_allow_html=True)
+
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # ============================================================
 # HANDLE QUESTION
@@ -463,9 +564,8 @@ if question:
 
     # Decide mode
     if st.session_state.vectorstore is not None:
-        # RAG
         docs = st.session_state.vectorstore.similarity_search(question, k=5)
-        context = "\n\n".join([doc.page_content for doc in docs])
+        context = "\n\n".join([d.page_content for d in docs])
         prompt = f"""You are analysing uploaded documents/data.
 
 DATA CONTEXT:
@@ -475,18 +575,17 @@ USER QUESTION:
 {question}
 
 INSTRUCTIONS:
-- Answer using only the data provided above
+- Answer using only the data provided
 - Be concise and specific
-- Use tables or bullet points only if they help clarity
+- Use tables or bullet points only when they genuinely help
 - If the answer is not in the data, say "This information is not in the uploaded files"
 - Never hallucinate numbers or facts
 """
 
-    elif needs_web_search(question):
-        # Web search
+    elif needs_web(question):
         web_context, sources = web_search(question)
         web_searched = True
-        prompt = f"""Answer the user's question using the latest web information below.
+        prompt = f"""Answer using the latest web information below.
 
 WEB SEARCH RESULTS:
 {web_context}
@@ -494,24 +593,18 @@ WEB SEARCH RESULTS:
 USER QUESTION:
 {question}
 
-INSTRUCTIONS:
-- Summarise clearly from the search results
-- Mention source URLs where helpful
-- Be concise
+- Summarise clearly, mention sources where helpful, be concise
 """
 
     else:
-        # General chat
         prompt = question
 
-    # Build messages with history
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for chat in st.session_state.chat_history[-6:]:
         messages.append({"role": "user", "content": chat["question"]})
         messages.append({"role": "assistant", "content": chat["answer"]})
     messages.append({"role": "user", "content": prompt})
 
-    # Stream response
     with st.chat_message("assistant"):
         if web_searched:
             st.markdown('<span class="ws-badge">🌐 Web Search Used</span>', unsafe_allow_html=True)
@@ -550,13 +643,4 @@ INSTRUCTIONS:
             "answer": full_response,
             "web_searched": web_searched
         })
-
-# ============================================================
-# DISCLAIMER
-# ============================================================
-
-st.markdown("""
-<div class="disclaimer">
-    InsightForge AI can make mistakes. Verify important information. ⓘ
-</div>
-""", unsafe_allow_html=True)
+        st.rerun()
