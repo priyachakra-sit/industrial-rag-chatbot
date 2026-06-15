@@ -286,7 +286,12 @@ with st.sidebar:
     if st.button("➕ Start New Chat"):
 
         st.session_state.chat_history = []
+
         st.session_state.vectorstore = None
+
+        st.session_state.quick_prompt = ""
+
+        st.session_state.analysis_ready = False
 
         st.rerun()
 
@@ -362,7 +367,7 @@ if chat_mode == "📂 Upload & Analyze Reports":
         accept_multiple_files=True
     )
 
-    if uploaded_files and st.session_state.analysis_ready:
+    if uploaded_files:
 
         all_documents = []
 
@@ -392,15 +397,15 @@ if chat_mode == "📂 Upload & Analyze Reports":
 
                 for sheet_name, df in excel_data.items():
 
-                    st.subheader(f"📄 {sheet_name}")
-                    st.dataframe(df)
+                    
+                    
 
                     analysis = advanced_dataframe_analysis(df)
 
                     text = f"""
 
 DATASET:
-{df.to_string(index=False)}
+{df.head(100).to_string(index=False)}
 
 ANALYSIS:
 {analysis}
@@ -415,14 +420,14 @@ ANALYSIS:
 
                 df = pd.read_csv(temp_path)
 
-                st.dataframe(df)
+                
 
                 analysis = advanced_dataframe_analysis(df)
 
                 text = f"""
 
 DATASET:
-{df.to_string(index=False)}
+{df.head(100).to_string(index=False)}
 
 ANALYSIS:
 {analysis}
@@ -475,25 +480,9 @@ for chat in recent_history:
 # ============================================================
 # CHAT INPUT
 # ============================================================
-
-question = None
-
-if (
-    "quick_prompt" in st.session_state
-    and st.session_state.quick_prompt
-):
-
-    question = st.session_state.quick_prompt
-
-    st.session_state.quick_prompt = ""
-
-user_input = st.chat_input(
-    "Ask anything..."
+question = st.chat_input(
+    "Ask anything about uploaded reports..."
 )
-
-if user_input:
-
-    question = user_input
 
 # ============================================================
 # GENERAL AI CHAT
@@ -650,13 +639,13 @@ QUESTION:
 {question}
 
 RULES:
-1. Mention trends
-2. Mention anomalies
-3. Mention recommendations
-4. Never hallucinate
-5. Use only provided data
-6. Keep answers concise
-7. Focus on actionable insights
+1. Answer only the user's question.
+2. Use only the uploaded data.
+3. Never hallucinate.
+4. Do not generate executive summaries unless asked.
+5. Do not generate recommendations unless asked.
+6. Keep responses concise.
+7. If data is unavailable, say "Data not available".
 
 """
 
