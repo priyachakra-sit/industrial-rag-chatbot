@@ -211,12 +211,8 @@ header, footer, #MainMenu,
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOP NAVBAR ──
-st.markdown("""
-<div class="topbar">
-    <span class="topbar-sub">Your Intelligent Industrial Assistant</span>
-</div>
-""", unsafe_allow_html=True)
+
+
 
 # ── DISCLAIMER ──
 st.markdown("""
