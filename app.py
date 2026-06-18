@@ -29,180 +29,70 @@ st.set_page_config(
 # CSS
 # ============================================================
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+st.markdown("""<style>
 
-*, *::before, *::after { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-html, body, .stApp { background: #f0faf4 !important; color: #0d2e1c !important; }
-
-header, footer, #MainMenu,
-[data-testid="stHeader"], [data-testid="stToolbar"],
-[data-testid="stDecoration"], [data-testid="collapsedControl"],
-[data-testid="stStatusWidget"], .stDeployButton {
-    display: none !important;
+html, body, .stApp {
+    font-family: 'Inter', sans-serif;
+    background: #f7f9fc;
 }
 
-.block-container { padding: 70px 0 180px !important; max-width: 100% !important; }
-[data-testid="stSidebar"] { display: none !important; }
-
-/* ── TOP NAV ── */
-.topbar {
-    position: fixed; top: 0; left: 0; right: 0; height: 60px;
-    background: rgba(240,250,244,0.97);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid #d4ecdf;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px; z-index: 9999;
-}
-.topbar-logo { font-size: 21px; font-weight: 800; color: #0d5c30; }
-.topbar-sub  { font-size: 13px; color: #5a8a6a; }
-
-/* ── NEW CHAT BTN — fixed top-right ── */
-div[data-testid="stButton"].new-chat-fixed {
-    position: fixed !important;
-    top: 12px !important; right: 28px !important;
-    z-index: 10000 !important;
+/* Main page */
+.block-container{
+    max-width:1000px !important;
+    margin:auto !important;
+    padding-top:20px !important;
+    padding-bottom:100px !important;
 }
 
-/* Target the new-chat button specifically by key class we inject */
-.new-chat-area {
-    position: fixed;
-    top: 11px; right: 24px;
-    z-index: 10000;
+/* Hide Streamlit junk */
+#MainMenu,
+footer,
+header{
+    visibility:hidden;
 }
 
-.new-chat-area .stButton > button {
-    background: #2d8653 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 30px !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-    padding: 8px 20px !important;
-    height: auto !important;
-    width: auto !important;
-    box-shadow: 0 2px 10px rgba(45,134,83,0.25) !important;
-}
-.new-chat-area .stButton > button:hover {
-    background: #236b42 !important;
+/* Chat messages */
+[data-testid="stChatMessage"]{
+    background:white !important;
+    border:1px solid #e5e7eb !important;
+    border-radius:18px !important;
+    padding:18px !important;
+    margin-bottom:14px !important;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
 }
 
-/* ── CHAT MESSAGES ── */
-[data-testid="stChatMessage"] {
-    background: white !important;
-    border: 1px solid #e0ede6 !important;
-    border-radius: 18px !important;
-    padding: 16px 22px !important;
-    margin-bottom: 12px !important;
-    max-width: 780px !important;
-    margin-left: auto !important; margin-right: auto !important;
-    box-shadow: 0 2px 8px rgba(0,100,50,0.05) !important;
+/* Input */
+[data-testid="stChatInput"]{
+    margin-top:20px;
 }
 
-/* ── CHAT INPUT ── */
-[data-testid="stChatInput"] {
-    position: fixed !important;
-    bottom: 40px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 780px !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    z-index: 9998 !important;
-}
-[data-testid="stChatInput"] > div {
-    background: white !important;
-    border: 2px solid #2d8653 !important;
-    border-radius: 50px !important;
-    box-shadow: 0 4px 24px rgba(45,134,83,0.15) !important;
-    min-height: 58px !important;
-}
-[data-testid="stChatInput"] textarea {
-    font-size: 15px !important;
-    padding: 16px 22px !important;
-    color: #0d2e1c !important;
-}
-[data-testid="stChatInput"] button {
-    background: #2d8653 !important;
-    border-radius: 50% !important;
-    margin: 8px !important;
-    width: 42px !important; height: 42px !important;
+[data-testid="stChatInput"] > div{
+    border-radius:20px !important;
+    border:1px solid #d1d5db !important;
+    background:white !important;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
-/* ── DISCLAIMER ── */
-.disclaimer-bar {
-    position: fixed; bottom: 10px; left: 0; right: 0;
-    text-align: center; font-size: 11px; color: #8aaa96; z-index: 9997;
+/* Buttons */
+.stButton button{
+    border-radius:12px !important;
+    background:#1f7a4d !important;
+    color:white !important;
+    border:none !important;
 }
 
-/* ── BADGES ── */
-.ws-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: #fff8e1; border: 1px solid #ffe082;
-    border-radius: 12px; padding: 3px 10px;
-    font-size: 11px; color: #795548; margin-bottom: 8px; font-weight: 500;
-}
-.file-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: #e8f7ee; border: 1px solid #b8dfc8;
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 12px; font-weight: 600; color: #0d5c30; margin: 3px;
+/* File uploader */
+[data-testid="stFileUploader"]{
+    background:white;
+    border-radius:15px;
+    padding:10px;
+    border:1px dashed #cbd5e1;
 }
 
-/* ── HERO ── */
-.hero-wrap {
-    text-align: center; padding: 50px 20px 30px;
-    max-width: 860px; margin: 0 auto;
-}
-.hero-bubble {
-    width: 90px; height: 90px; background: #e2f4ea;
-    border-radius: 50%; display: inline-flex;
-    align-items: center; justify-content: center;
-    font-size: 42px; border: 2px solid #c2dece; margin-bottom: 20px;
-}
-.hero-title { font-size: 44px; font-weight: 800; color: #0d5c30; margin: 0 0 8px; letter-spacing: -1px; }
-.hero-sub   { font-size: 16px; color: #4a7a5a; margin: 0 0 36px; }
+</style>""", unsafe_allow_html=True)
 
-/* ── FEATURE CARDS ── */
-.cards-row { display: flex; gap: 14px; justify-content: center; margin-bottom: 20px; }
-.fcard {
-    background: white; border: 1.5px solid #d4ecdf;
-    border-radius: 18px; padding: 22px 18px 18px;
-    width: 168px; text-align: center;
-    box-shadow: 0 2px 12px rgba(45,134,83,0.07); flex-shrink: 0;
-}
-.fcard .fci { font-size: 28px; margin-bottom: 10px; }
-.fcard .fct { font-weight: 700; font-size: 13px; color: #0d2e1c; margin-bottom: 4px; }
-.fcard .fcs { font-size: 11px; color: #5a8a6a; }
-
-/* ── ATTACH + GENERAL BUTTONS ── */
-.stButton > button {
-    background: white !important;
-    border: 1.5px solid #c2dece !important;
-    border-radius: 30px !important;
-    color: #0d5c30 !important;
-    font-weight: 600 !important;
-    font-size: 13px !important;
-    padding: 6px 16px !important;
-    height: auto !important; width: auto !important;
-}
-.stButton > button:hover {
-    border-color: #2d8653 !important;
-    background: #e8f7ee !important;
-}
-
-/* ── FILE UPLOADER ── */
-[data-testid="stFileUploader"] {
-    max-width: 780px; margin: 0 auto 10px;
-    background: white; border: 1.5px dashed #b8dfc8;
-    border-radius: 14px; padding: 10px 16px;
-}
-
-</style>
-""", unsafe_allow_html=True)
 
 # ============================================================
 # CLIENTS
@@ -305,14 +195,17 @@ def needs_web(q):
 
 
 # ── NEW CHAT BUTTON — injected via a fixed-position div ──
-st.markdown('<div class="new-chat-area">', unsafe_allow_html=True)
-if st.button("✨  New Chat", key="new_chat_btn"):
-    st.session_state.chat_history = []
-    st.session_state.vectorstore = None
-    st.session_state.uploaded_file_names = []
-    st.session_state.show_uploader = False
-    st.rerun()
-st.markdown('</div>', unsafe_allow_html=True)
+col1, col2 = st.columns([8,1])
+
+with col1:
+    st.title("⚡ InsightForge AI")
+
+with col2:
+    if st.button("New Chat"):
+        st.session_state.chat_history = []
+        st.session_state.vectorstore = None
+        st.session_state.uploaded_file_names = []
+        st.rerun()
 
 # ── DISCLAIMER ──
 st.markdown("""
@@ -325,20 +218,6 @@ st.markdown("""
 # HERO — only when no chat history
 # ============================================================
 
-if len(st.session_state.chat_history) == 0:
-    st.markdown("""
-<div class="hero-wrap">
-    <div class="hero-bubble">💬</div>
-    <div class="hero-title">InsightForge AI</div>
-    <div class="hero-sub">Your Intelligent Industrial Assistant</div>
-    <div class="cards-row">
-        <div class="fcard"><div class="fci">📄</div><div class="fct">Upload File</div><div class="fcs">PDF, Excel, CSV</div></div>
-        <div class="fcard"><div class="fci">🌐</div><div class="fct">Web Search</div><div class="fcs">Search the web</div></div>
-        <div class="fcard"><div class="fci">📊</div><div class="fct">Data Analysis</div><div class="fcs">Analyse your data</div></div>
-        <div class="fcard"><div class="fci">🧠</div><div class="fct">Get Insights</div><div class="fcs">Smart insights</div></div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
 
 # ============================================================
 # FILE BADGES
@@ -364,32 +243,14 @@ for chat in st.session_state.chat_history[-12:]:
 # ATTACH FILE BUTTON + UPLOADER
 # ============================================================
 
-left, mid, right = st.columns([2, 6, 2])
-with left:
-    if st.button("📎  Attach File", key="attach_btn"):
-        st.session_state.show_uploader = not st.session_state.show_uploader
-
-if st.session_state.show_uploader:
-    uploaded_files = st.file_uploader(
-        "Upload PDF, Excel or CSV",
-        type=["pdf", "xlsx", "csv"],
-        accept_multiple_files=True,
-        label_visibility="collapsed",
-        key="file_uploader"
-    )
-    if uploaded_files:
-        with st.spinner("Processing files..."):
-            vs, names = process_files(uploaded_files)
-            st.session_state.vectorstore = vs
-            st.session_state.uploaded_file_names = names
-            st.session_state.show_uploader = False
-        st.toast(f"✅ {len(names)} file(s) ready!")
-        st.rerun()
 
 # ============================================================
 # CHAT INPUT
 # ============================================================
-
+uploaded_files = st.file_uploader(
+    "Upload Files",
+    accept_multiple_files=True
+)
 question = st.chat_input("Ask me anything...")
 
 # ============================================================
