@@ -22,7 +22,7 @@ st.set_page_config(
     page_title="InsightForge AI",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # ============================================================
@@ -202,11 +202,28 @@ with col1:
 
 with col2:
     if st.button("New Chat"):
-        st.session_state.chat_history = []
-        st.session_state.vectorstore = None
-        st.session_state.uploaded_file_names = []
+        st.session_state.clear()
         st.rerun()
+with st.sidebar:
     
+    st.caption("Upload PDF, Excel or CSV files")
+
+    st.subheader("📂 Documents")
+
+    uploaded_files = st.file_uploader(
+        "Upload Files",
+        accept_multiple_files=True,
+        type=["pdf", "xlsx", "csv"]
+    )
+
+    if uploaded_files:
+
+        vectorstore, names = process_files(uploaded_files)
+
+        st.session_state.vectorstore = vectorstore
+        st.session_state.uploaded_file_names = names
+
+        st.success("Files uploaded")
 # ── DISCLAIMER ──
 st.markdown("""
 <div class="disclaimer-bar">
@@ -229,9 +246,7 @@ if st.session_state.uploaded_file_names:
         "📎 Uploaded Files: " +
         ", ".join(st.session_state.uploaded_file_names)
     )
-    badges = "".join(f'<span class="file-badge">📎 {n}</span>' for n in st.session_state.uploaded_file_names)
-    st.markdown(f'<div style="text-align:center;margin:10px 0 16px;">{badges}</div>', unsafe_allow_html=True)
-
+    
 # ============================================================
 # CHAT HISTORY
 # ============================================================
@@ -254,24 +269,7 @@ for chat in st.session_state.chat_history[-12:]:
 # ============================================================
 # SHOW UPLOADER ONLY ONCE
 
-if len(st.session_state.uploaded_file_names) == 0:
 
-    uploaded_files = st.file_uploader(
-        "📎 Upload PDF, Excel or CSV",
-        accept_multiple_files=True,
-        type=["pdf", "xlsx", "csv"]
-    )
-
-    if uploaded_files:
-
-        vectorstore, names = process_files(uploaded_files)
-
-        st.session_state.vectorstore = vectorstore
-        st.session_state.uploaded_file_names = names
-
-        st.success("✅ Files uploaded successfully")
-
-        st.rerun()
 question = st.chat_input("Ask me anything...")
 
 # ============================================================
