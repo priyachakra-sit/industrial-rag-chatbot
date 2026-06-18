@@ -352,4 +352,4 @@ Summarise clearly, cite sources, be concise."""
             "answer": full_response,
             "web_searched": web_searched
         })
-        st.rerun()
+        #st.rerun()
