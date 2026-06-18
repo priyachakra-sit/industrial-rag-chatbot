@@ -195,20 +195,20 @@ def needs_web(q):
 
 
 # ── NEW CHAT BUTTON — injected via a fixed-position div ──
-col1, col2 = st.columns([8,1])
+st.title("⚡ InsightForge AI")
 
-with col1:
-    st.title("⚡ InsightForge AI")
-
-with col2:
-    if st.button("New Chat"):
-        st.session_state.clear()
-        st.rerun()
 with st.sidebar:
-    
-    st.caption("Upload PDF, Excel or CSV files")
+
+    if st.button("✨ New Chat", use_container_width=True):
+        st.session_state.chat_history = []
+        st.session_state.vectorstore = None
+        st.session_state.uploaded_file_names = []
+        st.rerun()
+
+    st.markdown("---")
 
     st.subheader("📂 Documents")
+    st.caption("Upload PDF, Excel or CSV files")
 
     uploaded_files = st.file_uploader(
         "Upload Files",
@@ -223,7 +223,7 @@ with st.sidebar:
         st.session_state.vectorstore = vectorstore
         st.session_state.uploaded_file_names = names
 
-        st.success("Files uploaded")
+        st.success("✅ Files uploaded successfully")
 # ── DISCLAIMER ──
 st.markdown("""
 <div class="disclaimer-bar">
